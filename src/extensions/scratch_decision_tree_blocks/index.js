@@ -23,11 +23,11 @@ class ID3Blocks {
                     arguments: {
                         REC: {
                             type: DataRecord,
-                            defaultValue: "record"
+                            defaultValue: 'record'
                         },
-                        DS:{
+                        DS: {
                             type: TrainingDataset,
-                            defaultValue: ""
+                            defaultValue: ''
                         }
                     }
                 },
@@ -38,7 +38,7 @@ class ID3Blocks {
                     arguments: {
                         VALUES: {
                             type: ArgumentType.STRING,
-                            defaultValue: ""
+                            defaultValue: ''
                         }
                     }
                 },
@@ -49,11 +49,11 @@ class ID3Blocks {
                     arguments: {
                         ATTRIBUTES: {
                             type: ArgumentType.STRING,
-                            defaultValue: ""
+                            defaultValue: ''
                         },
                         RECORDS: {
                             type: Variable.LIST_TYPE,
-                            defaultValue: ""
+                            defaultValue: ''
                         }
                     }
                 }
@@ -65,24 +65,23 @@ class ID3Blocks {
 
     classify (args){
         const classifyValue = id3Main.main(args.DS, args.REC);
-        log.log("clasificación: " + classifyValue);
+        log.log(`clasificación: ${classifyValue}`);
     }
 
-    createRecord(args){
-        return new DataRecord(args.VALUES.split(","));
+    createRecord (args){
+        return new DataRecord(args.VALUES.split(','));
     }
 
-    buildTrainingDs(args){
-        let attributes = args.ATTRIBUTES.split(",");
+    buildTrainingDs (args){
+        const attributes = args.ATTRIBUTES.split(',');
 
-        let inputList = args.RECORDS.split(" ").slice();
-        let records = [];
+        const inputList = args.RECORDS.split(' ').slice();
+        const records = [];
 
         inputList.forEach(input => {
-           records.push(new DataRecord(input.split(",").slice()));
+            records.push(new DataRecord(input.split(',').slice()));
         });
-        let ts = new TrainingDataset(attributes, records);
-        return ts;
+        return new TrainingDataset(attributes, records);
     }
 }
 

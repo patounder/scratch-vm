@@ -1,27 +1,27 @@
 class NodeClass{
 
-    constructor(childList, branchValue){
+    constructor (childList, branchValue){
         this._childList = childList;
         this._branchValue = branchValue;
     }
 
-    get childList() {
+    get childList () {
         return this._childList;
     }
 
-    set childList(value) {
+    set childList (value) {
         this._childList = value;
     }
 
-    get branchValue() {
+    get branchValue () {
         return this._branchValue;
     }
 
-    set branchValue(value) {
+    set branchValue (value) {
         this._branchValue = value;
     }
 
 
 }
 
-module.exports = NodeClass
+module.exports = NodeClass;
