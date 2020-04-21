@@ -8,3 +8,7 @@ npm-*
 # Testing
 /.nyc_output
 /coverage
+
+.idea/
+dist/
+playground/
