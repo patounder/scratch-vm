@@ -75,12 +75,17 @@ class ID3Blocks {
                 {
                     opcode: 'newLeafNode',
                     blockType: BlockType.REPORTER,
-                    text: 'nodo hoja [LEAF_LABEL]',
+                    text: 'nodo hoja [LEAF_LABEL][BRANCH_VALUE]',
                     arguments: {
                         LEAF_LABEL: {
                             type: ArgumentType.STRING,
                             defaultValue: ''
+                        },
+                        BRANCH_VALUE: {
+                            type: ArgumentType.STRING,
+                            defaultValue: ''
                         }
+
                     }
                 },
                 {
