@@ -1,0 +1,52 @@
+class Schema {
+
+    constructor (mainAttribute, mainValuesMap, remainingAttributes, frequencyTablesMap, totalCountTraining){
+        this._mainAttribute = mainAttribute;
+        this._mainValuesMap = mainValuesMap;
+        this._remainingAttributes = remainingAttributes;
+        this._frequencyTablesMap = frequencyTablesMap;
+        this._totalCountTraining = totalCountTraining;
+    }
+
+    get mainAttribute () {
+        return this._mainAttribute;
+    }
+
+    set mainAttribute (value) {
+        this._mainAttribute = value;
+    }
+
+    get mainValuesMap () {
+        return this._mainValuesMap;
+    }
+
+    set mainValuesMap (value) {
+        this._mainValuesMap = value;
+    }
+
+    get remainingAttributes () {
+        return this._remainingAttributes;
+    }
+
+    set remainingAttributes (value) {
+        this._remainingAttributes = value;
+    }
+
+    get frequencyTablesMap () {
+        return this._frequencyTablesMap;
+    }
+
+    set frequencyTablesMap (value) {
+        this._frequencyTablesMap = value;
+    }
+
+    get totalCountTraining () {
+        return this._totalCountTraining;
+    }
+
+    set totalCountTraining (value) {
+        this._totalCountTraining = value;
+    }
+}
+
+module.exports = Schema;

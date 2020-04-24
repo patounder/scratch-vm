@@ -1,9 +1,12 @@
 const ArgumentType = require('../../extension-support/argument-type');
 const BlockType = require('../../extension-support/block-type');
+const NaiveBayes = require('./NaiveBayes');
+const Schema = require('./Schema');
 
 class NaiveBayesBlocks {
     constructor (runtime) {
         this.runtime = runtime;
+        this._nbObj = new NaiveBayes(new Schema());
     }
 
     getInfo () {
@@ -59,7 +62,9 @@ class NaiveBayesBlocks {
     }
     train (){}
 
-    probForClass (){}
+    probForClass (){
+        console.log(this._nbObj.sumDummy(3, 6));
+    }
 
     probConditional (){}
 }
