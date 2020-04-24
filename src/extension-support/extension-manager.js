@@ -25,7 +25,8 @@ const builtinExtensions = {
     boost: () => require('../extensions/scratch3_boost'),
     gdxfor: () => require('../extensions/scratch3_gdx_for'),
     newblocks: () => require('../extensions/scratch3_newblocks'),
-    id3Blocks: () => require('../extensions/scratch_decision_tree_blocks')
+    id3Blocks: () => require('../extensions/scratch_decision_tree_blocks'),
+    naiveBayesBlocks: () => require('../extensions/scratch3_naive_bayes')
 };
 
 /**
