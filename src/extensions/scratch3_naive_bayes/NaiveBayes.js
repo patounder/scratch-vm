@@ -20,6 +20,7 @@ class NaiveBayes {
         }
 
         this._schema.frequencyTablesMap = frequencyTablesMap;
+        console.log(this._schema);
     }
 
 
@@ -39,6 +40,7 @@ class NaiveBayes {
             }
         });
 
+        console.log(this._schema);
     }
 
     // return map with attributes (keys) and occurrences (values)
