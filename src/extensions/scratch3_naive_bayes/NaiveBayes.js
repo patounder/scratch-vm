@@ -76,14 +76,17 @@ class NaiveBayes {
     }
 
     getProbClass (mainValue){
-        return this._schema.mainValuesMap.get(mainValue) / this._schema.totalCountTraining;
+        const probClass = this._schema.mainValuesMap.get(mainValue) / this._schema.totalCountTraining;
+        console.log(`prob clase: ${probClass}`);
+        return probClass;
     }
 
     getProbConditional (attributeName, attributeValue, mainValue){
         const freqTable = this._schema.frequencyTablesMap.get(attributeName);
         const attributeFreq = freqTable.frequencyMap.get(mainValue).get(attributeValue);
-
-        return attributeFreq / this._schema.mainValuesMap.get(mainValue);
+        const resultProbCond = attributeFreq / this._schema.mainValuesMap.get(mainValue);
+        console.log(`prob condicional para valor: ${attributeValue}, atributo: ${attributeName}, valor clase: ${mainValue} es: ${resultProbCond}`);
+        return resultProbCond;
     }
 
     sumDummy (a, b){

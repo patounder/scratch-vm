@@ -98,7 +98,7 @@ class NaiveBayesBlocks {
     }
 
     initConfig (args){
-        console.log(args.ATTRIBUTES)
+        console.log(args.ATTRIBUTES);
         const classMain = args.MAIN;
         const attributes = args.ATTRIBUTES.split(',');
         this.naiveBayes.initSchema(classMain, attributes);
