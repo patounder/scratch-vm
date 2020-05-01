@@ -4,6 +4,7 @@ const NaiveBayes = require('./NaiveBayes');
 const Schema = require('./Schema');
 
 class NaiveBayesBlocks {
+
     constructor (runtime) {
         this.runtime = runtime;
         this.naiveBayes = new NaiveBayes(new Schema());
@@ -17,13 +18,13 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'initConfig',
                     blockType: BlockType.COMMAND,
-                    text: 'configuracion clase[CLASS_MAIN] atributos[ATTRIBUTES]',
+                    text: 'configuracion atributos [ATTRIBUTES] principal [MAIN]',
                     arguments: {
-                        CLASS_MAIN: {
+                        ATTRIBUTES: {
                             type: ArgumentType.STRING,
                             defaultValue: ''
                         },
-                        ATTRIBUTES: {
+                        MAIN: {
                             type: ArgumentType.STRING,
                             defaultValue: ''
                         }
@@ -32,13 +33,13 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'train',
                     blockType: BlockType.COMMAND,
-                    text: 'entrenar datos [DS] clase [CLASS_ID]',
+                    text: 'entrenando con datos [DS] principal [MAIN_VAL]',
                     arguments: {
                         DS: {
                             type: ArgumentType.STRING,
                             defaultValue: ''
                         },
-                        CLASS_ID: {
+                        MAIN_VAL: {
                             type: ArgumentType.STRING,
                             defaultValue: ''
                         }
@@ -47,9 +48,9 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'probForClass',
                     blockType: BlockType.REPORTER,
-                    text: 'probabilidad clase [CLASS_ID]',
+                    text: 'prob gral clase [MAIN_VALUE]',
                     arguments: {
-                        CLASS_ID: {
+                        MAIN_VALUE: {
                             type: ArgumentType.STRING,
                             defaultValue: ''
                         }
@@ -58,18 +59,23 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'probConditional',
                     blockType: BlockType.REPORTER,
-                    text: 'probabilidad de [VAL_REC] dada [CLASS_ID]',
+                    text: 'prob cond valor [ATT_VALUE] atributo [ATT_NAME] principal [MAIN_VALUE]',
                     arguments: {
-                        CLASS_ID: {
+                        ATT_NAME: {
                             type: ArgumentType.STRING,
                             defaultValue: ''
                         },
-                        VAL_REC: {
+                        ATT_VALUE: {
+                            type: ArgumentType.STRING,
+                            defaultValue: ''
+                        },
+                        MAIN_VALUE: {
                             type: ArgumentType.STRING,
                             defaultValue: ''
                         }
                     }
                 }
+
             ],
             menus: {
             }
@@ -77,13 +83,14 @@ class NaiveBayesBlocks {
     }
 
     initConfig (args){
-        const classMain = args.CLASS_MAIN;
+        console.log(args.ATTRIBUTES)
+        const classMain = args.MAIN;
         const attributes = args.ATTRIBUTES.split(',');
         this.naiveBayes.initSchema(classMain, attributes);
     }
 
     train (args){
-        const mainValue = args.CLASS_ID;
+        const mainValue = args.MAIN_VAL;
         const dataSet = args.DS.split(' ').slice();
         const trainningSet = [];
         dataSet.forEach(rec => {
@@ -98,11 +105,23 @@ class NaiveBayesBlocks {
         this.naiveBayes.train(mainValue, trainningSet);
     }
 
-    probForClass (){
-        console.log(this.naiveBayes.sumDummy(3, 6));
+    probForClass (args){
+        const mainValue = args.MAIN_VALUE;
+        const value = this.naiveBayes.getProbClass(mainValue);
+        console.log(value);
+        return value;
     }
 
-    probConditional (){}
+    probConditional (args){
+        const attributeName = args.ATT_NAME;
+        const attributeValue = args.ATT_VALUE;
+        const mainValue = args.MAIN_VALUE;
+        const result = this.naiveBayes.getProbConditional(attributeName, attributeValue, mainValue);
+        console.log(result);
+        return result;
+    }
+
+
 }
 
 module.exports = NaiveBayesBlocks;
