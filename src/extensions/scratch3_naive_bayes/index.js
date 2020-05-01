@@ -74,6 +74,21 @@ class NaiveBayesBlocks {
                             defaultValue: ''
                         }
                     }
+                },
+                {
+                    opcode: 'getItemRecord',
+                    blockType: BlockType.REPORTER,
+                    text: 'item [INDEX] de [RECORD]',
+                    arguments: {
+                        INDEX: {
+                            type: ArgumentType.NUMBER,
+                            defaultValue: ''
+                        },
+                        RECORD: {
+                            type: ArgumentType.STRING,
+                            defaultValue: ''
+                        }
+                    }
                 }
 
             ],
@@ -121,6 +136,13 @@ class NaiveBayesBlocks {
         return result;
     }
 
+    getItemRecord (args){
+        const index = args.INDEX;
+        // console.log(args.RECORD.name); // indefined
+        const recordLikeArray = args.RECORD.split(',').slice();
+
+        return recordLikeArray[index - 1]; // subs because consistency with lists in the code
+    }
 
 }
 
