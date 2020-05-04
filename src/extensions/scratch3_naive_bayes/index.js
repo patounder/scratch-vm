@@ -14,6 +14,7 @@ class NaiveBayesBlocks {
         return {
             id: 'naiveBayesBlocks',
             name: 'Bloques Naive Bayes',
+            color1: '#FF1A66',
             blocks: [
                 {
                     opcode: 'initConfig',
@@ -46,9 +47,9 @@ class NaiveBayesBlocks {
                     }
                 },
                 {
-                    opcode: 'probForClass',
+                    opcode: 'probApriori',
                     blockType: BlockType.REPORTER,
-                    text: 'prob gral clase [MAIN_VALUE]',
+                    text: 'prob a priori clase [MAIN_VALUE]',
                     arguments: {
                         MAIN_VALUE: {
                             type: ArgumentType.STRING,
@@ -120,9 +121,9 @@ class NaiveBayesBlocks {
         this.naiveBayes.train(mainValue, trainningSet);
     }
 
-    probForClass (args){
+    probApriori (args){
         const mainValue = args.MAIN_VALUE;
-        const value = this.naiveBayes.getProbClass(mainValue);
+        const value = this.naiveBayes.probApriori(mainValue);
         console.log(value);
         return value;
     }
@@ -131,7 +132,7 @@ class NaiveBayesBlocks {
         const attributeName = args.ATT_NAME;
         const attributeValue = args.ATT_VALUE;
         const mainValue = args.MAIN_VALUE;
-        const result = this.naiveBayes.getProbConditional(attributeName, attributeValue, mainValue);
+        const result = this.naiveBayes.probConditional(attributeName, attributeValue, mainValue);
         console.log(result);
         return result;
     }

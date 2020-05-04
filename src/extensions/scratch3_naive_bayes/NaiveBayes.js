@@ -75,13 +75,13 @@ class NaiveBayes {
         }
     }
 
-    getProbClass (mainValue){
+    probApriori (mainValue){
         const probClass = this._schema.mainValuesMap.get(mainValue) / this._schema.totalCountTraining;
         console.log(`prob clase: ${probClass}`);
         return probClass;
     }
 
-    getProbConditional (attributeName, attributeValue, mainValue){
+    probConditional (attributeName, attributeValue, mainValue){
         const freqTable = this._schema.frequencyTablesMap.get(attributeName);
         const attributeFreq = freqTable.frequencyMap.get(mainValue).get(attributeValue);
         const resultProbCond = attributeFreq / this._schema.mainValuesMap.get(mainValue);
