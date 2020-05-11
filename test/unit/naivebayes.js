@@ -6,5 +6,3 @@ test('suma dummy', t => {
     t.equals(nbObj.sumDummy(1,2), 3);
     t.end();
 });
-
-

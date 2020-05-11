@@ -13,10 +13,11 @@ class NaiveBayes {
         this._schema.mainValuesMap = new Map();
         this._schema._totalCountTraining = 0;
 
+        const emptyAttributeValues = [];
         const frequencyTablesMap = new Map();
         for (let i = 0; i < remainingAttributes.length; i++){
             const tableName = remainingAttributes[i];
-            frequencyTablesMap.set(tableName, new FrequencyTable(tableName, i, new Map()));
+            frequencyTablesMap.set(tableName, new FrequencyTable(tableName, i, new Map(), emptyAttributeValues));
         }
 
         this._schema.frequencyTablesMap = frequencyTablesMap;
@@ -82,6 +83,7 @@ class NaiveBayes {
     }
 
     probConditional (attributeName, attributeValue, mainValue){
+
         const freqTable = this._schema.frequencyTablesMap.get(attributeName);
         const attributeFreq = freqTable.frequencyMap.get(mainValue).get(attributeValue);
         const resultProbCond = attributeFreq / this._schema.mainValuesMap.get(mainValue);

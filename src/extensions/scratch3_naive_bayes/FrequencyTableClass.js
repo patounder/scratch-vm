@@ -1,9 +1,10 @@
 class FrequencyTableClass {
 
-    constructor (tableName, recordIndex, frequencyMap){
+    constructor (tableName, recordIndex, frequencyMap, attributesValues){
         this._tableName = tableName; // attribute name
         this._recordIndex = recordIndex;
         this._frequencyMap = frequencyMap; // matrix (map's map) between class (to predict) and remaining attributes
+        this._attributesValues = attributesValues;
     }
 
     get tableName () {
@@ -28,6 +29,14 @@ class FrequencyTableClass {
 
     set frequencyMap (value) {
         this._frequencyMap = value;
+    }
+
+    get attributesValues () {
+        return this._attributesValues;
+    }
+
+    set attributesValues (value) {
+        this._attributesValues = value;
     }
 }
 
