@@ -11,12 +11,12 @@ class NaiveBayes {
         this._schema.mainAttribute = mainAttribute;
         this._schema.remainingAttributes = remainingAttributes;
         this._schema.mainValuesMap = new Map();
-        this._schema._totalCountTraining = 0;
+        this._schema.totalCountTraining = 0;
 
         const frequencyTablesMap = new Map();
         for (let i = 0; i < remainingAttributes.length; i++){
             const tableName = remainingAttributes[i];
-            frequencyTablesMap.set(tableName, new FrequencyTable(tableName, i, new Map()));
+            frequencyTablesMap.set(tableName, new FrequencyTable(tableName, i, new Map(), []));
         }
 
         this._schema.frequencyTablesMap = frequencyTablesMap;
@@ -38,9 +38,21 @@ class NaiveBayes {
             } else {
                 // TODO validate when mainValue exist in map (use case when train with more one ds the same main value)
             }
+
+           this.buildAttributesValues(sampleArray, v.attributeValues, v.recordIndex);
         });
 
         console.log(this._schema);
+    }
+
+    buildAttributesValues (records, attributesValues, index){
+
+        records.forEach(rec => {
+
+            if(!attributesValues.includes(rec[index])){
+                attributesValues.push(rec[index]);
+            }
+        });
     }
 
     // return map with attributes (keys) and occurrences (values)
