@@ -47,6 +47,38 @@ class Schema {
     set totalCountTraining (value) {
         this._totalCountTraining = value;
     }
+
+    updateTotalCount (numRecords) {
+        this._totalCountTraining = this._totalCountTraining + numRecords;
+    }
+
+    updateMainValuesMap (mainValue, numRecords){
+        if (!this._mainValuesMap.has(mainValue)){ // not exist in array
+            this._mainValuesMap.set(mainValue, numRecords);
+        } else {
+            const lastCount = this._mainValuesMap.get(mainValue);
+            this._mainValuesMap.set(mainValue, lastCount + numRecords);
+        }
+    }
+
+    updateFrequencyTableMap (mainValue, sampleArray){
+
+
+        for (var [key, table] of Object.entries(this._frequencyTablesMap){
+            table.updateFrequencyMap(mainValue, sampleArray);
+            table.updateAttributesValues(sampleArray);
+        }
+
+        /*this._frequencyTablesMap.forEach(function (table, key, self) {
+
+            // validate if exist entry in map
+            if (!table.frequencyMap.has(mainValue)){
+                table.frequencyMap.set(mainValue, freqMap);
+            } else {
+                // TODO validate when mainValue exist in map (use case when train with more one ds the same main value)
+            }
+        });*/
+    }
 }
 
 module.exports = Schema;

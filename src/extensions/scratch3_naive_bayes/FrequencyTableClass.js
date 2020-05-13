@@ -38,6 +38,38 @@ class FrequencyTableClass {
     set attributesValues (value) {
         this._attributesValues = value;
     }
+
+    // return map with attributes (keys) and occurrences (values)
+    updateFrequencyMap (mainValue, records){
+        // let V : {v|v is a possible outcome of node.test-cond}.
+
+        const summaryAttMap = new Map();
+
+        records.forEach(rec => {
+            const attributeValue = rec[this._recordIndex];
+
+            //Add to map
+            if (summaryAttMap.get(attributeValue)){
+                summaryAttMap.set(attributeValue, summaryAttMap.get(attributeValue) + 1);
+            } else {
+                summaryAttMap.set(attributeValue, 1);
+            }
+
+        });
+
+        this._frequencyMap.set(mainValue, summaryAttMap);
+    }
+
+    updateAttributesValues (records){
+
+        records.forEach(rec => {
+            const attributeValue = rec[this._recordIndex];
+
+            if(!this._attributesValues.includes(attributeValue)){
+                this._attributesValues.push(attributeValue);
+            }
+        });
+    }
 }
 
 module.exports = FrequencyTableClass;
