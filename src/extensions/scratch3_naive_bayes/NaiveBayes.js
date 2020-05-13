@@ -89,9 +89,6 @@ class NaiveBayes {
         return resultProbCond;
     }
 
-    sumDummy (a, b){
-        return a + b;
-    }
 }
 
 module.exports = NaiveBayes;
