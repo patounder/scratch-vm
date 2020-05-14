@@ -95,9 +95,16 @@ class NaiveBayes {
 
     probConditional (attributeName, attributeValue, mainValue){
         const freqTable = this._schema.frequencyTablesMap.get(attributeName);
-        const attributeFreq = freqTable.frequencyMap.get(mainValue).get(attributeValue);
-        const resultProbCond = attributeFreq / this._schema.mainValuesMap.get(mainValue);
-        console.log(`prob condicional para valor: ${attributeValue}, atributo: ${attributeName}, valor clase: ${mainValue} es: ${resultProbCond}`);
+        let attributeFreq = freqTable.frequencyMap.get(mainValue).get(attributeValue);
+
+        if (typeof attributeFreq === 'undefined'){
+            attributeFreq = 0;
+        }
+        const constLaplaceAdd = 1;
+        const resultProbCond = (attributeFreq + constLaplaceAdd) /
+            (this._schema.mainValuesMap.get(mainValue) + this._schema.mainValuesMap.size) ;
+        console.log(`prob condicional para valor: ${attributeValue}, atributo: ${attributeName},
+        valor clase: ${mainValue} es: ${resultProbCond}`);
         return resultProbCond;
     }
 
