@@ -48,8 +48,7 @@ class NaiveBayes {
     buildAttributesValues (records, attributesValues, index){
 
         records.forEach(rec => {
-
-            if(!attributesValues.includes(rec[index])){
+            if (!attributesValues.includes(rec[index])){
                 attributesValues.push(rec[index]);
             }
         });
@@ -102,7 +101,7 @@ class NaiveBayes {
         }
         const constLaplaceAdd = 1;
         const resultProbCond = (attributeFreq + constLaplaceAdd) /
-            (this._schema.mainValuesMap.get(mainValue) + this._schema.mainValuesMap.size) ;
+            (this._schema.mainValuesMap.get(mainValue) + freqTable.attributeValues.length) ;
         console.log(`prob condicional para valor: ${attributeValue}, atributo: ${attributeName},
         valor clase: ${mainValue} es: ${resultProbCond}`);
         return resultProbCond;
