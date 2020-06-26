@@ -90,6 +90,10 @@ class NaiveBayesBlocks {
                             defaultValue: ''
                         }
                     }
+                },
+                {
+                    blockType: BlockType.BUTTON,
+                    text: 'Crear DS'
                 }
 
             ],
