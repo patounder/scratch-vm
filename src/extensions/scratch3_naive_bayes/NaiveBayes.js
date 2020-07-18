@@ -107,6 +107,21 @@ class NaiveBayes {
         return resultProbCond;
     }
 
+    hMAP(hNames, hValues){
+        var selectedIndex = 0;
+        var maxValue = 0;
+
+        console.log(`hNames: ${hNames}, hValues:${hValues}`);
+        for(let i = 0; i < hValues.length; i++){
+            if (hValues[i] > maxValue){
+                maxValue = hValues[i];
+                selectedIndex = i;
+            }
+        }
+
+        return hNames[selectedIndex];
+    }
+
 }
 
 module.exports = NaiveBayes;
