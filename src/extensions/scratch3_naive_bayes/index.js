@@ -19,7 +19,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'initConfig',
                     blockType: BlockType.COMMAND,
-                    text: 'configuracion atributos [ATTRIBUTES] principal [MAIN]',
+                    text: 'config nombres: hipotesis [MAIN] atributos [ATTRIBUTES]',
                     arguments: {
                         ATTRIBUTES: {
                             type: ArgumentType.STRING,
@@ -34,7 +34,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'train',
                     blockType: BlockType.COMMAND,
-                    text: 'entrenando con datos [DS] principal [MAIN_VAL]',
+                    text: 'entrenar hipotesis [MAIN_VAL] con datos [DS]',
                     arguments: {
                         DS: {
                             type: ArgumentType.STRING,
@@ -49,7 +49,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'probApriori',
                     blockType: BlockType.REPORTER,
-                    text: 'prob a priori clase [MAIN_VALUE]',
+                    text: 'prob a priori hipotesis [MAIN_VALUE]',
                     arguments: {
                         MAIN_VALUE: {
                             type: ArgumentType.STRING,
@@ -60,7 +60,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'probConditional',
                     blockType: BlockType.REPORTER,
-                    text: 'prob cond valor [ATT_VALUE] atributo [ATT_NAME] principal [MAIN_VALUE]',
+                    text: 'prob cond atributo [ATT_NAME] valor [ATT_VALUE] dada h [MAIN_VALUE]',
                     arguments: {
                         ATT_NAME: {
                             type: ArgumentType.STRING,
