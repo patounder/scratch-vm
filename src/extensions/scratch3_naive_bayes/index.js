@@ -47,45 +47,16 @@ class NaiveBayesBlocks {
                     }
                 },
                 {
-                    opcode: 'probApriori',
+                    opcode: 'teoBayes',
                     blockType: BlockType.REPORTER,
-                    text: 'prob a priori hipotesis [MAIN_VALUE]',
+                    text: 'Teo Bayes Hip [HIP] dado [NVAL]',
                     arguments: {
-                        MAIN_VALUE: {
-                            type: ArgumentType.STRING,
-                            defaultValue: ''
-                        }
-                    }
-                },
-                {
-                    opcode: 'probConditional',
-                    blockType: BlockType.REPORTER,
-                    text: 'prob cond atributo [ATT_NAME] valor [ATT_VALUE] dada h [MAIN_VALUE]',
-                    arguments: {
-                        ATT_NAME: {
+                        HIP: {
                             type: ArgumentType.STRING,
                             defaultValue: ''
                         },
-                        ATT_VALUE: {
-                            type: ArgumentType.STRING,
-                            defaultValue: ''
-                        },
-                        MAIN_VALUE: {
-                            type: ArgumentType.STRING,
-                            defaultValue: ''
-                        }
-                    }
-                },
-                {
-                    opcode: 'getItemRecord',
-                    blockType: BlockType.REPORTER,
-                    text: 'item [INDEX] de [RECORD]',
-                    arguments: {
-                        INDEX: {
-                            type: ArgumentType.NUMBER,
-                            defaultValue: ''
-                        },
-                        RECORD: {
+
+                        NVAL: {
                             type: ArgumentType.STRING,
                             defaultValue: ''
                         }
@@ -161,6 +132,18 @@ class NaiveBayesBlocks {
         const recordLikeArray = args.RECORD.split(',').slice();
 
         return recordLikeArray[index - 1]; // subs because consistency with lists in the code
+    }
+
+
+    teoBayes (args){
+        const hip = args.HIP;
+        console.log(`NVAL: ${args.NVAL}`);
+        const givenValues = args.NVAL.split(',');
+
+        const resultConditionalProb = this.naiveBayes.conditionalProb(hip, givenValues);
+        const resultAPrioriProb = this.naiveBayes.probApriori(hip);
+
+        return resultConditionalProb * resultAPrioriProb ;
     }
 
     hMAP(args){

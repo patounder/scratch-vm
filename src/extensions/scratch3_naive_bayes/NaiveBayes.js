@@ -107,6 +107,31 @@ class NaiveBayes {
         return resultProbCond;
     }
 
+    //conditionalProb :: si [lluvioso,frio,normal,fuerte] -> 0,986
+    //conditionalProb :: no [lluvioso,frio,normal,fuerte] -> 0,1234
+    conditionalProb (hip, newValues) {
+        const arrayKeys = Array.from(this._schema.frequencyTablesMap.keys());
+        const constLaplaceAdd = 1;
+        const arrayCondProb = [4];
+
+        for (let i = 0; i < newValues.length ; i++) {
+
+            let freqTable = this._schema.frequencyTablesMap.get(arrayKeys[i]);
+            let attFrequency = freqTable.frequencyMap.get(hip).get(newValues[i]);
+
+            if (typeof attFrequency === 'undefined'){
+                attFrequency = 0;
+            }
+
+            arrayCondProb[i] = (attFrequency + constLaplaceAdd) /
+                (this._schema.mainValuesMap.get(hip) + freqTable.attributeValues.length);
+        }
+
+        const resultCondProb = arrayCondProb.reduce((acc, n) => acc * n);
+        console.log(`resultCondProb: ${resultCondProb}, hip: ${hip}, newValues: ${newValues}`);
+        return resultCondProb;
+    }
+
     hMAP(hNames, hValues){
         var selectedIndex = 0;
         var maxValue = 0;
