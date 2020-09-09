@@ -151,7 +151,7 @@ class NaiveBayesBlocks {
         const hValues = args.HVALUES.split(' ').slice();
 
         const selectedHipo = this.naiveBayes.hMAP(hNames, hValues);
-        //console.log(selectedHipo);
+        console.log(selectedHipo);
         return selectedHipo;
     }
 
