@@ -19,7 +19,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'initConfig',
                     blockType: BlockType.COMMAND,
-                    text: 'config nombres: hipotesis [MAIN] atributos [ATTRIBUTES]',
+                    text: 'conf etiquetas hipo [MAIN] atributo [ATTRIBUTES]',
                     arguments: {
                         ATTRIBUTES: {
                             type: ArgumentType.STRING,
