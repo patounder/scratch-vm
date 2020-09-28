@@ -34,7 +34,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'train',
                     blockType: BlockType.COMMAND,
-                    text: 'entrenar hipotesis [MAIN_VAL] con datos [DS]',
+                    text: 'entrenar hipo [MAIN_VAL] con datos [DS]',
                     arguments: {
                         DS: {
                             type: ArgumentType.STRING,
@@ -49,7 +49,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'teoBayes',
                     blockType: BlockType.REPORTER,
-                    text: 'Teo Bayes Hip [HIP] dado [NVAL]',
+                    text: 'Bayes hip [HIP] dado [NVAL]',
                     arguments: {
                         HIP: {
                             type: ArgumentType.STRING,
@@ -65,7 +65,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'hMAP',
                     blockType: BlockType.REPORTER,
-                    text: 'hMAP names [HNAMES] values [HVALUES]',
+                    text: 'hMAX hips [HNAMES] valores [HVALUES]',
                     arguments: {
                         HNAMES: {
                             type: ArgumentType.STRING,
