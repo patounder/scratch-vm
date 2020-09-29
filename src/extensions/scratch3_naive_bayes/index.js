@@ -89,14 +89,14 @@ class NaiveBayesBlocks {
 
     initConfig (args){
         console.log(args.ATTRIBUTES);
-        const classMain = args.MAIN;
-        const attributes = args.ATTRIBUTES.split(',');
+        const classMain = args.MAIN.toLowerCase();
+        const attributes = args.ATTRIBUTES.toLowerCase().split(',');
         this.naiveBayes.initSchema(classMain, attributes);
     }
 
     train (args){
-        const mainValue = args.MAIN_VAL;
-        const dataSet = args.DS.split(' ').slice();
+        const mainValue = args.MAIN_VAL.toLowerCase();
+        const dataSet = args.DS.toLowerCase().split(' ').slice();
         const trainningSet = [];
         dataSet.forEach(rec => {
             trainningSet.push(rec.split(',').slice());
@@ -136,9 +136,9 @@ class NaiveBayesBlocks {
 
 
     teoBayes (args){
-        const hip = args.HIP;
+        const hip = args.HIP.toLowerCase();
         console.log(`NVAL: ${args.NVAL}`);
-        const givenValues = args.NVAL.split(',');
+        const givenValues = args.NVAL.toLowerCase().split(',');
 
         const resultConditionalProb = this.naiveBayes.conditionalProb(hip, givenValues);
         const resultAPrioriProb = this.naiveBayes.probApriori(hip);
@@ -147,8 +147,8 @@ class NaiveBayesBlocks {
     }
 
     hMAP(args){
-        const hNames = args.HNAMES.split(' ').slice();
-        const hValues = args.HVALUES.split(' ').slice();
+        const hNames = args.HNAMES.toLowerCase().split(' ').slice();
+        const hValues = args.HVALUES.toLowerCase().split(' ').slice();
 
         const selectedHipo = this.naiveBayes.hMAP(hNames, hValues);
         console.log(selectedHipo);
