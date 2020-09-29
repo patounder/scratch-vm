@@ -110,31 +110,6 @@ class NaiveBayesBlocks {
         this.naiveBayes.train(mainValue, trainningSet);
     }
 
-    probApriori (args){
-        const mainValue = args.MAIN_VALUE;
-        const value = this.naiveBayes.probApriori(mainValue);
-        console.log(value);
-        return value;
-    }
-
-    probConditional (args){
-        const attributeName = args.ATT_NAME;
-        const attributeValue = args.ATT_VALUE;
-        const mainValue = args.MAIN_VALUE;
-        const result = this.naiveBayes.probConditional(attributeName, attributeValue, mainValue);
-        console.log(result);
-        return result;
-    }
-
-    getItemRecord (args){
-        const index = args.INDEX;
-        // console.log(args.RECORD.name); // indefined
-        const recordLikeArray = args.RECORD.split(',').slice();
-
-        return recordLikeArray[index - 1]; // subs because consistency with lists in the code
-    }
-
-
     teoBayes (args){
         const hip = args.HIP.toLowerCase();
         console.log(`NVAL: ${args.NVAL}`);
