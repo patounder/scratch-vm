@@ -94,15 +94,15 @@ class NaiveBayes {
 
     //conditionalProb :: si [lluvioso,frio,normal,fuerte] -> 0,986
     //conditionalProb :: no [lluvioso,frio,normal,fuerte] -> 0,1234
-    conditionalProb (hip, newValues) {
+    conditionalProb (hip, givenValues) {
         const arrayKeys = Array.from(this._schema.frequencyTablesMap.keys());
         const constLaplaceAdd = 1;
         const arrayCondProb = [4];
 
-        for (let i = 0; i < newValues.length ; i++) {
+        for (let i = 0; i < givenValues.length ; i++) {
 
             let freqTable = this._schema.frequencyTablesMap.get(arrayKeys[i]);
-            let attFrequency = freqTable.frequencyMap.get(hip).get(newValues[i]);
+            let attFrequency = freqTable.frequencyMap.get(hip).get(givenValues[i]);
 
             if (typeof attFrequency === 'undefined'){
                 attFrequency = 0;
@@ -113,7 +113,7 @@ class NaiveBayes {
         }
 
         const resultCondProb = arrayCondProb.reduce((acc, n) => acc * n);
-        console.log(`resultCondProb: ${resultCondProb}, hip: ${hip}, newValues: ${newValues}`);
+        console.log(`resultCondProb: ${resultCondProb}, hip: ${hip}, newValues: ${givenValues}`);
         return resultCondProb;
     }
 
