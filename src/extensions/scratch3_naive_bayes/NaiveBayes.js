@@ -86,25 +86,10 @@ class NaiveBayes {
         }
     }
 
-    probApriori (mainValue){
+    aprioriProb (mainValue){
         const probClass = this._schema.mainValuesMap.get(mainValue) / this._schema.totalCountTraining;
         console.log(`prob clase: ${probClass}`);
         return probClass;
-    }
-
-    probConditional (attributeName, attributeValue, mainValue){
-        const freqTable = this._schema.frequencyTablesMap.get(attributeName);
-        let attributeFreq = freqTable.frequencyMap.get(mainValue).get(attributeValue);
-
-        if (typeof attributeFreq === 'undefined'){
-            attributeFreq = 0;
-        }
-        const constLaplaceAdd = 1;
-        const resultProbCond = (attributeFreq + constLaplaceAdd) /
-            (this._schema.mainValuesMap.get(mainValue) + freqTable.attributeValues.length) ;
-        console.log(`prob condicional para valor: ${attributeValue}, atributo: ${attributeName},
-        valor clase: ${mainValue} es: ${resultProbCond}`);
-        return resultProbCond;
     }
 
     //conditionalProb :: si [lluvioso,frio,normal,fuerte] -> 0,986
@@ -130,6 +115,10 @@ class NaiveBayes {
         const resultCondProb = arrayCondProb.reduce((acc, n) => acc * n);
         console.log(`resultCondProb: ${resultCondProb}, hip: ${hip}, newValues: ${newValues}`);
         return resultCondProb;
+    }
+
+    totalProb (givenValues){
+
     }
 
     hMAP(hNames, hValues){

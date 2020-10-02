@@ -116,9 +116,10 @@ class NaiveBayesBlocks {
         const givenValues = args.NVAL.toLowerCase().split(',');
 
         const resultConditionalProb = this.naiveBayes.conditionalProb(hip, givenValues);
-        const resultAPrioriProb = this.naiveBayes.probApriori(hip);
+        const resultAPrioriProb = this.naiveBayes.aprioriProb(hip);
+        const resultProbEvidence = this.naiveBayes.totalProb(givenValues);
 
-        return resultConditionalProb * resultAPrioriProb ;
+        return resultConditionalProb * resultAPrioriProb;
     }
 
     hMAP(args){
