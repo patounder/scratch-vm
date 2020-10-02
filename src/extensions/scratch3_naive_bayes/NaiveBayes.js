@@ -20,7 +20,7 @@ class NaiveBayes {
         }
 
         this._schema.frequencyTablesMap = frequencyTablesMap;
-        console.log(this._schema);
+        //console.log(this._schema);
     }
 
 
@@ -117,8 +117,14 @@ class NaiveBayes {
         return resultCondProb;
     }
 
+    // Function calculate probability for givenValues in frequency table
+    // [] -> Num
+    // [lluvioso,frio,normal,fuerte] -> 12.34 (por mencionar algun numero)
     totalProb (givenValues){
 
+        for (let i = 0; i < givenValues.length ; i++) {
+
+        }
     }
 
     hMAP(hNames, hValues){
