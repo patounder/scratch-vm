@@ -1,7 +1,7 @@
 const test = require('tap').test;
-const NaiveBayes = require('../../src/extensions/scratch3_naive_bayes/NaiveBayes');
-const Schema = require('../../src/extensions/scratch3_naive_bayes/Schema');
-const FrequencyTable = require('../../src/extensions/scratch3_naive_bayes/FrequencyTableClass');
+const NaiveBayes = require('../../src/extensions/scratch3_naive_bayes/naive_bayes');
+const Schema = require('../../src/extensions/scratch3_naive_bayes/schema');
+const FrequencyTable = require('../../src/extensions/scratch3_naive_bayes/freq_table');
 
 test('initSchema', t => {
 

@@ -1,7 +1,7 @@
 const ArgumentType = require('../../extension-support/argument-type');
 const BlockType = require('../../extension-support/block-type');
-const NaiveBayes = require('./NaiveBayes');
-const Schema = require('./Schema');
+const NaiveBayes = require('./naive_bayes');
+const Schema = require('./schema');
 
 class NaiveBayesBlocks {
 

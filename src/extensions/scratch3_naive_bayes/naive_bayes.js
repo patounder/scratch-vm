@@ -1,6 +1,6 @@
-const FrequencyTable = require('./FrequencyTableClass');
+const FrequencyTable = require('./freq_table');
 
-class NaiveBayes {
+class Naive_bayes {
 
     constructor (schema){
         this._schema = schema; // schema with all data
@@ -144,4 +144,4 @@ class NaiveBayes {
 
 }
 
-module.exports = NaiveBayes;
+module.exports = Naive_bayes;
