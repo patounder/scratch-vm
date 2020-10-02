@@ -1,4 +1,4 @@
-class Freq_table {
+class FreqTable {
 
     constructor (tableName, recordIndex, frequencyMap, attributeValues){
         this._tableName = tableName; // attribute name
@@ -40,4 +40,4 @@ class Freq_table {
     }
 }
 
-module.exports = Freq_table;
+module.exports = FreqTable;
