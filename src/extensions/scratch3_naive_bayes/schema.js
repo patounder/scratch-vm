@@ -1,10 +1,10 @@
 class Schema {
 
-    constructor (mainAttribute, mainValuesMap, remainingAttributes, frequencyTablesMap, totalCountTraining){
+    constructor (mainAttribute, mainValuesMap, remainingAttributes, attributesMap, totalCountTraining){
         this._mainAttribute = mainAttribute;
         this._mainValuesMap = mainValuesMap;
         this._remainingAttributes = remainingAttributes;
-        this._frequencyTablesMap = frequencyTablesMap;
+        this._attributesMap = attributesMap;
         this._totalCountTraining = totalCountTraining;
     }
 
@@ -32,12 +32,12 @@ class Schema {
         this._remainingAttributes = value;
     }
 
-    get frequencyTablesMap () {
-        return this._frequencyTablesMap;
+    get attributesMap () {
+        return this._attributesMap;
     }
 
-    set frequencyTablesMap (value) {
-        this._frequencyTablesMap = value;
+    set attributesMap (value) {
+        this._attributesMap = value;
     }
 
     get totalCountTraining () {

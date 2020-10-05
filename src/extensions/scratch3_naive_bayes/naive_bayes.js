@@ -13,13 +13,13 @@ class NaiveBayes {
         this._schema.mainValuesMap = new Map();
         this._schema.totalCountTraining = 0;
 
-        const frequencyTablesMap = new Map();
+        const attributesMap = new Map();
         for (let i = 0; i < remainingAttributes.length; i++){
             const tableName = remainingAttributes[i];
-            frequencyTablesMap.set(tableName, new FrequencyTable(tableName, i, new Map(), []));
+            attributesMap.set(tableName, new FrequencyTable(tableName, i, new Map(), []));
         }
 
-        this._schema.frequencyTablesMap = frequencyTablesMap;
+        this._schema.attributesMap = attributesMap;
         //console.log(this._schema);
     }
 
@@ -29,7 +29,7 @@ class NaiveBayes {
         this.updateTotalCount(mainValue, sampleArray.length);
         this.updateMainValuesMap(mainValue, sampleArray.length);
 
-        this._schema.frequencyTablesMap.forEach((v, k, m) => {
+        this._schema.attributesMap.forEach((v, k, m) => {
             const freqMap = this.buildFrequencyMap(sampleArray, v.recordIndex, mainValue);
 
             // validate if exist entry in map
@@ -44,6 +44,49 @@ class NaiveBayes {
 
         console.log(this._schema);
     }
+
+    // function to update schema when train with text (no tabulated data)
+    // String Array Number -> Void
+    // alegria ['eres,bueno,lo,hiciste,bien,te,quiero] 3 -> Void (pero se actualiza schema)
+    trainForText (mainValue, sampleArray, nItems) {
+
+        this.updateTotalCount(mainValue, nItems);
+        this.updateMainValuesMap(mainValue, nItems);
+
+        this._schema.attributesMap.forEach((v, k, m) => {
+            const freqMap = this.buildFrequencyTextMap(sampleArray);
+
+            // validate if exist entry in map
+            if (!v.frequencyMap.has(mainValue)){
+                v.frequencyMap.set(mainValue, freqMap);
+            } else {
+                // TODO validate when mainValue exist in map (use case when train with more one ds the same main value)
+            }
+        });
+
+        console.log(this._schema);
+        //console.log(this._schema.attributesMap.get('mensaje'));
+        //console.log(this._schema.attributesMap.get('mensaje')._frequencyMap.get('alegres'));
+        /*
+
+            //initialize category data structures if we've never seen this category. DONE
+            //self.initializeCategory(mainValue)
+
+            //update our count of how many documents mapped to this category
+            self.docCount[mainValue]++
+
+            //update the total number of documents we have learned from
+            self.totalDocuments++
+
+            //normalize the text into a word array
+            var tokens = await self.tokenizer(text)
+
+            //get a frequency count for each token in the text
+            var frequencyTable = self.frequencyTable(tokens)
+        */
+
+    }
+
 
     buildAttributesValues (records, attributesValues, index){
 
@@ -73,6 +116,21 @@ class NaiveBayes {
         return frequencyMap;
     }
 
+    buildFrequencyTextMap (records){
+
+        const frequencyMap = new Map();
+
+        records.forEach(rec => {
+            if (frequencyMap.get(rec)){
+                frequencyMap.set(rec, frequencyMap.get(rec) + 1);
+            } else {
+                frequencyMap.set(rec, 1);
+            }
+        });
+
+        return frequencyMap;
+    }
+
     updateTotalCount (mainValue, numRecords) {
         this._schema.totalCountTraining = (this._schema.totalCountTraining + numRecords);
     }
@@ -95,13 +153,13 @@ class NaiveBayes {
     //conditionalProb :: si [lluvioso,frio,normal,fuerte] -> 0,986
     //conditionalProb :: no [lluvioso,frio,normal,fuerte] -> 0,1234
     conditionalProb (hip, givenValues) {
-        const arrayKeys = Array.from(this._schema.frequencyTablesMap.keys());
+        const arrayKeys = Array.from(this._schema.attributesMap.keys());
         const constLaplaceAdd = 1;
         const arrayCondProb = [4];
 
         for (let i = 0; i < givenValues.length ; i++) {
 
-            let freqTable = this._schema.frequencyTablesMap.get(arrayKeys[i]);
+            let freqTable = this._schema.attributesMap.get(arrayKeys[i]);
             let attFrequency = freqTable.frequencyMap.get(hip).get(givenValues[i]);
 
             if (typeof attFrequency === 'undefined'){

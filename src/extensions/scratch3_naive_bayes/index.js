@@ -2,6 +2,9 @@ const ArgumentType = require('../../extension-support/argument-type');
 const BlockType = require('../../extension-support/block-type');
 const NaiveBayes = require('./naive_bayes');
 const Schema = require('./schema');
+const Variable = require('../../engine/variable');
+
+const formatMessage = require('format-message');
 
 class NaiveBayesBlocks {
 
@@ -43,6 +46,23 @@ class NaiveBayesBlocks {
                         MAIN_VAL: {
                             type: ArgumentType.STRING,
                             defaultValue: ''
+                        }
+                    }
+                },
+                {
+                    opcode: 'trainText',
+                    blockType: BlockType.COMMAND,
+                    text: 'trainText hipo [MAIN_VAL] con datos [DS] cantidad [N_ITEMS]',
+                    arguments: {
+                        DS: {
+                            type: ArgumentType.STRING,
+                            defaultValue: ''
+                        },
+                        MAIN_VAL: {
+                            type: ArgumentType.STRING,
+                            defaultValue: ''
+                        },
+                        N_ITEMS: {
                         }
                     }
                 },
@@ -108,6 +128,16 @@ class NaiveBayesBlocks {
         */
 
         this.naiveBayes.train(mainValue, trainningSet);
+    }
+
+    trainText (args){
+        const mainValue = args.MAIN_VAL.toLowerCase()
+        console.log(`mainValue: ${mainValue}`)
+        const dataSet = args.DS.toLowerCase().split(' ').slice()
+        console.log(`dataSet: ${dataSet}`)
+        const nItems = args.N_ITEMS
+        console.log(`nItems: ${nItems}`)
+        this.naiveBayes.trainForText(mainValue, dataSet, nItems);
     }
 
     teoBayes (args){
