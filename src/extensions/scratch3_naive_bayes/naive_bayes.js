@@ -123,9 +123,20 @@ class NaiveBayes {
         return probClass;
     }
 
+    // Function calculate probability for givenValues in frequency table
+    // [] -> Num
+    // [lluvioso,frio,normal,fuerte] -> 12.34 (por mencionar algun numero)
+    totalProb (givenValues){
+
+        for (let i = 0; i < givenValues.length ; i++) {
+
+        }
+    }
+
+
     //conditionalProb :: si [lluvioso,frio,normal,fuerte] -> 0,986
     //conditionalProb :: no [lluvioso,frio,normal,fuerte] -> 0,1234
-    conditionalProb (hip, givenValues) {
+    tableConditionalProb (hip, givenValues) {
         const arrayKeys = Array.from(this._schema.attributesMap.keys());
         const constLaplaceAdd = 1;
         const arrayCondProb = [4];
@@ -181,31 +192,22 @@ class NaiveBayes {
         return logProbability
     }*/
 
-    // Function calculate probability for givenValues in frequency table
-    // [] -> Num
-    // [lluvioso,frio,normal,fuerte] -> 12.34 (por mencionar algun numero)
-    totalProb (givenValues){
-
-        for (let i = 0; i < givenValues.length ; i++) {
-
-        }
-    }
 
     teoBayes (hip, givenValue){
         const TABLE_CLASS_TYPE = 'table';
         const resultAPrioriProb = this.aprioriProb(hip)
 
         if (this._schema.classType === TABLE_CLASS_TYPE) {
-
             const givenValuesArray = givenValue.split(',')
-            const resultConditionalProb = this.conditionalProb(hip, givenValuesArray)
-
+            const resultConditionalProb = this.tableConditionalProb(hip, givenValuesArray)
             //const resultProbEvidence = this.naiveBayes.totalProb(givenValue);
+
             const teoBayesResult = resultConditionalProb * resultAPrioriProb
-            console.log(`teoBayesResult: ${teoBayesResult}`)
+            //console.log(`teoBayesResult: ${teoBayesResult}`)
             return teoBayesResult;
         }
 
+        //classification type text
 
 
     }
