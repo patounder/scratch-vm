@@ -105,14 +105,14 @@ class NaiveBayesBlocks {
             ],
             menus: {
                 classificationTypes: {
-                    items: this._getClassTypes()
+                    items: this.getClassTypes()
                 }
             }
         };
     }
 
-    _getClassTypes (){
-        const types = [{text: 'texto', value:'text'}, {text: 'tabla', value:'table'}]
+    getClassTypes (){
+        const types = [{text: 'texto', value: 'text'}, {text: 'tabla', value: 'table'}]
         return types
     }
 

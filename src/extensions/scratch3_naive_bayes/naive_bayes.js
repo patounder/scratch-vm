@@ -15,7 +15,7 @@ class NaiveBayes {
             attributesMap.set(tableName, new FrequencyTable(tableName, i, new Map(), []));
         }
         this._schema = new Schema(mainAttribute, new Map(), remainingAttributes, attributesMap, 0, classType)
-        console.log(this._schema);
+        //console.log(this._schema);
     }
 
 
