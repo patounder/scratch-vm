@@ -1,4 +1,5 @@
 const FrequencyTable = require('./freq_table');
+const Schema = require('./schema')
 
 class NaiveBayes {
 
@@ -8,20 +9,12 @@ class NaiveBayes {
 
     // initialize schema except mainValuesResume
     initSchema (mainAttribute, remainingAttributes, classType){
-        this._schema.mainAttribute = mainAttribute;
-        this._schema.remainingAttributes = remainingAttributes;
-        this._schema.classType = classType;
-        this._schema.mainValuesMap = new Map();
-        this._schema.totalCountTraining = 0;
-
         const attributesMap = new Map();
         for (let i = 0; i < remainingAttributes.length; i++){
             const tableName = remainingAttributes[i];
             attributesMap.set(tableName, new FrequencyTable(tableName, i, new Map(), []));
         }
-
-
-        this._schema.attributesMap = attributesMap;
+        this._schema = new Schema(mainAttribute, new Map(), remainingAttributes, attributesMap, 0, classType)
         console.log(this._schema);
     }
 
