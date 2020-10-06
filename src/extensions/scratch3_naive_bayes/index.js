@@ -2,9 +2,6 @@ const ArgumentType = require('../../extension-support/argument-type');
 const BlockType = require('../../extension-support/block-type');
 const NaiveBayes = require('./naive_bayes');
 const Schema = require('./schema');
-const Variable = require('../../engine/variable');
-
-const formatMessage = require('format-message');
 
 class NaiveBayesBlocks {
 
@@ -22,7 +19,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'initConfig',
                     blockType: BlockType.COMMAND,
-                    text: 'conf etiquetas hipo [MAIN] atributo [ATTRIBUTES]',
+                    text: 'conf etiquetas hipo [MAIN] atributo [ATTRIBUTES] tipo classifica [CLASS_TYPE]',
                     arguments: {
                         ATTRIBUTES: {
                             type: ArgumentType.STRING,
@@ -31,6 +28,10 @@ class NaiveBayesBlocks {
                         MAIN: {
                             type: ArgumentType.STRING,
                             defaultValue: ''
+                        },
+                        CLASS_TYPE: {
+                            type: ArgumentType.STRING,
+                            menu: 'classificationTypes'
                         }
                     }
                 },
@@ -103,15 +104,24 @@ class NaiveBayesBlocks {
                 }
             ],
             menus: {
+                classificationTypes: {
+                    items: this._getClassTypes()
+                }
             }
         };
     }
 
+    _getClassTypes (){
+        const types = [{text: 'texto', value:'text'}, {text: 'tabla', value:'table'}]
+        return types
+    }
+
     initConfig (args){
-        console.log(args.ATTRIBUTES);
         const classMain = args.MAIN.toLowerCase();
         const attributes = args.ATTRIBUTES.toLowerCase().split(',');
-        this.naiveBayes.initSchema(classMain, attributes);
+        const classType = args.CLASS_TYPE;
+        console.log(`classType: ${classType}`)
+        this.naiveBayes.initSchema(classMain, attributes, classType);
     }
 
     train (args){

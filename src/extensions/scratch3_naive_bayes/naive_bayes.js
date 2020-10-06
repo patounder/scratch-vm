@@ -3,13 +3,14 @@ const FrequencyTable = require('./freq_table');
 class NaiveBayes {
 
     constructor (schema){
-        this._schema = schema; // schema with all data
+        this._schema = schema;
     }
 
     // initialize schema except mainValuesResume
-    initSchema (mainAttribute, remainingAttributes){
+    initSchema (mainAttribute, remainingAttributes, classType){
         this._schema.mainAttribute = mainAttribute;
         this._schema.remainingAttributes = remainingAttributes;
+        this._schema.classType = classType;
         this._schema.mainValuesMap = new Map();
         this._schema.totalCountTraining = 0;
 
@@ -19,8 +20,9 @@ class NaiveBayes {
             attributesMap.set(tableName, new FrequencyTable(tableName, i, new Map(), []));
         }
 
+
         this._schema.attributesMap = attributesMap;
-        //console.log(this._schema);
+        console.log(this._schema);
     }
 
 
@@ -63,28 +65,6 @@ class NaiveBayes {
                 // TODO validate when mainValue exist in map (use case when train with more one ds the same main value)
             }
         });
-
-        console.log(this._schema);
-        //console.log(this._schema.attributesMap.get('mensaje'));
-        //console.log(this._schema.attributesMap.get('mensaje')._frequencyMap.get('alegres'));
-        /*
-
-            //initialize category data structures if we've never seen this category. DONE
-            //self.initializeCategory(mainValue)
-
-            //update our count of how many documents mapped to this category
-            self.docCount[mainValue]++
-
-            //update the total number of documents we have learned from
-            self.totalDocuments++
-
-            //normalize the text into a word array
-            var tokens = await self.tokenizer(text)
-
-            //get a frequency count for each token in the text
-            var frequencyTable = self.frequencyTable(tokens)
-        */
-
     }
 
 

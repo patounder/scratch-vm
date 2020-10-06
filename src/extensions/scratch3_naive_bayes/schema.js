@@ -1,11 +1,12 @@
 class Schema {
 
-    constructor (mainAttribute, mainValuesMap, remainingAttributes, attributesMap, totalCountTraining){
+    constructor (mainAttribute, mainValuesMap, remainingAttributes, attributesMap, totalCountTraining, classType){
         this._mainAttribute = mainAttribute;
         this._mainValuesMap = mainValuesMap;
         this._remainingAttributes = remainingAttributes;
         this._attributesMap = attributesMap;
         this._totalCountTraining = totalCountTraining;
+        this._classType = classType;
     }
 
     get mainAttribute () {
@@ -46,6 +47,14 @@ class Schema {
 
     set totalCountTraining (value) {
         this._totalCountTraining = value;
+    }
+
+    get classType () {
+        return this._classType;
+    }
+
+    set classType (value) {
+        this._classType = value;
     }
 }
 
