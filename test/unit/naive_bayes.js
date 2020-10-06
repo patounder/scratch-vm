@@ -100,7 +100,7 @@ test('initSchema for text example', initTextSchema => {
     naiveBayes.trainForText('alegres', alegreSampleArray, 4)
 
     initTextSchema.equals(naiveBayes._schema.totalCountTraining, 4);
-    initTextSchema.equals(naiveBayes._schema._mainValuesMap.size, 1);
+    initTextSchema.equals(naiveBayes._schema.hipValuesMap.size, 1);
 
     const mensajeAttribute = naiveBayes._schema.attributesMap.get('mensaje');
     initTextSchema.type(mensajeAttribute, FrequencyTable);
@@ -116,7 +116,7 @@ test('initSchema for text example', initTextSchema => {
     naiveBayes.trainForText('tristes', tristeSampleArray, 3);
 
     initTextSchema.equals(naiveBayes._schema.totalCountTraining, 7);
-    initTextSchema.equals(naiveBayes._schema._mainValuesMap.size, 2);
+    initTextSchema.equals(naiveBayes._schema.hipValuesMap.size, 2);
 
     const mensajeAttributeAfterTrainTristesText = naiveBayes._schema.attributesMap.get('mensaje');
     initTextSchema.type(mensajeAttributeAfterTrainTristesText, FrequencyTable);
@@ -155,7 +155,7 @@ test('categorize text', categorizeText => {
             naiveBayes.trainForText('tristes', tristeSampleArray, 3);
 
             trainTextTest.equals(naiveBayes._schema.totalCountTraining, 7);
-            trainTextTest.equals(naiveBayes._schema._mainValuesMap.size, 2);
+            trainTextTest.equals(naiveBayes._schema.hipValuesMap.size, 2);
 
             const mensajeFreqTableAfterTrainText = naiveBayes._schema.attributesMap.get('mensaje');
             trainTextTest.type(mensajeFreqTableAfterTrainText, FrequencyTable);

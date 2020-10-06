@@ -68,7 +68,7 @@ class NaiveBayesBlocks {
                     }
                 },
                 {
-                    opcode: 'teoBayes',
+                    opcode: 'bayes',
                     blockType: BlockType.REPORTER,
                     text: 'Bayes hip [HIP] dado [NVAL]',
                     arguments: {
@@ -150,25 +150,20 @@ class NaiveBayesBlocks {
         this.naiveBayes.trainForText(mainValue, dataSet, nItems);
     }
 
-    teoBayes (args){
-        const hip = args.HIP.toLowerCase();
-        console.log(`NVAL: ${args.NVAL}`);
-        const givenValues = args.NVAL.toLowerCase().split(',');
+    bayes (args){
+        const hip = args.HIP.toLowerCase()
+        const givenValues = args.NVAL.toLowerCase()
 
-        const resultConditionalProb = this.naiveBayes.conditionalProb(hip, givenValues);
-        const resultAPrioriProb = this.naiveBayes.aprioriProb(hip);
-        const resultProbEvidence = this.naiveBayes.totalProb(givenValues);
-
-        return resultConditionalProb * resultAPrioriProb;
+        return this.naiveBayes.teoBayes(hip, givenValues)
     }
 
     hMAP(args){
         const hNames = args.HNAMES.toLowerCase().split(' ').slice();
         const hValues = args.HVALUES.toLowerCase().split(' ').slice();
 
-        const selectedHipo = this.naiveBayes.hMAP(hNames, hValues);
-        console.log(selectedHipo);
-        return selectedHipo;
+        const selectedHip = this.naiveBayes.hMAP(hNames, hValues);
+        console.log(selectedHip);
+        return selectedHip;
     }
 
 }

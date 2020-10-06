@@ -22,7 +22,7 @@ class NaiveBayes {
     train (mainValue, sampleArray) {
 
         this.updateTotalCount(mainValue, sampleArray.length);
-        this.updateMainValuesMap(mainValue, sampleArray.length);
+        this.updateHipValuesMap(mainValue, sampleArray.length);
 
         this._schema.attributesMap.forEach((v, k, m) => {
             const freqMap = this.buildFrequencyMap(sampleArray, v.recordIndex, mainValue);
@@ -46,7 +46,7 @@ class NaiveBayes {
     trainForText (mainValue, sampleArray, nItems) {
 
         this.updateTotalCount(mainValue, nItems);
-        this.updateMainValuesMap(mainValue, nItems);
+        this.updateHipValuesMap(mainValue, nItems);
 
         this._schema.attributesMap.forEach((v, k, m) => {
             const freqMap = this.buildFrequencyTextMap(sampleArray);
@@ -108,17 +108,17 @@ class NaiveBayes {
         this._schema.totalCountTraining = (this._schema.totalCountTraining + numRecords);
     }
 
-    updateMainValuesMap (mainValue, numRecords){
-        if (!this._schema.mainValuesMap.has(mainValue)){ // not exist in array
-            this._schema.mainValuesMap.set(mainValue, numRecords);
+    updateHipValuesMap (mainValue, numRecords){
+        if (!this._schema.hipValuesMap.has(mainValue)){ // not exist in array
+            this._schema.hipValuesMap.set(mainValue, numRecords);
         } else {
-            const lastCount = this._schema.mainValuesMap.get(mainValue);
-            this._schema.mainValuesMap.set(mainValue, lastCount + numRecords);
+            const lastCount = this._schema.hipValuesMap.get(mainValue);
+            this._schema.hipValuesMap.set(mainValue, lastCount + numRecords);
         }
     }
 
-    aprioriProb (mainValue){
-        const probClass = this._schema.mainValuesMap.get(mainValue) / this._schema.totalCountTraining;
+    aprioriProb (hipValue){
+        const probClass = this._schema.hipValuesMap.get(hipValue) / this._schema.totalCountTraining;
         console.log(`prob clase: ${probClass}`);
         return probClass;
     }
@@ -140,13 +140,46 @@ class NaiveBayes {
             }
 
             arrayCondProb[i] = (attFrequency + constLaplaceAdd) /
-                (this._schema.mainValuesMap.get(hip) + freqTable.attributeValues.length);
+                (this._schema.hipValuesMap.get(hip) + freqTable.attributeValues.length);
         }
 
         const resultCondProb = arrayCondProb.reduce((acc, n) => acc * n);
         console.log(`resultCondProb: ${resultCondProb}, hip: ${hip}, newValues: ${givenValues}`);
         return resultCondProb;
     }
+
+    /*
+    textConditionalProb = async function (text, category) {
+        var self = this
+            , maxProbability = -Infinity
+            , chosenCategory = null
+
+        var tokens = await self.tokenizer(text)
+        var frequencyTable = self.frequencyTable(tokens)
+
+        //start by calculating the overall probability of this category
+        //=>  out of all documents we've ever looked at, how many were
+        //    mapped to this category
+        var categoryProbability = self.docCount[category] / self.totalDocuments
+
+        //take the log to avoid underflow
+        var logProbability = Math.log(categoryProbability)
+
+        //now determine P( w | c ) for each word `w` in the text
+        Object
+            .keys(frequencyTable)
+            .forEach(function (token) {
+                var frequencyInText = frequencyTable[token]
+                var tokenProbability = self.tokenProbability(token, category)
+
+                // console.log('token: %s category: `%s` tokenProbability: %d', token, category, tokenProbability)
+
+                //determine the log of the P( w | c ) for this word
+                logProbability += frequencyInText * Math.log(tokenProbability)
+            })
+
+        return logProbability
+    }*/
 
     // Function calculate probability for givenValues in frequency table
     // [] -> Num
@@ -156,6 +189,25 @@ class NaiveBayes {
         for (let i = 0; i < givenValues.length ; i++) {
 
         }
+    }
+
+    teoBayes (hip, givenValue){
+        const TABLE_CLASS_TYPE = 'table';
+        const resultAPrioriProb = this.aprioriProb(hip)
+
+        if (this._schema.classType === TABLE_CLASS_TYPE) {
+
+            const givenValuesArray = givenValue.split(',')
+            const resultConditionalProb = this.conditionalProb(hip, givenValuesArray)
+
+            //const resultProbEvidence = this.naiveBayes.totalProb(givenValue);
+            const teoBayesResult = resultConditionalProb * resultAPrioriProb
+            console.log(`teoBayesResult: ${teoBayesResult}`)
+            return teoBayesResult;
+        }
+
+
+
     }
 
     hMAP(hNames, hValues){
