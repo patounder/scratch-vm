@@ -148,7 +148,7 @@ test('categorize text', categorizeText => {
 
         initTextSchema.test('train text tests', trainTextTest => {
 
-            const alegreSampleArray = 'eres,bueno,una,buena,persona,te,quiero'.toLowerCase().split(',');
+            const alegreSampleArray = 'eres,bueno,una,buena,persona,te,quiero,mujer,buena'.toLowerCase().split(',');
             naiveBayes.trainForText('alegres', alegreSampleArray, 4);
 
             const tristeSampleArray = 'eres,malo,no,te,quiero,haces,todo,mal'.toLowerCase().split(',');
@@ -173,13 +173,14 @@ test('categorize text', categorizeText => {
         initTextSchema.end()
     })
 
-    categorizeText.test('test for text conditional probability', textConditionalProbab =>{
+    categorizeText.test('test for text conditional probability', textConditionalProb =>{
 
         const newExample = 'persona buena'.split(' ')
 
         const resultAlegre = naiveBayes.textConditionalProb('alegres', newExample);
         const resultTriste = naiveBayes.textConditionalProb('tristes', newExample);
-        textConditionalProbab.end();
+        textConditionalProb.equals(resultAlegre > resultTriste, true)
+        textConditionalProb.end();
     })
 
     categorizeText.end();

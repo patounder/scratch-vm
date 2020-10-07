@@ -140,7 +140,7 @@ class NaiveBayes {
     tableConditionalProb (hip, givenValues) {
         const arrayKeys = Array.from(this._schema.attributesMap.keys());
         const constLaplaceAdd = 1;
-        const arrayCondProb = [4];
+        const arrayCondProb = [4]; //TODO update length of array
 
         for (let i = 0; i < givenValues.length ; i++) {
 
@@ -174,56 +174,40 @@ class NaiveBayes {
     }
 
     textConditionalProb (hipValue, words) {
-        const frequencyTextWords = this.frequencyTextWords(words);
-        //exist in schema
-        //var frequencyTable = self.frequencyTable(tokens)
 
-        // a priori prob
-        //var categoryProbability = self.docCount[category] / self.totalDocuments
-
-        //take the log to avoid underflow
-        var logProbability = 0// = Math.log(categoryProbability)
         const uniqueAttributeIndex = 0
         const attName = this._schema.remainingAttributes[uniqueAttributeIndex];
         const attFreqTable = this._schema.attributesMap.get(attName);
         const attFrequencyMap = attFreqTable.frequencyMap.get(hipValue);
+        const arrayCondProb = [words.length];
 
         const vocabularySize = function () {
             const wordsMap = attFreqTable.frequencyMap;
             var vocabularyCount = 0;
             wordsMap.forEach(function (hValue, hKey, m){
-                hValue.forEach(function (wordValue, wordKey, mw){
-                    vocabularyCount += wordValue;
-                })
+                vocabularyCount += hValue.size;
             });
             return vocabularyCount
         }
 
-        const categorySize = function () {
-            var count = 0;
-            attFrequencyMap.forEach(function (val,k,m){
-                count += val
-            })
-            return count
-        }
-
-        const catSize = categorySize();
+        const catSize = attFrequencyMap.size;
         const vocSize = vocabularySize();
 
         //now determine P( w | c ) for each word `w` in the text
-        Object
-            .keys(frequencyTextWords)
-            .forEach(function (word){
-                var frequencyByTrain = attFrequencyMap.get(word) || 0;
-                const tokenProbability = frequencyByTrain + 1 / catSize + vocSize
 
-                var frequencyInText = frequencyTextWords[word]
+        for(let i = 0; i < words.length; i++){
+            var frequencyByTrain = attFrequencyMap.get(words[i]) || 0;
+            const tokenProbability = frequencyByTrain + 1 / catSize + vocSize
 
-                logProbability += frequencyInText * Math.log(tokenProbability)
-            });
-
-        return logProbability
+            arrayCondProb[i] = tokenProbability
+        }
+        const resultCondProb = arrayCondProb.reduce((acc, n) => acc * n)
+        //console.log(`resultCondProb: ${resultCondProb}, hip: ${hip}, newValues: ${givenValues}`);
+        return resultCondProb
     }
+
+
+
 
     teoBayes (hip, givenValue){
         const TABLE_CLASS_TYPE = 'table';
@@ -242,7 +226,7 @@ class NaiveBayes {
         //classification type text
         const words = givenValue.split(' ')
         const resultConditionalProb = this.textConditionalProb(hip, words);
-        return Math.log(resultAPrioriProb) + resultConditionalProb;
+        return resultAPrioriProb + resultConditionalProb;
     }
 
     hMAP(hNames, hValues){
