@@ -58,6 +58,7 @@ class NaiveBayes {
                 // TODO validate when mainValue exist in map (use case when train with more one ds the same main value)
             }
         });
+        console.log(this._schema);
     }
 
 
@@ -159,39 +160,70 @@ class NaiveBayes {
         return resultCondProb;
     }
 
-    /*
-    textConditionalProb = async function (text, category) {
-        var self = this
-            , maxProbability = -Infinity
-            , chosenCategory = null
+    frequencyTextWords (words) {
+        var frequencyTable = Object.create(null)
 
-        var tokens = await self.tokenizer(text)
-        var frequencyTable = self.frequencyTable(tokens)
+        words.forEach(function (token) {
+            if (!frequencyTable[token])
+                frequencyTable[token] = 1
+            else
+                frequencyTable[token]++
+        })
 
-        //start by calculating the overall probability of this category
-        //=>  out of all documents we've ever looked at, how many were
-        //    mapped to this category
-        var categoryProbability = self.docCount[category] / self.totalDocuments
+        return frequencyTable
+    }
+
+    textConditionalProb (hipValue, words) {
+        const frequencyTextWords = this.frequencyTextWords(words);
+        //exist in schema
+        //var frequencyTable = self.frequencyTable(tokens)
+
+        // a priori prob
+        //var categoryProbability = self.docCount[category] / self.totalDocuments
 
         //take the log to avoid underflow
-        var logProbability = Math.log(categoryProbability)
+        var logProbability = 0// = Math.log(categoryProbability)
+        const uniqueAttributeIndex = 0
+        const attName = this._schema.remainingAttributes[uniqueAttributeIndex];
+        const attFreqTable = this._schema.attributesMap.get(attName);
+        const attFrequencyMap = attFreqTable.frequencyMap.get(hipValue);
+
+        const vocabularySize = function () {
+            const wordsMap = attFreqTable.frequencyMap;
+            var vocabularyCount = 0;
+            wordsMap.forEach(function (hValue, hKey, m){
+                hValue.forEach(function (wordValue, wordKey, mw){
+                    vocabularyCount += wordValue;
+                })
+            });
+            return vocabularyCount
+        }
+
+        const categorySize = function () {
+            var count = 0;
+            attFrequencyMap.forEach(function (val,k,m){
+                count += val
+            })
+            return count
+        }
+
+        const catSize = categorySize();
+        const vocSize = vocabularySize();
 
         //now determine P( w | c ) for each word `w` in the text
         Object
-            .keys(frequencyTable)
-            .forEach(function (token) {
-                var frequencyInText = frequencyTable[token]
-                var tokenProbability = self.tokenProbability(token, category)
+            .keys(frequencyTextWords)
+            .forEach(function (word){
+                var frequencyByTrain = attFrequencyMap.get(word) || 0;
+                const tokenProbability = frequencyByTrain + 1 / catSize + vocSize
 
-                // console.log('token: %s category: `%s` tokenProbability: %d', token, category, tokenProbability)
+                var frequencyInText = frequencyTextWords[word]
 
-                //determine the log of the P( w | c ) for this word
                 logProbability += frequencyInText * Math.log(tokenProbability)
-            })
+            });
 
         return logProbability
-    }*/
-
+    }
 
     teoBayes (hip, givenValue){
         const TABLE_CLASS_TYPE = 'table';
@@ -208,8 +240,9 @@ class NaiveBayes {
         }
 
         //classification type text
-
-
+        const words = givenValue.split(' ')
+        const resultConditionalProb = this.textConditionalProb(hip, words);
+        return Math.log(resultAPrioriProb) + resultConditionalProb;
     }
 
     hMAP(hNames, hValues){
@@ -226,7 +259,6 @@ class NaiveBayes {
 
         return hNames[selectedIndex];
     }
-
 }
 
 module.exports = NaiveBayes;
