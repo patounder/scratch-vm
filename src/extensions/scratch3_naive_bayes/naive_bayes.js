@@ -160,19 +160,6 @@ class NaiveBayes {
         return resultCondProb;
     }
 
-    frequencyTextWords (words) {
-        var frequencyTable = Object.create(null)
-
-        words.forEach(function (token) {
-            if (!frequencyTable[token])
-                frequencyTable[token] = 1
-            else
-                frequencyTable[token]++
-        })
-
-        return frequencyTable
-    }
-
     textConditionalProb (hipValue, words) {
 
         const uniqueAttributeIndex = 0
@@ -194,8 +181,7 @@ class NaiveBayes {
         const vocSize = vocabularySize();
 
         //now determine P( w | c ) for each word `w` in the text
-
-        for(let i = 0; i < words.length; i++){
+        for (let i = 0; i < words.length; i++){
             var frequencyByTrain = attFrequencyMap.get(words[i]) || 0;
             const tokenProbability = frequencyByTrain + 1 / catSize + vocSize
 
@@ -205,9 +191,6 @@ class NaiveBayes {
         //console.log(`resultCondProb: ${resultCondProb}, hip: ${hip}, newValues: ${givenValues}`);
         return resultCondProb
     }
-
-
-
 
     teoBayes (hip, givenValue){
         const TABLE_CLASS_TYPE = 'table';
@@ -240,7 +223,6 @@ class NaiveBayes {
                 selectedIndex = i;
             }
         }
-
         return hNames[selectedIndex];
     }
 }

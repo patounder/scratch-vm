@@ -3,30 +3,6 @@ const NaiveBayes = require('../../src/extensions/scratch3_naive_bayes/naive_baye
 const Schema = require('../../src/extensions/scratch3_naive_bayes/schema');
 const FrequencyTable = require('../../src/extensions/scratch3_naive_bayes/freq_table');
 
-/*
-test('testing before and after', t => {
-    let num1 = 0;
-    const afterFun = function () {
-        console.log('after');
-    };
-
-    const beforeFun = function () {
-        console.log('before');
-    };
-
-    t.equals(num1, 1);
-
-    t.afterEach((afterFun, v) => {
-        console.log(v);
-        afterFun();
-    });
-
-    t.beforeEach((beforeFun, t) => {
-        num1 = 1;
-        beforeFun();
-    });
-});*/
-
 test('init schema disfruta jugar', initTableSchema => {
 
     const naiveBayes = new NaiveBayes(new Schema());
@@ -173,15 +149,22 @@ test('categorize text', categorizeText => {
         initTextSchema.end()
     })
 
-    categorizeText.test('test for text conditional probability', textConditionalProb =>{
+    const givenValue = 'persona buena'
 
-        const newExample = 'persona buena'.split(' ')
+    categorizeText.test('', teoBayesTest => {
+        teoBayesTest.test('test for text conditional probability', textConditionalProb =>{
+            const newExample = givenValue.split(' ')
+            const resultAlegre = naiveBayes.textConditionalProb('alegres', newExample);
+            const resultTriste = naiveBayes.textConditionalProb('tristes', newExample);
+            textConditionalProb.equals(resultAlegre > resultTriste, true)
 
-        const resultAlegre = naiveBayes.textConditionalProb('alegres', newExample);
-        const resultTriste = naiveBayes.textConditionalProb('tristes', newExample);
-        textConditionalProb.equals(resultAlegre > resultTriste, true)
-        textConditionalProb.end();
+            textConditionalProb.end();
+        })
+
+        const resultTeoBayesAlegres = naiveBayes.teoBayes('alegres', givenValue)
+        const resultTeoBayesTristes = naiveBayes.teoBayes('tristes', givenValue)
+        teoBayesTest.equals(resultTeoBayesAlegres > resultTeoBayesTristes, true)
+        teoBayesTest.end()
     })
-
     categorizeText.end();
 });
