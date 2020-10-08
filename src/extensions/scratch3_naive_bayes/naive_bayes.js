@@ -225,6 +225,10 @@ class NaiveBayes {
         }
         return hNames[selectedIndex];
     }
+
+    formatInputToArray(givenValues){
+        //TODO finish to format value by type classification
+    }
 }
 
 module.exports = NaiveBayes;

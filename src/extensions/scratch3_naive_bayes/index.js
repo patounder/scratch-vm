@@ -19,7 +19,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'initConfig',
                     blockType: BlockType.COMMAND,
-                    text: 'conf etiquetas hipo [MAIN] atributo [ATTRIBUTES] tipo classifica [CLASS_TYPE]',
+                    text: 'classifica [CLASS_TYPE] hipotesis [MAIN] atributo(s) [ATTRIBUTES]',
                     arguments: {
                         ATTRIBUTES: {
                             type: ArgumentType.STRING,
@@ -38,7 +38,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'train',
                     blockType: BlockType.COMMAND,
-                    text: 'entrenar hipo [MAIN_VAL] con datos [DS]',
+                    text: 'entrena hipotesis [MAIN_VAL] con datos [DS]',
                     arguments: {
                         DS: {
                             type: ArgumentType.STRING,
@@ -53,7 +53,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'trainText',
                     blockType: BlockType.COMMAND,
-                    text: 'trainText hipo [MAIN_VAL] con datos [DS] cantidad [N_ITEMS]',
+                    text: 'entrena hipo [MAIN_VAL] con datos [DS] cantidad [N_ITEMS]',
                     arguments: {
                         DS: {
                             type: ArgumentType.STRING,
@@ -70,7 +70,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'bayes',
                     blockType: BlockType.REPORTER,
-                    text: 'Bayes hip [HIP] dado [NVAL]',
+                    text: 'bayes para hipotesis [HIP] dado [NVAL]',
                     arguments: {
                         HIP: {
                             type: ArgumentType.STRING,
@@ -86,7 +86,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'hMAP',
                     blockType: BlockType.REPORTER,
-                    text: 'hMAX hips [HNAMES] valores [HVALUES]',
+                    text: 'maxima hipotesis entre [HNAMES] valores [HVALUES]',
                     arguments: {
                         HNAMES: {
                             type: ArgumentType.STRING,
