@@ -1,0 +1,39 @@
+class NaiveBayesInputsStub {
+    static getAlegriaTrainingSet(){
+        return [
+            'estas muy grande',
+            'haces todo bien',
+            'eres increible',
+            'muy bien hecho',
+            'muchas gracias',
+            'eres magnifica',
+            'eres bueno',
+            'eres una buena persona',
+            'te quiero',
+            'lo hiciste bien',
+            'quiero estar contigo',
+            'eres una ganadora'
+        ]
+    }
+
+
+    static getTristezaTrainingSet(){
+        return [
+            'no sirves para nada',
+            'lo hiciste mal',
+            'eres una mala persona',
+            'eres malvado',
+            'mal hecho',
+            'no hay nada que agradecer',
+            'eres malo',
+            'no te quiero',
+            'haces todo mal',
+            'ya no quiero estar contigo',
+            'no lo hiciste bien',
+            'eres un perdedor'
+        ]
+    }
+
+}
+
+module.exports = NaiveBayesInputsStub

@@ -2,6 +2,7 @@ const test = require('tap').test;
 const NaiveBayes = require('../../src/extensions/scratch3_naive_bayes/naive_bayes');
 const Schema = require('../../src/extensions/scratch3_naive_bayes/schema');
 const FrequencyTable = require('../../src/extensions/scratch3_naive_bayes/freq_table');
+const NaiveBayesInputsStub = require('./stub/naive_bayes_inputs')
 
 test('init schema disfruta jugar', initTableSchema => {
 
@@ -107,7 +108,6 @@ test('initSchema for text example', initTextSchema => {
     initTextSchema.end();
 });
 
-
 test('categorize text', categorizeText => {
     const naiveBayes = new NaiveBayes(new Schema());
     const mainAttr = 'emocion';
@@ -120,17 +120,21 @@ test('categorize text', categorizeText => {
         initTextSchema.equals(naiveBayes._schema.mainAttribute, 'emocion');
         initTextSchema.equals(naiveBayes._schema.totalCountTraining, 0);
         initTextSchema.equals(naiveBayes._schema.attributesMap.size, 1);
-        initTextSchema.equals(naiveBayes._schema.classType, 'text')
+        initTextSchema.equals(naiveBayes._schema.classType, 'text');
 
         initTextSchema.test('train text tests', trainTextTest => {
 
-            const alegreSampleArray = 'eres,bueno,una,buena,persona,te,quiero,mujer,buena'.toLowerCase().split(',');
-            naiveBayes.trainForText('alegres', alegreSampleArray, 4);
+            const search = ' '
+            const replacer = new RegExp(search, 'g')
+            const alegreSampleArray = NaiveBayesInputsStub.getAlegriaTrainingSet().join().replace(replacer, ',')
+                .split(',').slice()
+            naiveBayes.trainForText('alegres', alegreSampleArray, 12);
 
-            const tristeSampleArray = 'eres,malo,no,te,quiero,haces,todo,mal'.toLowerCase().split(',');
-            naiveBayes.trainForText('tristes', tristeSampleArray, 3);
+            const tristeSampleArray = NaiveBayesInputsStub.getTristezaTrainingSet().join().replace(replacer, ',')
+                .split(',').slice()
+            naiveBayes.trainForText('tristes', tristeSampleArray, 12);
 
-            trainTextTest.equals(naiveBayes._schema.totalCountTraining, 7);
+            trainTextTest.equals(naiveBayes._schema.totalCountTraining, 24);
             trainTextTest.equals(naiveBayes._schema.hipValuesMap.size, 2);
 
             const mensajeFreqTableAfterTrainText = naiveBayes._schema.attributesMap.get('mensaje');
@@ -140,10 +144,10 @@ test('categorize text', categorizeText => {
             const tristesFrequencyMap = mensajeFreqTableAfterTrainText.frequencyMap.get('tristes');
 
             trainTextTest.type(alegresFrequencyMap, Map);
-            trainTextTest.equals(alegresFrequencyMap.size, 8);
+            trainTextTest.equals(alegresFrequencyMap.size, 23);
 
             trainTextTest.type(tristesFrequencyMap, Map);
-            trainTextTest.equals(tristesFrequencyMap.size, 8);
+            trainTextTest.equals(tristesFrequencyMap.size, 27);
             trainTextTest.end();
         })
         initTextSchema.end()
