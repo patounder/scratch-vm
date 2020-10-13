@@ -126,11 +126,11 @@ test('categorize text', categorizeText => {
 
             const search = ' '
             const replacer = new RegExp(search, 'g')
-            const alegreSampleArray = NaiveBayesInputsStub.getAlegriaTrainingSet().join().replace(replacer, ',')
+            const alegreSampleArray = NaiveBayesInputsStub.getAlegriaTextTrainingSet().join().replace(replacer, ',')
                 .split(',').slice()
             naiveBayes.trainForText('alegres', alegreSampleArray, 12);
 
-            const tristeSampleArray = NaiveBayesInputsStub.getTristezaTrainingSet().join().replace(replacer, ',')
+            const tristeSampleArray = NaiveBayesInputsStub.getTristezaTextTrainingSet().join().replace(replacer, ',')
                 .split(',').slice()
             naiveBayes.trainForText('tristes', tristeSampleArray, 12);
 
@@ -156,15 +156,6 @@ test('categorize text', categorizeText => {
     const givenValue = 'persona buena'
 
     categorizeText.test('', teoBayesTest => {
-        teoBayesTest.test('test for text conditional probability', textConditionalProb =>{
-            const newExample = givenValue.split(' ')
-            const resultAlegre = naiveBayes.textConditionalProb('alegres', newExample);
-            const resultTriste = naiveBayes.textConditionalProb('tristes', newExample);
-            textConditionalProb.equals(resultAlegre > resultTriste, true)
-
-            textConditionalProb.end();
-        })
-
         const resultTeoBayesAlegres = naiveBayes.teoBayes('alegres', givenValue)
         const resultTeoBayesTristes = naiveBayes.teoBayes('tristes', givenValue)
         teoBayesTest.equals(resultTeoBayesAlegres > resultTeoBayesTristes, true)

@@ -1,5 +1,5 @@
 class NaiveBayesInputsStub {
-    static getAlegriaTrainingSet(){
+    static getAlegriaTextTrainingSet(){
         return [
             'estas muy grande',
             'haces todo bien',
@@ -17,7 +17,7 @@ class NaiveBayesInputsStub {
     }
 
 
-    static getTristezaTrainingSet(){
+    static getTristezaTextTrainingSet(){
         return [
             'no sirves para nada',
             'lo hiciste mal',
