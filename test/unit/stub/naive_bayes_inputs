@@ -17,7 +17,7 @@ class NaiveBayesInputsStub {
     }
 
 
-    static getTristezaTextTrainingSet(){
+    static getTristezaTextTrainingSet (){
         return [
             'no sirves para nada',
             'lo hiciste mal',
@@ -34,6 +34,35 @@ class NaiveBayesInputsStub {
         ]
     }
 
+    static getSiDisfrutaTableTrainningSet () {
+        const dataSet = [
+            'nublado,caluroso,alta,debil',
+            'lluvioso,templado,alta,debil',
+            'lluvioso,frio,normal,debil',
+            'nublado,frio,normal,fuerte',
+            'soleado,frio,normal,debil',
+            'lluvioso,templado,normal,debil',
+            'soleado,templado,normal,fuerte',
+            'nublado,templado,alta,fuerte',
+            'nublado,caluroso,normal,debil']
+
+        let arraySiDisfruta = []
+
+        dataSet.forEach(rec => {
+            arraySiDisfruta.push(rec.split(',').slice());
+        });
+
+        return arraySiDisfruta
+    }
+
+    static getNoDisfrutaTableTrainningSet () {
+        return [
+            'soleado,caluroso,alta,debil',
+            'soleado,caluroso,alta,fuerte',
+            'lluvioso,frío,normal,fuerte',
+            'soleado,templado,alta,debil',
+            'lluvioso,templado,alta,fuerte']
+    }
 }
 
 module.exports = NaiveBayesInputsStub
