@@ -55,10 +55,9 @@ test('categorize table data', categorizeTable => {
         initTableSchema.end();
     });
 
-    //TODO train table
     categorizeTable.test('train for table text', trainTable => {
 
-        naiveBayes.train('si', NaiveBayesInputsStub.getSiDisfrutaTableTrainningSet())
+        naiveBayes.train('si', NaiveBayesInputsStub.getSiDisfrutaTableTrainningSet(), 9)
 
         trainTable.equals(naiveBayes._schema.totalCountTraining, 9)
         trainTable.equals(naiveBayes._schema.hipValuesMap.get('si'), 9)
@@ -122,63 +121,6 @@ test('categorize table data', categorizeTable => {
     categorizeTable.end()
 })
 
-
-test('initSchema for text example', initTextSchema => {
-
-    const naiveBayes = new NaiveBayes(new Schema());
-    const mainAttr = 'emocion';
-    const arrayAttr = 'mensaje'.toLowerCase().split(',');
-    const classType = 'text'
-
-    naiveBayes.initSchema(mainAttr, arrayAttr, classType);
-
-    initTextSchema.equals(naiveBayes._schema.mainAttribute, 'emocion');
-    initTextSchema.equals(naiveBayes._schema.totalCountTraining, 0);
-    initTextSchema.equals(naiveBayes._schema.attributesMap.size, 1);
-    initTextSchema.equals(naiveBayes._schema.classType, 'text')
-
-    const freqTextoTable = naiveBayes._schema.attributesMap.get('mensaje');
-    initTextSchema.type(freqTextoTable, FrequencyTable);
-    initTextSchema.equals(freqTextoTable._tableName, 'mensaje');
-    initTextSchema.equals(freqTextoTable._recordIndex, 0);
-    initTextSchema.equals(freqTextoTable._frequencyMap.size, 0);
-    initTextSchema.equals(freqTextoTable._attributeValues.length, 0);
-
-    const alegreSampleArray = 'eres,bueno,lo,hiciste,bien,te,quiero,bueno,completamente'.toLowerCase().split(',');
-    naiveBayes.trainForText('alegres', alegreSampleArray, 4)
-
-    initTextSchema.equals(naiveBayes._schema.totalCountTraining, 4);
-    initTextSchema.equals(naiveBayes._schema.hipValuesMap.size, 1);
-
-    const mensajeAttribute = naiveBayes._schema.attributesMap.get('mensaje');
-    initTextSchema.type(mensajeAttribute, FrequencyTable);
-    const alegresFrequencyMap = mensajeAttribute.frequencyMap.get('alegres');
-
-    initTextSchema.type(alegresFrequencyMap, Map);
-    initTextSchema.equals(alegresFrequencyMap.size, 8)
-    initTextSchema.equals(alegresFrequencyMap.get('eres'), 1)
-    initTextSchema.equals(alegresFrequencyMap.get('bien'), 1)
-    initTextSchema.equals(alegresFrequencyMap.get('bueno'), 2)
-
-    const tristeSampleArray = 'eres,malo,no,te,quiero,haces,todo,mal'.toLowerCase().split(',');
-    naiveBayes.trainForText('tristes', tristeSampleArray, 3);
-
-    initTextSchema.equals(naiveBayes._schema.totalCountTraining, 7);
-    initTextSchema.equals(naiveBayes._schema.hipValuesMap.size, 2);
-
-    const mensajeAttributeAfterTrainTristesText = naiveBayes._schema.attributesMap.get('mensaje');
-    initTextSchema.type(mensajeAttributeAfterTrainTristesText, FrequencyTable);
-
-    const tristesFrequencyMap = mensajeAttributeAfterTrainTristesText.frequencyMap.get('tristes');
-    initTextSchema.type(tristesFrequencyMap, Map);
-    initTextSchema.equals(tristesFrequencyMap.size, 8)
-    initTextSchema.equals(tristesFrequencyMap.get('no'), 1)
-    initTextSchema.equals(tristesFrequencyMap.get('malo'), 1)
-    initTextSchema.equals(tristesFrequencyMap.get('mal'), 1)
-
-    initTextSchema.end();
-});
-
 test('categorize text', categorizeText => {
     const naiveBayes = new NaiveBayes(new Schema());
     const mainAttr = 'emocion';
@@ -199,11 +141,11 @@ test('categorize text', categorizeText => {
             const replacer = new RegExp(search, 'g')
             const alegreSampleArray = NaiveBayesInputsStub.getAlegriaTextTrainingSet().join().replace(replacer, ',')
                 .split(',').slice()
-            naiveBayes.trainForText('alegres', alegreSampleArray, 12);
+            naiveBayes.train('alegres', alegreSampleArray, 12);
 
             const tristeSampleArray = NaiveBayesInputsStub.getTristezaTextTrainingSet().join().replace(replacer, ',')
                 .split(',').slice()
-            naiveBayes.trainForText('tristes', tristeSampleArray, 12);
+            naiveBayes.train('tristes', tristeSampleArray, 12);
 
             trainTextTest.equals(naiveBayes._schema.totalCountTraining, 24);
             trainTextTest.equals(naiveBayes._schema.hipValuesMap.size, 2);

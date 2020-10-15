@@ -5,6 +5,8 @@ class NaiveBayes {
 
     constructor (schema){
         this._schema = schema;
+        this.TEXT_CLASSIFICATION_TEXT = 'text';
+        this.TABLE_CLASSIFICATION_TYPE = 'table';
     }
 
     // initialize schema except mainValuesResume
@@ -19,48 +21,46 @@ class NaiveBayes {
     }
 
 
-    train (mainValue, sampleArray) {
-
-        this.updateTotalCount(mainValue, sampleArray.length);
-        this.updateHipValuesMap(mainValue, sampleArray.length);
-
-        this._schema.attributesMap.forEach((v, k, m) => {
-            const freqMap = this.buildFrequencyMap(sampleArray, v.recordIndex, mainValue);
-
-            // validate if exist entry in map
-            if (!v.frequencyMap.has(mainValue)){
-                v.frequencyMap.set(mainValue, freqMap);
-            } else {
-                // TODO validate when mainValue exist in map (use case when train with more one ds the same main value)
-            }
-
-           this.buildAttributesValues(sampleArray, v.attributeValues, v.recordIndex);
-        });
-
-        console.log(this._schema);
-    }
-
-    // function to update schema when train with text (no tabulated data)
-    // String Array Number -> Void
-    // alegria ['eres,bueno,lo,hiciste,bien,te,quiero] 3 -> Void (pero se actualiza schema)
-    trainForText (mainValue, sampleArray, nItems) {
+    train (mainValue, sampleArray, nItems) {
 
         this.updateTotalCount(mainValue, nItems);
         this.updateHipValuesMap(mainValue, nItems);
 
-        this._schema.attributesMap.forEach((v, k, m) => {
-            const freqMap = this.buildFrequencyTextMap(sampleArray);
+        if(this._schema.classType === this.TEXT_CLASSIFICATION_TEXT){
+            this._schema.attributesMap.forEach((v, k, m) => {
+                const freqMap = this.buildFrequencyTextMap(sampleArray);
 
-            // validate if exist entry in map
-            if (!v.frequencyMap.has(mainValue)){
-                v.frequencyMap.set(mainValue, freqMap);
-            } else {
-                // TODO validate when mainValue exist in map (use case when train with more one ds the same main value)
-            }
-        });
+                // validate if exist entry in map
+                if (!v.frequencyMap.has(mainValue)){
+                    v.frequencyMap.set(mainValue, freqMap);
+                } else {
+                    // TODO validate when mainValue exist in map (use case when train with more one ds the same main value)
+                }
+            });
+
+        } else {
+            this._schema.attributesMap.forEach((v, k, m) => {
+
+                const trainningSet = [];
+
+                sampleArray.forEach(rec => {
+                    trainningSet.push(rec.split(',').slice());
+                });
+
+                const freqMap = this.buildFrequencyMap(trainningSet, v.recordIndex);
+
+                // validate if exist entry in map
+                if (!v.frequencyMap.has(mainValue)){
+                    v.frequencyMap.set(mainValue, freqMap);
+                } else {
+                    // TODO validate when mainValue exist in map (use case when train with more one ds the same main value)
+                }
+               this.buildAttributesValues(trainningSet, v.attributeValues, v.recordIndex);
+            });
+        }
+
         console.log(this._schema);
     }
-
 
     buildAttributesValues (records, attributesValues, index){
 
@@ -193,10 +193,9 @@ class NaiveBayes {
     }
 
     teoBayes (hip, givenValue){
-        const TABLE_CLASS_TYPE = 'table';
         const resultAPrioriProb = this.aprioriProb(hip)
 
-        if (this._schema.classType === TABLE_CLASS_TYPE) {
+        if (this._schema.classType === this.TABLE_CLASSIFICATION_TYPE) {
             const givenValuesArray = givenValue.split(',')
             const resultConditionalProb = this.tableConditionalProb(hip, givenValuesArray)
             //const resultProbEvidence = this.naiveBayes.totalProb(givenValue);

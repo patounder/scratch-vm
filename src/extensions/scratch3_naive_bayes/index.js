@@ -38,22 +38,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'train',
                     blockType: BlockType.COMMAND,
-                    text: 'entrena hipotesis [MAIN_VAL] con datos [DS]',
-                    arguments: {
-                        DS: {
-                            type: ArgumentType.STRING,
-                            defaultValue: ''
-                        },
-                        MAIN_VAL: {
-                            type: ArgumentType.STRING,
-                            defaultValue: ''
-                        }
-                    }
-                },
-                {
-                    opcode: 'trainText',
-                    blockType: BlockType.COMMAND,
-                    text: 'entrena hipo [MAIN_VAL] con datos [DS] cantidad [N_ITEMS]',
+                    text: 'entrena hipotesis [MAIN_VAL] con datos [DS] cantidad [N_ITEMS]',
                     arguments: {
                         DS: {
                             type: ArgumentType.STRING,
@@ -123,27 +108,8 @@ class NaiveBayesBlocks {
     train (args){
         const mainValue = args.MAIN_VAL.toLowerCase();
         const dataSet = args.DS.toLowerCase().split(' ').slice();
-        const trainningSet = [];
-        dataSet.forEach(rec => {
-            trainningSet.push(rec.split(',').slice());
-        });
-
-        /*
-        console.log('mainValue: '+ mainValue);
-        console.log('trainingSet: ' + trainingSet[0]);
-        */
-
-        this.naiveBayes.train(mainValue, trainningSet);
-    }
-
-    trainText (args){
-        const mainValue = args.MAIN_VAL.toLowerCase()
-        console.log(`mainValue: ${mainValue}`)
-        const dataSet = args.DS.toLowerCase().split(' ').slice()
-        console.log(`dataSet: ${dataSet}`)
         const nItems = args.N_ITEMS
-        console.log(`nItems: ${nItems}`)
-        this.naiveBayes.trainForText(mainValue, dataSet, nItems);
+        this.naiveBayes.train(mainValue, dataSet, nItems);
     }
 
     bayes (args){

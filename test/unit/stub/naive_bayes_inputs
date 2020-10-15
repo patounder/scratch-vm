@@ -35,7 +35,7 @@ class NaiveBayesInputsStub {
     }
 
     static getSiDisfrutaTableTrainningSet () {
-        const dataSet = [
+        return [
             'nublado,caluroso,alta,debil',
             'lluvioso,templado,alta,debil',
             'lluvioso,frio,normal,debil',
@@ -45,14 +45,6 @@ class NaiveBayesInputsStub {
             'soleado,templado,normal,fuerte',
             'nublado,templado,alta,fuerte',
             'nublado,caluroso,normal,debil']
-
-        let arraySiDisfruta = []
-
-        dataSet.forEach(rec => {
-            arraySiDisfruta.push(rec.split(',').slice());
-        });
-
-        return arraySiDisfruta
     }
 
     static getNoDisfrutaTableTrainningSet () {
