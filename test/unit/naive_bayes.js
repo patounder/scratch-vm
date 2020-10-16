@@ -57,63 +57,76 @@ test('categorize table data', categorizeTable => {
 
     categorizeTable.test('train for table text', trainTable => {
 
-        naiveBayes.train('si', NaiveBayesInputsStub.getSiDisfrutaTableTrainningSet(), 9)
+        trainTable.test('with examples yes enjoy', enjoyYesDs =>{
+            naiveBayes.train('si', NaiveBayesInputsStub.getSiDisfrutaTableTrainningSet(), 9)
 
-        trainTable.equals(naiveBayes._schema.totalCountTraining, 9)
-        trainTable.equals(naiveBayes._schema.hipValuesMap.get('si'), 9)
-        trainTable.equals(naiveBayes._schema.attributesMap.size, 4)
+            enjoyYesDs.equals(naiveBayes._schema.totalCountTraining, 9)
+            enjoyYesDs.equals(naiveBayes._schema.hipValuesMap.get('si'), 9)
+            enjoyYesDs.equals(naiveBayes._schema.attributesMap.size, 4)
 
-        //Cielo FrequencyTable
-        const cieloFrequencyTable = naiveBayes._schema.attributesMap.get('cielo')
-        trainTable.type(cieloFrequencyTable, FrequencyTable)
-        trainTable.equals(cieloFrequencyTable.tableName, 'cielo')
-        trainTable.equals(cieloFrequencyTable.recordIndex, 0)
-        trainTable.equals(cieloFrequencyTable.attributeValues.join(), 'nublado,lluvioso,soleado')
-        const cieloFrequencyMap = cieloFrequencyTable.frequencyMap
-        trainTable.type(cieloFrequencyMap, Map)
-        const cieloSiMap = cieloFrequencyMap.get('si')
-        trainTable.equals(cieloSiMap.get('soleado'), 2)
-        trainTable.equals(cieloSiMap.get('nublado'), 4)
-        trainTable.equals(cieloSiMap.get('lluvioso'), 3)
+            //Cielo FrequencyTable
+            const cieloFrequencyTable = naiveBayes._schema.attributesMap.get('cielo')
+            enjoyYesDs.type(cieloFrequencyTable, FrequencyTable)
+            enjoyYesDs.equals(cieloFrequencyTable.tableName, 'cielo')
+            enjoyYesDs.equals(cieloFrequencyTable.recordIndex, 0)
+            enjoyYesDs.equals(cieloFrequencyTable.attributeValues.join(), 'nublado,lluvioso,soleado')
+            const cieloFrequencyMap = cieloFrequencyTable.frequencyMap
+            enjoyYesDs.type(cieloFrequencyMap, Map)
+            const cieloSiMap = cieloFrequencyMap.get('si')
+            enjoyYesDs.equals(cieloSiMap.get('soleado'), 2)
+            enjoyYesDs.equals(cieloSiMap.get('nublado'), 4)
+            enjoyYesDs.equals(cieloSiMap.get('lluvioso'), 3)
 
-        const temperaturaFrequencyTable = naiveBayes._schema.attributesMap.get('temperatura')
-        trainTable.type(temperaturaFrequencyTable, FrequencyTable)
-        trainTable.equals(temperaturaFrequencyTable.tableName, 'temperatura')
-        trainTable.equals(temperaturaFrequencyTable.recordIndex, 1)
-        trainTable.equals(temperaturaFrequencyTable.attributeValues.join(), 'caluroso,templado,frio')
+            const temperaturaFrequencyTable = naiveBayes._schema.attributesMap.get('temperatura')
+            enjoyYesDs.type(temperaturaFrequencyTable, FrequencyTable)
+            enjoyYesDs.equals(temperaturaFrequencyTable.tableName, 'temperatura')
+            enjoyYesDs.equals(temperaturaFrequencyTable.recordIndex, 1)
+            enjoyYesDs.equals(temperaturaFrequencyTable.attributeValues.join(), 'caluroso,templado,frio')
 
-        const temperaturarequencyMap = temperaturaFrequencyTable.frequencyMap
-        trainTable.type(temperaturarequencyMap, Map)
-        const temperaturaSiMap = temperaturarequencyMap.get('si')
-        trainTable.equals(temperaturaSiMap.get('caluroso'), 2)
-        trainTable.equals(temperaturaSiMap.get('templado'), 4)
-        trainTable.equals(temperaturaSiMap.get('frio'), 3)
+            const temperaturarequencyMap = temperaturaFrequencyTable.frequencyMap
+            enjoyYesDs.type(temperaturarequencyMap, Map)
+            const temperaturaSiMap = temperaturarequencyMap.get('si')
+            enjoyYesDs.equals(temperaturaSiMap.get('caluroso'), 2)
+            enjoyYesDs.equals(temperaturaSiMap.get('templado'), 4)
+            enjoyYesDs.equals(temperaturaSiMap.get('frio'), 3)
 
-        const humedadFrequencyTable = naiveBayes._schema.attributesMap.get('humedad')
-        trainTable.type(humedadFrequencyTable, FrequencyTable)
-        trainTable.equals(humedadFrequencyTable.tableName, 'humedad')
-        trainTable.equals(humedadFrequencyTable.recordIndex, 2)
-        trainTable.equals(humedadFrequencyTable.attributeValues.join(), 'alta,normal')
+            const humedadFrequencyTable = naiveBayes._schema.attributesMap.get('humedad')
+            enjoyYesDs.type(humedadFrequencyTable, FrequencyTable)
+            enjoyYesDs.equals(humedadFrequencyTable.tableName, 'humedad')
+            enjoyYesDs.equals(humedadFrequencyTable.recordIndex, 2)
+            enjoyYesDs.equals(humedadFrequencyTable.attributeValues.join(), 'alta,normal')
 
-        const humedadFrequencyMap = humedadFrequencyTable.frequencyMap
-        trainTable.type(humedadFrequencyMap, Map)
-        const humedadSiMap = humedadFrequencyMap.get('si')
-        trainTable.equals(humedadSiMap.get('alta'), 3)
-        trainTable.equals(humedadSiMap.get('normal'), 6)
+            const humedadFrequencyMap = humedadFrequencyTable.frequencyMap
+            enjoyYesDs.type(humedadFrequencyMap, Map)
+            const humedadSiMap = humedadFrequencyMap.get('si')
+            enjoyYesDs.equals(humedadSiMap.get('alta'), 3)
+            enjoyYesDs.equals(humedadSiMap.get('normal'), 6)
 
-        const vientoFrequencyTable = naiveBayes._schema.attributesMap.get('viento')
-        trainTable.type(vientoFrequencyTable, FrequencyTable)
-        trainTable.equals(vientoFrequencyTable.tableName, 'viento')
-        trainTable.equals(vientoFrequencyTable.recordIndex, 3)
-        trainTable.equals(vientoFrequencyTable.attributeValues.join(), 'debil,fuerte')
+            const vientoFrequencyTable = naiveBayes._schema.attributesMap.get('viento')
+            enjoyYesDs.type(vientoFrequencyTable, FrequencyTable)
+            enjoyYesDs.equals(vientoFrequencyTable.tableName, 'viento')
+            enjoyYesDs.equals(vientoFrequencyTable.recordIndex, 3)
+            enjoyYesDs.equals(vientoFrequencyTable.attributeValues.join(), 'debil,fuerte')
 
-        const vientoFrequencyMap = vientoFrequencyTable.frequencyMap
-        trainTable.type(vientoFrequencyMap, Map)
-        const vientoSiMap = vientoFrequencyMap.get('si')
-        trainTable.equals(vientoSiMap.get('fuerte'), 3)
-        trainTable.equals(vientoSiMap.get('debil'), 6)
+            const vientoFrequencyMap = vientoFrequencyTable.frequencyMap
+            enjoyYesDs.type(vientoFrequencyMap, Map)
+            const vientoSiMap = vientoFrequencyMap.get('si')
+            enjoyYesDs.equals(vientoSiMap.get('fuerte'), 3)
+            enjoyYesDs.equals(vientoSiMap.get('debil'), 6)
 
+            enjoyYesDs.end()
+        })
 
+        trainTable.test('with examples no enjoy ', noEnjoyDs => {
+            const examplesNoEnjoy = NaiveBayesInputsStub.getNoDisfrutaTableTrainningSet()
+            naiveBayes.train('no', examplesNoEnjoy, examplesNoEnjoy.length)
+
+            noEnjoyDs.equals(naiveBayes._schema.totalCountTraining, 14)
+            noEnjoyDs.equals(naiveBayes._schema.hipValuesMap.get('no'), 5)
+            noEnjoyDs.equals(naiveBayes._schema.attributesMap.size, 4)
+
+            noEnjoyDs.end()
+        })
         trainTable.end()
     });
 
