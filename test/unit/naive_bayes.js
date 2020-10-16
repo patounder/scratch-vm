@@ -58,7 +58,7 @@ test('categorize table data', categorizeTable => {
     categorizeTable.test('train for table text', trainTable => {
 
         trainTable.test('with examples yes enjoy', enjoyYesDs =>{
-            naiveBayes.train('si', NaiveBayesInputsStub.getSiDisfrutaTableTrainningSet(), 9)
+            naiveBayes.train('si', NaiveBayesInputsStub.getYesEnjoyTrainingSet(), 9)
 
             enjoyYesDs.equals(naiveBayes._schema.totalCountTraining, 9)
             enjoyYesDs.equals(naiveBayes._schema.hipValuesMap.get('si'), 9)
@@ -118,7 +118,7 @@ test('categorize table data', categorizeTable => {
         })
 
         trainTable.test('with examples no enjoy ', noEnjoyDs => {
-            const examplesNoEnjoy = NaiveBayesInputsStub.getNoDisfrutaTableTrainningSet()
+            const examplesNoEnjoy = NaiveBayesInputsStub.getNoEnjoyTrainingSet()
             naiveBayes.train('no', examplesNoEnjoy, examplesNoEnjoy.length)
 
             noEnjoyDs.equals(naiveBayes._schema.totalCountTraining, 14)

@@ -34,7 +34,7 @@ class NaiveBayesInputsStub {
         ]
     }
 
-    static getSiDisfrutaTableTrainningSet () {
+    static getYesEnjoyTrainingSet () {
         return [
             'nublado,caluroso,alta,debil',
             'lluvioso,templado,alta,debil',
@@ -47,7 +47,7 @@ class NaiveBayesInputsStub {
             'nublado,caluroso,normal,debil']
     }
 
-    static getNoDisfrutaTableTrainningSet () {
+    static getNoEnjoyTrainingSet () {
         return [
             'soleado,caluroso,alta,debil',
             'soleado,caluroso,alta,fuerte',
