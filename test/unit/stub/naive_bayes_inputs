@@ -51,7 +51,7 @@ class NaiveBayesInputsStub {
         return [
             'soleado,caluroso,alta,debil',
             'soleado,caluroso,alta,fuerte',
-            'lluvioso,frío,normal,fuerte',
+            'lluvioso,frio,normal,fuerte',
             'soleado,templado,alta,debil',
             'lluvioso,templado,alta,fuerte']
     }
