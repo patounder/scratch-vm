@@ -20,7 +20,7 @@
     "i18n:push": "tx-push-src scratch-editor extensions translations/core/en.json",
     "lint": "eslint . && format-message lint src/**/*.js",
     "prepublish": "in-publish && npm run build || not-in-publish",
-    "start": "webpack-dev-server",
+    "start": "webpack-dev-server --info-verbosity verbose",
     "tap": "tap ./test/{unit,integration}/*.js",
     "tap:unit": "tap ./test/unit/*.js",
     "tap:integration": "tap ./test/integration/*.js",

@@ -19,7 +19,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'initConfig',
                     blockType: BlockType.COMMAND,
-                    text: 'classifica [CLASS_TYPE] hipotesis [MAIN] atributo(s) [ATTRIBUTES]',
+                    text: 'clasifica [CLASS_TYPE] hipotesis [MAIN] atributo(s) [ATTRIBUTES]',
                     arguments: {
                         ATTRIBUTES: {
                             type: ArgumentType.STRING,
