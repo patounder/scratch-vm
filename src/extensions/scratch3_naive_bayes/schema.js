@@ -7,6 +7,7 @@ class Schema {
         this._attributesMap = attributesMap;
         this._totalCountTraining = totalCountTraining;
         this._classType = classType;
+        this._bayesResultMap = new Map();
     }
 
     get mainAttribute () {
@@ -55,6 +56,14 @@ class Schema {
 
     set classType (value) {
         this._classType = value;
+    }
+
+    get bayesResultMap (){
+        return this._bayesResultMap;
+    }
+
+    set bayesResultMap (map) {
+        this._bayesResultMap = map;
     }
 }
 

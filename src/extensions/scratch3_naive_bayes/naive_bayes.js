@@ -194,35 +194,43 @@ class NaiveBayes {
 
     teoBayes (hip, givenValue){
         const resultAPrioriProb = this.aprioriProb(hip)
+        let teoBayesResult = 0;
+        let resultConditionalProb = 0;
 
         if (this._schema.classType === this.TABLE_CLASSIFICATION_TYPE) {
             const givenValuesArray = givenValue.split(',')
-            const resultConditionalProb = this.tableConditionalProb(hip, givenValuesArray)
-            //const resultProbEvidence = this.naiveBayes.totalProb(givenValue);
-
-            const teoBayesResult = resultConditionalProb * resultAPrioriProb
-            //console.log(`teoBayesResult: ${teoBayesResult}`)
-            return teoBayesResult;
+            resultConditionalProb = this.tableConditionalProb(hip, givenValuesArray);
+        } else {
+            //classification type text
+            const words = givenValue.split(' ');
+            resultConditionalProb = this.textConditionalProb(hip, words);
         }
 
-        //classification type text
-        const words = givenValue.split(' ')
-        const resultConditionalProb = this.textConditionalProb(hip, words);
-        return resultAPrioriProb + resultConditionalProb;
+        teoBayesResult = resultAPrioriProb + resultConditionalProb;
+
+        console.log(`set hip:${hip}, teoBayesResult:${teoBayesResult}`);
+        this._schema.bayesResultMap.set(hip, teoBayesResult);//Set result in schema
+
+        return teoBayesResult;
     }
 
-    hMAP(hNames, hValues){
-        var selectedIndex = 0;
+
+    hMAP(hValues){
         var maxValue = 0;
 
-        console.log(`hNames: ${hNames}, hValues:${hValues}`);
-        for(let i = 0; i < hValues.length; i++){
+        console.log(`hValues:${hValues}`);
+        for (let i = 0; i < hValues.length; i++){
             if (hValues[i] > maxValue){
                 maxValue = hValues[i];
-                selectedIndex = i;
             }
         }
-        return hNames[selectedIndex];
+        return this.getKey(maxValue);
+    }
+
+    getKey(value) {
+        const selectedKey = [...this._schema.bayesResultMap].find(([key, val]) => val == value)[0];
+        console.log(`selected key:${selectedKey}`);
+        return selectedKey;
     }
 
     formatInputToArray(givenValues){

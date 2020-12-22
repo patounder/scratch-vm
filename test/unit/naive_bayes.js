@@ -166,7 +166,7 @@ test('categorize text', categorizeText => {
 
     naiveBayes.initSchema(mainAttr, arrayAttr, classType);
 
-    categorizeText.test('test for init schema', initTextSchema =>{
+    categorizeText.test('test for init schema', initTextSchema => {
         initTextSchema.equals(naiveBayes._schema.mainAttribute, 'emocion');
         initTextSchema.equals(naiveBayes._schema.totalCountTraining, 0);
         initTextSchema.equals(naiveBayes._schema.attributesMap.size, 1);

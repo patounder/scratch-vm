@@ -38,7 +38,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'train',
                     blockType: BlockType.COMMAND,
-                    text: 'entrena hipotesis [MAIN_VAL] con datos [DS] cantidad [N_ITEMS]',
+                    text: 'entrena hipotesis tipo [MAIN_VAL] con datos [DS] cantidad [N_ITEMS]',
                     arguments: {
                         DS: {
                             type: ArgumentType.STRING,
@@ -55,7 +55,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'bayes',
                     blockType: BlockType.REPORTER,
-                    text: 'bayes para hipotesis [HIP] dado [NVAL]',
+                    text: 'bayes hipotesis tipo [HIP] dado [NVAL]',
                     arguments: {
                         HIP: {
                             type: ArgumentType.STRING,
@@ -71,7 +71,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'hMAP',
                     blockType: BlockType.REPORTER,
-                    text: 'maxima hipotesis entre [HNAMES] valores [HVALUES]',
+                    text: 'maxima hipotesis entre valores [HVALUES]',
                     arguments: {
                         HNAMES: {
                             type: ArgumentType.STRING,
@@ -120,10 +120,9 @@ class NaiveBayesBlocks {
     }
 
     hMAP(args){
-        const hNames = args.HNAMES.toLowerCase().split(' ').slice();
         const hValues = args.HVALUES.toLowerCase().split(' ').slice();
 
-        const selectedHip = this.naiveBayes.hMAP(hNames, hValues);
+        const selectedHip = this.naiveBayes.hMAP(hValues);
         console.log(selectedHip);
         return selectedHip;
     }
