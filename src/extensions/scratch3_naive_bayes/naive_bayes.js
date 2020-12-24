@@ -200,14 +200,13 @@ class NaiveBayes {
         if (this._schema.classType === this.TABLE_CLASSIFICATION_TYPE) {
             const givenValuesArray = givenValue.split(',')
             resultConditionalProb = this.tableConditionalProb(hip, givenValuesArray);
+            teoBayesResult = resultAPrioriProb * resultConditionalProb;
         } else {
             //classification type text
             const words = givenValue.split(' ');
             resultConditionalProb = this.textConditionalProb(hip, words);
+            teoBayesResult = resultAPrioriProb + resultConditionalProb;
         }
-
-        teoBayesResult = resultAPrioriProb + resultConditionalProb;
-
         console.log(`set hip:${hip}, teoBayesResult:${teoBayesResult}`);
         this._schema.bayesResultMap.set(hip, teoBayesResult);//Set result in schema
 
