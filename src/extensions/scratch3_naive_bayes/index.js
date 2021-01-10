@@ -19,7 +19,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'initConfig',
                     blockType: BlockType.COMMAND,
-                    text: 'clasifica [CLASS_TYPE] hipotesis [MAIN] atributo(s) [ATTRIBUTES]',
+                    text: 'clasifica [MAIN] tipo [CLASS_TYPE] en base [ATTRIBUTES]',
                     arguments: {
                         ATTRIBUTES: {
                             type: ArgumentType.STRING,
@@ -38,7 +38,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'train',
                     blockType: BlockType.COMMAND,
-                    text: 'entrena hipotesis tipo [MAIN_VAL] con datos [DS] cantidad [N_ITEMS]',
+                    text: 'entrena categoria [MAIN_VAL] con datos [DS] cantidad [N_ITEMS]',
                     arguments: {
                         DS: {
                             type: ArgumentType.STRING,
@@ -55,7 +55,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'bayes',
                     blockType: BlockType.REPORTER,
-                    text: 'bayes hipotesis tipo [HIP] dado [NVAL]',
+                    text: 'bayes categoria [HIP] dado [NVAL]',
                     arguments: {
                         HIP: {
                             type: ArgumentType.STRING,
@@ -71,7 +71,7 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'hMAP',
                     blockType: BlockType.REPORTER,
-                    text: 'maxima hipotesis entre valores [HVALUES]',
+                    text: 'maxima categoria entre valores [HVALUES]',
                     arguments: {
                         HNAMES: {
                             type: ArgumentType.STRING,
