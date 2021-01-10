@@ -13,7 +13,7 @@ class NaiveBayesBlocks {
     getInfo () {
         return {
             id: 'naivebayes',
-            name: 'Naive Bayes',
+            name: 'Bayes Ingenuo',
             color1: '#FF1A66',
             blocks: [
                 {
