@@ -19,19 +19,19 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'initConfig',
                     blockType: BlockType.COMMAND,
-                    text: 'clasifica [MAIN] tipo [CLASS_TYPE] en base [ATTRIBUTES]',
+                    text: 'clasifica [MAIN] tipo [CLASS_TYPE] en base a [ATTRIBUTES]',
                     arguments: {
-                        ATTRIBUTES: {
-                            type: ArgumentType.STRING,
-                            defaultValue: ''
-                        },
                         MAIN: {
                             type: ArgumentType.STRING,
-                            defaultValue: ''
+                            defaultValue: 'categoria'
                         },
                         CLASS_TYPE: {
                             type: ArgumentType.STRING,
                             menu: 'classificationTypes'
+                        },
+                        ATTRIBUTES: {
+                            type: ArgumentType.STRING,
+                            defaultValue: 'caracteristica'
                         }
                     }
                 },
@@ -40,13 +40,13 @@ class NaiveBayesBlocks {
                     blockType: BlockType.COMMAND,
                     text: 'entrena categoria [MAIN_VAL] con datos [DS] cantidad [N_ITEMS]',
                     arguments: {
-                        DS: {
-                            type: ArgumentType.STRING,
-                            defaultValue: ''
-                        },
                         MAIN_VAL: {
                             type: ArgumentType.STRING,
-                            defaultValue: ''
+                            defaultValue: 'valor_cat'
+                        },
+                        DS: {
+                            type: ArgumentType.STRING,
+                            defaultValue: 'ejemplos'
                         },
                         N_ITEMS: {
                         }
@@ -59,7 +59,7 @@ class NaiveBayesBlocks {
                     arguments: {
                         HIP: {
                             type: ArgumentType.STRING,
-                            defaultValue: ''
+                            defaultValue: 'valor'
                         },
 
                         NVAL: {
@@ -73,10 +73,6 @@ class NaiveBayesBlocks {
                     blockType: BlockType.REPORTER,
                     text: 'maxima categoria entre valores [HVALUES]',
                     arguments: {
-                        HNAMES: {
-                            type: ArgumentType.STRING,
-                            defaultValue: ''
-                        },
                         HVALUES: {
                             type: ArgumentType.STRING,
                             defaultValue: ''
