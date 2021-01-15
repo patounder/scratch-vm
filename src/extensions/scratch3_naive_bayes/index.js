@@ -59,12 +59,11 @@ class NaiveBayesBlocks {
                     arguments: {
                         HIP: {
                             type: ArgumentType.STRING,
-                            defaultValue: 'valor'
+                            defaultValue: 'valor_cat'
                         },
-
                         NVAL: {
                             type: ArgumentType.STRING,
-                            defaultValue: ''
+                            defaultValue: 'ej_nuevo'
                         }
                     }
                 },
@@ -75,7 +74,7 @@ class NaiveBayesBlocks {
                     arguments: {
                         HVALUES: {
                             type: ArgumentType.STRING,
-                            defaultValue: ''
+                            defaultValue: 'lista_bayes'
                         }
                     }
                 }
