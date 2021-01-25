@@ -213,3 +213,17 @@ test('categorize text', categorizeText => {
     })
     categorizeText.end();
 });
+
+
+test('remove symbols', removeSymbolsTest =>{
+
+    var funRemoveSymbols = function (myStr) {
+        return myStr.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+
+    removeSymbolsTest.equals(funRemoveSymbols('Alegría'), 'alegria');
+    removeSymbolsTest.equals(funRemoveSymbols('VideoJuegos'), 'videojuegos');
+    removeSymbolsTest.equals(funRemoveSymbols('Video Juegos'), 'video juegos');
+
+    removeSymbolsTest.end();
+});

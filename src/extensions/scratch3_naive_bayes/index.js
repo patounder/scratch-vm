@@ -93,33 +93,36 @@ class NaiveBayesBlocks {
     }
 
     initConfig (args){
-        const classMain = args.MAIN.toLowerCase();
-        const attributes = args.ATTRIBUTES.toLowerCase().split(',');
+        const classMain = this.normalizeString(args.MAIN);
+        const attributes = this.normalizeString(args.ATTRIBUTES).split(',');
         const classType = args.CLASS_TYPE;
         console.log(`classType: ${classType}`)
         this.naiveBayes.initSchema(classMain, attributes, classType);
     }
 
     train (args){
-        const mainValue = args.MAIN_VAL.toLowerCase();
-        const dataSet = args.DS.toLowerCase().split(' ').slice();
-        const nItems = args.N_ITEMS
+        const mainValue = this.normalizeString(args.MAIN_VAL);
+        const dataSet = this.normalizeString(args.DS).split(' ').slice();
+        const nItems = args.N_ITEMS;
         this.naiveBayes.train(mainValue, dataSet, nItems);
     }
 
     bayes (args){
-        const hip = args.HIP.toLowerCase()
-        const givenValues = args.NVAL.toLowerCase()
+        const hip = this.normalizeString(args.HIP);
+        const newValue = this.normalizeString(args.NVAL);
 
-        return this.naiveBayes.teoBayes(hip, givenValues)
+        return this.naiveBayes.teoBayes(hip, newValue);
     }
 
     hMAP(args){
-        const hValues = args.HVALUES.toLowerCase().split(' ').slice();
-
+        const hValues = this.normalizeString(args.HVALUES).split(' ').slice();
         const selectedHip = this.naiveBayes.hMAP(hValues);
         console.log(selectedHip);
         return selectedHip;
+    }
+
+    normalizeString (myStr){
+        return myStr.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }
 
 }
