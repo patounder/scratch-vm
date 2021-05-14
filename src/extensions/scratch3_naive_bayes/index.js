@@ -1,7 +1,9 @@
 const ArgumentType = require('../../extension-support/argument-type');
 const BlockType = require('../../extension-support/block-type');
-const NaiveBayes = require('./naive_bayes');
+const NaiveBayes = require('./naive-bayes');
 const Schema = require('./schema');
+
+const CATEGORY_DEFAULT_VALUE = 'nombre', CHARACTERISTICS_DEFAULT_VALUE = 'caracteristicas', TRAIN_OPT_CAT_DEFAULT_VALUE = 'opc_cat';
 
 class NaiveBayesBlocks {
 
@@ -19,30 +21,30 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'initConfig',
                     blockType: BlockType.COMMAND,
-                    text: 'clasifica [MAIN] tipo [CLASS_TYPE] en base a [ATTRIBUTES]',
+                    text: 'clasificar [CLASS_TYPE] categoria [CATEGORY] en base a [CHARACTERISTICS]',
                     arguments: {
-                        MAIN: {
-                            type: ArgumentType.STRING,
-                            defaultValue: 'categoria'
-                        },
                         CLASS_TYPE: {
                             type: ArgumentType.STRING,
                             menu: 'classificationTypes'
                         },
-                        ATTRIBUTES: {
+                        CATEGORY: {
                             type: ArgumentType.STRING,
-                            defaultValue: 'caracteristica'
+                            defaultValue: CATEGORY_DEFAULT_VALUE
+                        },
+                        CHARACTERISTICS: {
+                            type: ArgumentType.STRING,
+                            defaultValue: CHARACTERISTICS_DEFAULT_VALUE
                         }
                     }
                 },
                 {
                     opcode: 'train',
                     blockType: BlockType.COMMAND,
-                    text: 'entrena categoria [MAIN_VAL] con datos [DS] cantidad [N_ITEMS]',
+                    text: 'entrenar categoria opcion [CATEGORY_OPTION] con datos [DS] cantidad [N_ITEMS]',
                     arguments: {
-                        MAIN_VAL: {
+                        CATEGORY_OPTION: {
                             type: ArgumentType.STRING,
-                            defaultValue: 'valor_cat'
+                            defaultValue: TRAIN_OPT_CAT_DEFAULT_VALUE
                         },
                         DS: {
                             type: ArgumentType.STRING,
@@ -59,7 +61,7 @@ class NaiveBayesBlocks {
                     arguments: {
                         HIP: {
                             type: ArgumentType.STRING,
-                            defaultValue: 'valor_cat'
+                            defaultValue: TRAIN_OPT_CAT_DEFAULT_VALUE
                         },
                         NVAL: {
                             type: ArgumentType.STRING,
@@ -88,28 +90,45 @@ class NaiveBayesBlocks {
     }
 
     getClassTypes (){
-        const types = [{text: 'texto', value: 'text'}, {text: 'tabla', value: 'table'}]
-        return types
+        const types = [{text: 'texto', value: 'text'}, {text: 'tabla', value: 'table'}];
+        return types;
     }
 
     initConfig (args){
-        const classMain = this.normalizeString(args.MAIN);
-        const attributes = this.normalizeString(args.ATTRIBUTES).split(',');
-        const classType = args.CLASS_TYPE;
-        console.log(`classType: ${classType}`)
-        this.naiveBayes.initSchema(classMain, attributes, classType);
+        const argCategory = args.CATEGORY;
+        const argsCharacteristic = args.CHARACTERISTICS;
+        const argClassType = args.CLASS_TYPE;
+
+        if(argCategory == CATEGORY_DEFAULT_VALUE || argsCharacteristic == CHARACTERISTICS_DEFAULT_VALUE){
+            console.log('using default values. Change them');
+            return;
+        }
+
+        const classMain = this.normalizeString(argCategory);
+        const attributes = this.normalizeString(argsCharacteristic).split(',');
+        this.naiveBayes.initSchema(classMain, attributes, argClassType);
     }
 
     train (args){
-        const mainValue = this.normalizeString(args.MAIN_VAL);
+        const mainValue = this.normalizeString(args.CATEGORY_OPTION);
         const dataSet = this.normalizeString(args.DS).split(' ').slice();
         const nItems = args.N_ITEMS;
         this.naiveBayes.train(mainValue, dataSet, nItems);
     }
 
     bayes (args){
-        const hip = this.normalizeString(args.HIP);
-        const newValue = this.normalizeString(args.NVAL);
+
+        const hipArg = args.HIP;
+        const nvalArg = args.NVAL;
+        if ((hipArg == CATEGORY_DEFAULT_VALUE) || (typeof nvalArg === 'undefined')){
+
+            return;
+        }
+        console.log(`hipArg: ${hipArg}`);
+        console.log(`nvalArg: ${nvalArg}`);
+
+        const hip = this.normalizeString(hipArg);
+        const newValue = this.normalizeString(nvalArg);
 
         return this.naiveBayes.teoBayes(hip, newValue);
     }

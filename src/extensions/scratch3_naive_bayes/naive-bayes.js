@@ -1,32 +1,34 @@
-const FrequencyTable = require('./freq_table');
-const Schema = require('./schema')
+const FrequencyTable = require('./frequency-table');
+const Schema = require('./schema');
 
 class NaiveBayes {
 
     constructor (schema){
         this._schema = schema;
-        this.TEXT_CLASSIFICATION_TEXT = 'text';
+        this.TEXT_CLASSIFICATION_TYPE = 'text';
         this.TABLE_CLASSIFICATION_TYPE = 'table';
     }
 
     // initialize schema except mainValuesResume
-    initSchema (mainAttribute, remainingAttributes, classType){
+    initSchema (mainCharacteristic, baseCharacteristics, classType){
         const attributesMap = new Map();
-        for (let i = 0; i < remainingAttributes.length; i++){
-            const tableName = remainingAttributes[i];
+        for (let i = 0; i < baseCharacteristics.length; i++){
+            const tableName = baseCharacteristics[i];
             attributesMap.set(tableName, new FrequencyTable(tableName, i, new Map(), []));
         }
-        this._schema = new Schema(mainAttribute, new Map(), remainingAttributes, attributesMap, 0, classType)
-        //console.log(this._schema);
+        this._schema = new Schema(mainCharacteristic, new Map(), baseCharacteristics, attributesMap, 0, classType);
     }
 
-
     train (mainValue, sampleArray, nItems) {
+
+        if (this._schema.hipValuesMap === undefined || this._schema.attributesMap === undefined){
+            return;
+        }
 
         this.updateTotalCount(mainValue, nItems);
         this.updateHipValuesMap(mainValue, nItems);
 
-        if(this._schema.classType === this.TEXT_CLASSIFICATION_TEXT){
+        if (this._schema.classType === this.TEXT_CLASSIFICATION_TYPE){
             this._schema.attributesMap.forEach((v, k, m) => {
                 const freqMap = this.buildFrequencyTextMap(sampleArray);
 
@@ -63,7 +65,6 @@ class NaiveBayes {
     }
 
     buildAttributesValues (records, attributesValues, index){
-
         records.forEach(rec => {
             if (!attributesValues.includes(rec[index])){
                 attributesValues.push(rec[index]);
@@ -74,7 +75,6 @@ class NaiveBayes {
     // return map with attributes (keys) and occurrences (values)
     buildFrequencyMap (records, attributeIndex){
         // let V : {v|v is a possible outcome of node.test-cond}.
-
         const frequencyMap = new Map();
 
         records.forEach(rec => {
@@ -86,7 +86,6 @@ class NaiveBayes {
                 frequencyMap.set(attributeKey, 1);
             }
         });
-
         return frequencyMap;
     }
 
@@ -110,6 +109,7 @@ class NaiveBayes {
     }
 
     updateHipValuesMap (mainValue, numRecords){
+
         if (!this._schema.hipValuesMap.has(mainValue)){ // not exist in array
             this._schema.hipValuesMap.set(mainValue, numRecords);
         } else {
@@ -123,17 +123,6 @@ class NaiveBayes {
         console.log(`prob clase: ${probClass}`);
         return probClass;
     }
-
-    // Function calculate probability for givenValues in frequency table
-    // [] -> Num
-    // [lluvioso,frio,normal,fuerte] -> 12.34 (por mencionar algun numero)
-    totalProb (givenValues){
-
-        for (let i = 0; i < givenValues.length ; i++) {
-
-        }
-    }
-
 
     //conditionalProb :: si [lluvioso,frio,normal,fuerte] -> 0,986
     //conditionalProb :: no [lluvioso,frio,normal,fuerte] -> 0,1234
@@ -174,7 +163,7 @@ class NaiveBayes {
             wordsMap.forEach(function (hValue, hKey, m){
                 vocabularyCount += hValue.size;
             });
-            return vocabularyCount
+            return vocabularyCount;
         }
 
         const catSize = attFrequencyMap.size;
@@ -183,13 +172,13 @@ class NaiveBayes {
         //now determine P( w | c ) for each word `w` in the text
         for (let i = 0; i < words.length; i++){
             var frequencyByTrain = attFrequencyMap.get(words[i]) || 0;
-            const tokenProbability = frequencyByTrain + 1 / catSize + vocSize
+            const tokenProbability = frequencyByTrain + 1 / catSize + vocSize;
 
-            arrayCondProb[i] = tokenProbability
+            arrayCondProb[i] = tokenProbability;
         }
-        const resultCondProb = arrayCondProb.reduce((acc, n) => acc * n)
+        const resultCondProb = arrayCondProb.reduce((acc, n) => acc * n);
         //console.log(`resultCondProb: ${resultCondProb}, hip: ${hip}, newValues: ${givenValues}`);
-        return resultCondProb
+        return resultCondProb;
     }
 
     teoBayes (hip, givenValue){
@@ -213,7 +202,6 @@ class NaiveBayes {
         return teoBayesResult;
     }
 
-
     hMAP(hValues){
         var maxValue = 0;
 
@@ -230,10 +218,6 @@ class NaiveBayes {
         const selectedKey = [...this._schema.bayesResultMap].find(([key, val]) => val == value)[0];
         console.log(`selected key:${selectedKey}`);
         return selectedKey;
-    }
-
-    formatInputToArray(givenValues){
-        //TODO finish to format value by type classification
     }
 }
 
