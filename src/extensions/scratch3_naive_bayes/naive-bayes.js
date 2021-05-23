@@ -5,22 +5,19 @@ class NaiveBayes {
 
     constructor (schema){
         this._schema = schema;
-        this.TEXT_CLASSIFICATION_TYPE = 'text';
-        this.TABLE_CLASSIFICATION_TYPE = 'table';
     }
 
     // initialize schema except mainValuesResume
-    initSchema (mainCharacteristic, baseCharacteristics, classType){
+    initSchema (mainCharacteristic, baseCharacteristics){
         const attributesMap = new Map();
         for (let i = 0; i < baseCharacteristics.length; i++){
             const tableName = baseCharacteristics[i];
             attributesMap.set(tableName, new FrequencyTable(tableName, i, new Map(), []));
         }
-        this._schema = new Schema(mainCharacteristic, new Map(), baseCharacteristics, attributesMap, 0, classType);
+        this._schema = new Schema(mainCharacteristic, new Map(), baseCharacteristics, attributesMap, 0);
     }
 
     train (mainValue, sampleArray, nItems) {
-
         if (this._schema.hipValuesMap === undefined || this._schema.attributesMap === undefined){
             return;
         }
@@ -28,38 +25,16 @@ class NaiveBayes {
         this.updateTotalCount(mainValue, nItems);
         this.updateHipValuesMap(mainValue, nItems);
 
-        if (this._schema.classType === this.TEXT_CLASSIFICATION_TYPE){
-            this._schema.attributesMap.forEach((v, k, m) => {
-                const freqMap = this.buildFrequencyTextMap(sampleArray);
+        this._schema.attributesMap.forEach((v, k, m) => {
+            const freqMap = this.buildFrequencyTextMap(sampleArray);
 
-                // validate if exist entry in map
-                if (!v.frequencyMap.has(mainValue)){
-                    v.frequencyMap.set(mainValue, freqMap);
-                } else {
-                    // TODO validate when mainValue exist in map (use case when train with more one ds the same main value)
-                }
-            });
-
-        } else {
-            this._schema.attributesMap.forEach((v, k, m) => {
-
-                const trainningSet = [];
-
-                sampleArray.forEach(rec => {
-                    trainningSet.push(rec.split(',').slice());
-                });
-
-                const freqMap = this.buildFrequencyMap(trainningSet, v.recordIndex);
-
-                // validate if exist entry in map
-                if (!v.frequencyMap.has(mainValue)){
-                    v.frequencyMap.set(mainValue, freqMap);
-                } else {
-                    // TODO validate when mainValue exist in map (use case when train with more one ds the same main value)
-                }
-               this.buildAttributesValues(trainningSet, v.attributeValues, v.recordIndex);
-            });
-        }
+            // validate if exist entry in map
+            if (!v.frequencyMap.has(mainValue)){
+                v.frequencyMap.set(mainValue, freqMap);
+            } else {
+                // TODO validate when mainValue exist in map (use case when train with more one ds the same main value)
+            }
+        });
 
         console.log(this._schema);
     }
@@ -164,7 +139,7 @@ class NaiveBayes {
                 vocabularyCount += hValue.size;
             });
             return vocabularyCount;
-        }
+        };
 
         const catSize = attFrequencyMap.size;
         const vocSize = vocabularySize();
@@ -186,16 +161,11 @@ class NaiveBayes {
         let teoBayesResult = 0;
         let resultConditionalProb = 0;
 
-        if (this._schema.classType === this.TABLE_CLASSIFICATION_TYPE) {
-            const givenValuesArray = givenValue.split(',')
-            resultConditionalProb = this.tableConditionalProb(hip, givenValuesArray);
-            teoBayesResult = resultAPrioriProb * resultConditionalProb;
-        } else {
-            //classification type text
-            const words = givenValue.split(' ');
-            resultConditionalProb = this.textConditionalProb(hip, words);
-            teoBayesResult = resultAPrioriProb + resultConditionalProb;
-        }
+        //classification type text
+        const words = givenValue.split(' ');
+        resultConditionalProb = this.textConditionalProb(hip, words);
+        teoBayesResult = resultAPrioriProb + resultConditionalProb;
+
         console.log(`set hip:${hip}, teoBayesResult:${teoBayesResult}`);
         this._schema.bayesResultMap.set(hip, teoBayesResult);//Set result in schema
 

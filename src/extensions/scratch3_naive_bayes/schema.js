@@ -1,12 +1,11 @@
 class Schema {
 
-    constructor (mainAttribute, hipValuesMap, remainingAttributes, attributesMap, totalCountTraining, classType){
+    constructor (mainAttribute, hipValuesMap, remainingAttributes, attributesMap, totalCountTraining){
         this._mainAttribute = mainAttribute;
         this._hipValuesMap = hipValuesMap;
         this._remainingAttributes = remainingAttributes;
         this._attributesMap = attributesMap;
         this._totalCountTraining = totalCountTraining;
-        this._classType = classType;
         this._bayesResultMap = new Map();
     }
 

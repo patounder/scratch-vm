@@ -21,12 +21,8 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'initConfig',
                     blockType: BlockType.COMMAND,
-                    text: 'clasificar [CLASS_TYPE] categoria [CATEGORY] en base a [CHARACTERISTICS]',
+                    text: 'clasificar categoria [CATEGORY] en base a [CHARACTERISTICS]',
                     arguments: {
-                        CLASS_TYPE: {
-                            type: ArgumentType.STRING,
-                            menu: 'classificationTypes'
-                        },
                         CATEGORY: {
                             type: ArgumentType.STRING,
                             defaultValue: CATEGORY_DEFAULT_VALUE
@@ -80,24 +76,13 @@ class NaiveBayesBlocks {
                         }
                     }
                 }
-            ],
-            menus: {
-                classificationTypes: {
-                    items: this.getClassTypes()
-                }
-            }
+            ]
         };
-    }
-
-    getClassTypes (){
-        const types = [{text: 'texto', value: 'text'}, {text: 'tabla', value: 'table'}];
-        return types;
     }
 
     initConfig (args){
         const argCategory = args.CATEGORY;
         const argsCharacteristic = args.CHARACTERISTICS;
-        const argClassType = args.CLASS_TYPE;
 
         if(argCategory == CATEGORY_DEFAULT_VALUE || argsCharacteristic == CHARACTERISTICS_DEFAULT_VALUE){
             console.log('using default values. Change them');
@@ -106,7 +91,7 @@ class NaiveBayesBlocks {
 
         const classMain = this.normalizeString(argCategory);
         const attributes = this.normalizeString(argsCharacteristic).split(',');
-        this.naiveBayes.initSchema(classMain, attributes, argClassType);
+        this.naiveBayes.initSchema(classMain, attributes);
     }
 
     train (args){
