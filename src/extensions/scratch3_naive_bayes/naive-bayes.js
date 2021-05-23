@@ -1,4 +1,3 @@
-const FrequencyTable = require('./frequency-table');
 const Schema = require('./schema');
 
 class NaiveBayes {
@@ -8,33 +7,22 @@ class NaiveBayes {
     }
 
     // initialize schema except mainValuesResume
-    initSchema (mainCharacteristic, baseCharacteristics){
+    initSchema (mainCharacteristic){
         const attributesMap = new Map();
-        for (let i = 0; i < baseCharacteristics.length; i++){
-            const tableName = baseCharacteristics[i];
-            attributesMap.set(tableName, new FrequencyTable(tableName, i, new Map(), []));
-        }
-        this._schema = new Schema(mainCharacteristic, new Map(), baseCharacteristics, attributesMap, 0);
+        this._schema = new Schema(mainCharacteristic, new Map(), attributesMap, 0);
     }
 
-    train (categoryValue, dataSet, nItems) {
+    train (category, dataSet, dataSetLength) {
         if (this._schema.hipValuesMap === undefined || this._schema.attributesMap === undefined){
             return;
         }
 
-        this._schema.totalCountTraining = (this._schema.totalCountTraining + nItems);
-        this.updateHipValuesMap(categoryValue, nItems);
+        this._schema.totalCountTraining = (this._schema.totalCountTraining + dataSetLength);
+        this.updateHipValuesMap(category, dataSetLength);
 
-        this._schema.attributesMap.forEach((v, k, m) => {
-            const freqMap = this.buildFrequencyTextMap(dataSet);
-
-            // validate if exist entry in map
-            if (!v.frequencyMap.has(categoryValue)){
-                v.frequencyMap.set(categoryValue, freqMap);
-            } else {
-                // TODO validate when mainValue exist in map (use case when train with more one ds the same main value)
-            }
-        });
+        if(! this._schema.attributesMap.has(category)){
+            this._schema.attributesMap.set(category, this.buildFrequencyTextMap(dataSet));
+        }
 
         console.log(this._schema);
     }
@@ -64,11 +52,11 @@ class NaiveBayes {
         return frequencyMap;
     }
 
-    buildFrequencyTextMap (records){
+    buildFrequencyTextMap (dataSet){
 
         const frequencyMap = new Map();
 
-        records.forEach(rec => {
+        dataSet.forEach(rec => {
             if (frequencyMap.get(rec)){
                 frequencyMap.set(rec, frequencyMap.get(rec) + 1);
             } else {
@@ -81,7 +69,7 @@ class NaiveBayes {
 
     updateHipValuesMap (categoryValue, numRecords){
 
-        if (!this._schema.hipValuesMap.has(categoryValue)){ // not exist in array
+        if (!this._schema.hipValuesMap.has(categoryValue)){
             this._schema.hipValuesMap.set(categoryValue, numRecords);
         } else {
             const lastCount = this._schema.hipValuesMap.get(categoryValue);
@@ -95,75 +83,49 @@ class NaiveBayes {
         return probClass;
     }
 
-    //conditionalProb :: si [lluvioso,frio,normal,fuerte] -> 0,986
-    //conditionalProb :: no [lluvioso,frio,normal,fuerte] -> 0,1234
-    tableConditionalProb (hip, givenValues) {
-        const arrayKeys = Array.from(this._schema.attributesMap.keys());
-        const constLaplaceAdd = 1;
-        const arrayCondProb = [4]; //TODO update length of array
+    textConditionalProb (category, messageWords) {
 
-        for (let i = 0; i < givenValues.length ; i++) {
+        console.log(`attributesMap.size: ${this._schema.attributesMap.size}`);
+        const attFrequencyMap = this._schema.attributesMap.get(category);
+        console.log(`attFrequencyMap.size: ${attFrequencyMap.size}`);
+        const arrayCondProb = [messageWords.length];
 
-            let freqTable = this._schema.attributesMap.get(arrayKeys[i]);
-            let attFrequency = freqTable.frequencyMap.get(hip).get(givenValues[i]);
-
-            if (typeof attFrequency === 'undefined'){
-                attFrequency = 0;
-            }
-
-            arrayCondProb[i] = (attFrequency + constLaplaceAdd) /
-                (this._schema.hipValuesMap.get(hip) + freqTable.attributeValues.length);
+        var vocSize = 0;
+        for(const [key, value] of this._schema.attributesMap){
+            vocSize += value.size;
         }
 
-        const resultCondProb = arrayCondProb.reduce((acc, n) => acc * n);
-        console.log(`resultCondProb: ${resultCondProb}, hip: ${hip}, newValues: ${givenValues}`);
-        return resultCondProb;
-    }
-
-    textConditionalProb (hipValue, words) {
-
-        const uniqueAttributeIndex = 0
-        const attName = this._schema.remainingAttributes[uniqueAttributeIndex];
-        const attFreqTable = this._schema.attributesMap.get(attName);
-        const attFrequencyMap = attFreqTable.frequencyMap.get(hipValue);
-        const arrayCondProb = [words.length];
-
-        const vocabularySize = function () {
-            const wordsMap = attFreqTable.frequencyMap;
-            var vocabularyCount = 0;
-            wordsMap.forEach(function (hValue, hKey, m){
-                vocabularyCount += hValue.size;
-            });
-            return vocabularyCount;
-        };
-
         const catSize = attFrequencyMap.size;
-        const vocSize = vocabularySize();
+
+        console.log(`catSize: ${catSize}`);
+        console.log(`vocSize: ${vocSize}`);
 
         //now determine P( w | c ) for each word `w` in the text
-        for (let i = 0; i < words.length; i++){
-            var frequencyByTrain = attFrequencyMap.get(words[i]) || 0;
+        for (let i = 0; i < messageWords.length; i++) {
+            var frequencyByTrain = attFrequencyMap.get(messageWords[i]) || 0;
             const tokenProbability = frequencyByTrain + 1 / catSize + vocSize;
 
             arrayCondProb[i] = tokenProbability;
         }
+        console.log(`arrayCondProb: ${arrayCondProb}`);
+
         const resultCondProb = arrayCondProb.reduce((acc, n) => acc * n);
-        //console.log(`resultCondProb: ${resultCondProb}, hip: ${hip}, newValues: ${givenValues}`);
+        console.log(`resultCondProb: ${resultCondProb}, category: ${category}, messageWords: ${messageWords}`);
         return resultCondProb;
     }
 
-    teoBayes (hip, givenValue){
-        const resultAPrioriProb = this.aprioriProb(hip)
+    teoBayes (category, givenValue){
+        const resultAPrioriProb = this.aprioriProb(category);
         let teoBayesResult = 0;
         let resultConditionalProb = 0;
 
         //classification type text
-        const words = givenValue.split(' ');
-        resultConditionalProb = this.textConditionalProb(hip, words);
+        const newMessageWords = givenValue.split(' ');
+        resultConditionalProb = this.textConditionalProb(category, newMessageWords);
         teoBayesResult = resultAPrioriProb + resultConditionalProb;
 
-        console.log(`set hip:${hip}, teoBayesResult:${teoBayesResult}`);
-        this._schema.bayesResultMap.set(hip, teoBayesResult);//Set result in schema
+        console.log(`category:${category}, teoBayesResult:${teoBayesResult}`);
+        this._schema.bayesResultMap.set(category, teoBayesResult);//Set result in schema
 
         return teoBayesResult;
     }

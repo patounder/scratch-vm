@@ -1,10 +1,9 @@
 class Schema {
 
-    constructor (mainAttribute, hipValuesMap, remainingAttributes, attributesMap, totalCountTraining){
+    constructor (mainAttribute, hipValuesMap, attributesMap, totalCountTraining){
         this._mainAttribute = mainAttribute;
-        this._hipValuesMap = hipValuesMap;
-        this._remainingAttributes = remainingAttributes;
-        this._attributesMap = attributesMap;
+        this._hipValuesMap = hipValuesMap; //map para contar ejemplos por categoria
+        this._attributesMap = attributesMap; // map con frequency table. Remover frequency table por bagWords
         this._totalCountTraining = totalCountTraining;
         this._bayesResultMap = new Map();
     }
