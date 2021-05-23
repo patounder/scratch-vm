@@ -1,7 +1,6 @@
 const test = require('tap').test;
 const NaiveBayes = require('../../src/extensions/scratch3_naive_bayes/naive-bayes');
 const Schema = require('../../src/extensions/scratch3_naive_bayes/schema');
-const FrequencyTable = require('../../src/extensions/scratch3_naive_bayes/frequency-table');
 const NaiveBayesInputsStub = require('./stub/naive_bayes_inputs')
 
 test('categorize text', categorizeText => {
@@ -30,11 +29,8 @@ test('categorize text', categorizeText => {
             trainTextTest.equals(naiveBayes._schema.totalCountTraining, 24);
             trainTextTest.equals(naiveBayes._schema.hipValuesMap.size, 2);
 
-            const mensajeFreqTableAfterTrainText = naiveBayes._schema.attributesMap.get('mensaje');
-            trainTextTest.type(mensajeFreqTableAfterTrainText, FrequencyTable);
-
-            const alegresFrequencyMap = mensajeFreqTableAfterTrainText.frequencyMap.get('alegres');
-            const tristesFrequencyMap = mensajeFreqTableAfterTrainText.frequencyMap.get('tristes');
+            const alegresFrequencyMap = naiveBayes._schema.attributesMap.get('alegres');
+            const tristesFrequencyMap = naiveBayes._schema.attributesMap.get('tristes');
 
             trainTextTest.type(alegresFrequencyMap, Map);
             trainTextTest.equals(alegresFrequencyMap.size, 23);
@@ -43,15 +39,15 @@ test('categorize text', categorizeText => {
             trainTextTest.equals(tristesFrequencyMap.size, 27);
             trainTextTest.end();
         })
-        initTextSchema.end()
-    })
+        initTextSchema.end();
+    });
 
     const givenValue = 'persona buena';
 
     categorizeText.test('', teoBayesTest => {
         const resultTeoBayesAlegres = naiveBayes.teoBayes('alegres', givenValue);
         const resultTeoBayesTristes = naiveBayes.teoBayes('tristes', givenValue);
-        teoBayesTest.equals(resultTeoBayesAlegres > resultTeoBayesTristes, true)
+        teoBayesTest.equals(resultTeoBayesAlegres > resultTeoBayesTristes, true);
         teoBayesTest.end();
     })
     categorizeText.end();
