@@ -17,20 +17,20 @@ class NaiveBayes {
         this._schema = new Schema(mainCharacteristic, new Map(), baseCharacteristics, attributesMap, 0);
     }
 
-    train (mainValue, sampleArray, nItems) {
+    train (categoryValue, dataSet, nItems) {
         if (this._schema.hipValuesMap === undefined || this._schema.attributesMap === undefined){
             return;
         }
 
-        this.updateTotalCount(mainValue, nItems);
-        this.updateHipValuesMap(mainValue, nItems);
+        this._schema.totalCountTraining = (this._schema.totalCountTraining + nItems);
+        this.updateHipValuesMap(categoryValue, nItems);
 
         this._schema.attributesMap.forEach((v, k, m) => {
-            const freqMap = this.buildFrequencyTextMap(sampleArray);
+            const freqMap = this.buildFrequencyTextMap(dataSet);
 
             // validate if exist entry in map
-            if (!v.frequencyMap.has(mainValue)){
-                v.frequencyMap.set(mainValue, freqMap);
+            if (!v.frequencyMap.has(categoryValue)){
+                v.frequencyMap.set(categoryValue, freqMap);
             } else {
                 // TODO validate when mainValue exist in map (use case when train with more one ds the same main value)
             }
@@ -79,17 +79,13 @@ class NaiveBayes {
         return frequencyMap;
     }
 
-    updateTotalCount (mainValue, numRecords) {
-        this._schema.totalCountTraining = (this._schema.totalCountTraining + numRecords);
-    }
+    updateHipValuesMap (categoryValue, numRecords){
 
-    updateHipValuesMap (mainValue, numRecords){
-
-        if (!this._schema.hipValuesMap.has(mainValue)){ // not exist in array
-            this._schema.hipValuesMap.set(mainValue, numRecords);
+        if (!this._schema.hipValuesMap.has(categoryValue)){ // not exist in array
+            this._schema.hipValuesMap.set(categoryValue, numRecords);
         } else {
-            const lastCount = this._schema.hipValuesMap.get(mainValue);
-            this._schema.hipValuesMap.set(mainValue, lastCount + numRecords);
+            const lastCount = this._schema.hipValuesMap.get(categoryValue);
+            this._schema.hipValuesMap.set(categoryValue, lastCount + numRecords);
         }
     }
 

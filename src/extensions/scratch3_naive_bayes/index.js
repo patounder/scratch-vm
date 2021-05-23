@@ -95,10 +95,10 @@ class NaiveBayesBlocks {
     }
 
     train (args){
-        const mainValue = this.normalizeString(args.CATEGORY_OPTION);
+        const categoryValue = this.normalizeString(args.CATEGORY_OPTION);
         const dataSet = this.normalizeString(args.DS).split(' ').slice();
         const nItems = args.N_ITEMS;
-        this.naiveBayes.train(mainValue, dataSet, nItems);
+        this.naiveBayes.train(categoryValue, dataSet, nItems);
     }
 
     bayes (args){
