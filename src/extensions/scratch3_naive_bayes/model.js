@@ -1,8 +1,8 @@
-class Schema {
+class Model {
 
-    constructor (mainAttribute, hipValuesMap, attributesMap, totalCountTraining){
+    constructor (mainAttribute, categoriesMap, attributesMap, totalCountTraining){
         this._mainAttribute = mainAttribute;
-        this._hipValuesMap = hipValuesMap; //map para contar ejemplos por categoria
+        this._categoriesMap = categoriesMap; //map para contar ejemplos por categoria
         this._attributesMap = attributesMap; // map con frequency table. Remover frequency table por bagWords
         this._totalCountTraining = totalCountTraining;
         this._bayesResultMap = new Map();
@@ -16,12 +16,12 @@ class Schema {
         this._mainAttribute = value;
     }
 
-    get hipValuesMap () {
-        return this._hipValuesMap;
+    get categoriesMap () {
+        return this._categoriesMap;
     }
 
-    set hipValuesMap (value) {
-        this._hipValuesMap = value;
+    set categoriesMap (value) {
+        this._categoriesMap = value;
     }
 
     get remainingAttributes () {
@@ -65,4 +65,4 @@ class Schema {
     }
 }
 
-module.exports = Schema;
+module.exports = Model;

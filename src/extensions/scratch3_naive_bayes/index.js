@@ -1,7 +1,7 @@
 const ArgumentType = require('../../extension-support/argument-type');
 const BlockType = require('../../extension-support/block-type');
 const NaiveBayes = require('./naive-bayes');
-const Schema = require('./schema');
+const Model = require('./model');
 
 const CATEGORY_DEFAULT_VALUE = 'nombre', CHARACTERISTICS_DEFAULT_VALUE = 'caracteristicas', TRAIN_OPT_CAT_DEFAULT_VALUE = 'opc_cat';
 
@@ -9,7 +9,7 @@ class NaiveBayesBlocks {
 
     constructor (runtime) {
         this.runtime = runtime;
-        this.naiveBayes = new NaiveBayes(new Schema());
+        this.naiveBayes = new NaiveBayes();
     }
 
     getInfo () {
@@ -85,7 +85,7 @@ class NaiveBayesBlocks {
         }
 
         const classMain = this.normalizeString(argCategory);
-        this.naiveBayes.initSchema(classMain);
+        this.naiveBayes.initModel(classMain);
     }
 
     train (args){
