@@ -40,11 +40,11 @@ class Model {
         this._mapBagWordsForCategory = value;
     }
 
-    get totalExamplesCounter () {
+    get counterTotalExamples () {
         return this._counterTotalExamples;
     }
 
-    set totalExamplesCounter (value) {
+    set counterTotalExamples (value) {
         this._counterTotalExamples = value;
     }
 

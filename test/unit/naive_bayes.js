@@ -3,15 +3,33 @@ const NaiveBayes = require('../../src/extensions/scratch3_naive_bayes/naive-baye
 const Model = require('../../src/extensions/scratch3_naive_bayes/model');
 const NaiveBayesInputsStub = require('./stub/naive_bayes_inputs')
 
-test('categorize text', categorizeText => {
+test('clasiffy text', clasiffyTextTester => {
     const naiveBayes = new NaiveBayes();
     const mainAttr = 'emocion';
 
-    naiveBayes.initModel(mainAttr);
+    clasiffyTextTester.test('testing init model', initModelTester => {
+        naiveBayes.initModel(mainAttr);
 
-    categorizeText.test('test for init schema', initTextSchema => {
+        initModelTester.equals(naiveBayes.model.mainAttribute, 'emocion');
+
+        initModelTester.type(naiveBayes.model.mapCounterCategoryExamples, Map);
+        initModelTester.equals(naiveBayes.model.mapCounterCategoryExamples.size, 0);
+
+        initModelTester.type(naiveBayes.model.mapBagWordsForCategory, Map);
+        initModelTester.equals(naiveBayes.model.mapBagWordsForCategory.size, 0);
+
+        initModelTester.equals(naiveBayes.model.counterTotalExamples, 0);
+
+        initModelTester.type(naiveBayes.model.mapBayesResult, Map);
+        initModelTester.equals(naiveBayes.model.mapBayesResult.size, 0);
+
+        initModelTester.end();
+    });
+
+
+    clasiffyTextTester.test('test for init schema', initTextSchema => {
         initTextSchema.equals(naiveBayes._model.mainAttribute, 'emocion');
-        initTextSchema.equals(naiveBayes._model.totalCountTraining, 0);
+        initTextSchema.equals(naiveBayes._model._mapCounterCategoryDocuments, 0);
         initTextSchema.equals(naiveBayes._model.attributesMap.size, 0);
 
         initTextSchema.test('train text tests', trainTextTest => {
@@ -45,13 +63,13 @@ test('categorize text', categorizeText => {
 
     const givenValue = 'persona buena';
 
-    categorizeText.test('', teoBayesTest => {
+    clasiffyTextTester.test('', teoBayesTest => {
         const resultTeoBayesAlegres = naiveBayes.teoBayes('alegres', givenValue);
         const resultTeoBayesTristes = naiveBayes.teoBayes('tristes', givenValue);
         teoBayesTest.equals(resultTeoBayesAlegres > resultTeoBayesTristes, true);
         teoBayesTest.end();
     })
-    categorizeText.end();
+    clasiffyTextTester.end();
 });
 
 test('remove symbols', removeSymbolsTest =>{

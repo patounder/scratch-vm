@@ -25,7 +25,7 @@ class NaiveBayes {
             return;
         }
 
-        this._model.totalExamplesCounter = (this._model.totalExamplesCounter + documentsCounter);
+        this._model.counterTotalExamples = (this._model.counterTotalExamples + documentsCounter);
         this.updateMapCategoryCounter(category, documentsCounter);
 
         if(!this._model.mapBagWordsForCategory.has(category)){
@@ -61,7 +61,7 @@ class NaiveBayes {
     }
 
     aprioriProb (hipValue){
-        const probClass = this._model.mapCounterCategoryExamples.get(hipValue) / this._model.totalExamplesCounter;
+        const probClass = this._model.mapCounterCategoryExamples.get(hipValue) / this._model.counterTotalExamples;
         console.log(`prob clase: ${probClass}`);
         return probClass;
     }
