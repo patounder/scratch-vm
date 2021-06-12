@@ -1,11 +1,11 @@
 class Model {
 
-    constructor (mainAttribute, mapCounterCategoryDocuments, bagWordMapForCategory, totalExamplesCounter){
+    constructor (mainAttribute, mapCounterCategoryExamples, bagWordMapForCategory, counterTotalExamples){
         this._mainAttribute = mainAttribute;
-        this._mapCounterCategoryDocuments = mapCounterCategoryDocuments; //map para contar ejemplos por categoria
-        this._bagWordMapForCategory = bagWordMapForCategory; // map con frequency table. Remover frequency table por bagWords
-        this._totalExamplesCounter = totalExamplesCounter;
-        this._bayesResultMap = new Map();
+        this._mapCounterCategoryExamples = mapCounterCategoryExamples; //map para contar ejemplos (documentos) por categoria
+        this._mapBagWordsForCategory = bagWordMapForCategory; // map (category_val, map(word, occurrences))
+        this._counterTotalExamples = counterTotalExamples;
+        this._mapBayesResult = new Map();
     }
 
     get mainAttribute () {
@@ -16,12 +16,12 @@ class Model {
         this._mainAttribute = value;
     }
 
-    get mapCounterCategoryDocuments () {
-        return this._mapCounterCategoryDocuments;
+    get mapCounterCategoryExamples () {
+        return this._mapCounterCategoryExamples;
     }
 
-    set mapCounterCategoryDocuments (value) {
-        this._mapCounterCategoryDocuments = value;
+    set mapCounterCategoryExamples (value) {
+        this._mapCounterCategoryExamples = value;
     }
 
     get remainingAttributes () {
@@ -32,20 +32,20 @@ class Model {
         this._remainingAttributes = value;
     }
 
-    get bagWordMapForCategory () {
-        return this._bagWordMapForCategory;
+    get mapBagWordsForCategory () {
+        return this._mapBagWordsForCategory;
     }
 
-    set bagWordMapForCategory (value) {
-        this._bagWordMapForCategory = value;
+    set mapBagWordsForCategory (value) {
+        this._mapBagWordsForCategory = value;
     }
 
     get totalExamplesCounter () {
-        return this._totalExamplesCounter;
+        return this._counterTotalExamples;
     }
 
     set totalExamplesCounter (value) {
-        this._totalExamplesCounter = value;
+        this._counterTotalExamples = value;
     }
 
     get classType () {
@@ -56,12 +56,12 @@ class Model {
         this._classType = value;
     }
 
-    get bayesResultMap (){
-        return this._bayesResultMap;
+    get mapBayesResult (){
+        return this._mapBayesResult;
     }
 
-    set bayesResultMap (map) {
-        this._bayesResultMap = map;
+    set mapBayesResult (map) {
+        this._mapBayesResult = map;
     }
 }
 

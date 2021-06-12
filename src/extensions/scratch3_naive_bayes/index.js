@@ -62,7 +62,7 @@ class NaiveBayesBlocks {
                     }
                 },
                 {
-                    opcode: 'hMAP',
+                    opcode: 'maxCategoryFrom',
                     blockType: BlockType.REPORTER,
                     text: 'maxima categoria entre valores [HVALUES]',
                     arguments: {
@@ -112,9 +112,9 @@ class NaiveBayesBlocks {
         return this.naiveBayes.teoBayes(hip, newValue);
     }
 
-    hMAP(args){
+    maxCategoryFrom(args){
         const hValues = this.normalizeString(args.HVALUES).split(' ').slice();
-        const selectedHip = this.naiveBayes.hMAP(hValues);
+        const selectedHip = this.naiveBayes.maxCategoryFrom(hValues);
         console.log(selectedHip);
         return selectedHip;
     }
