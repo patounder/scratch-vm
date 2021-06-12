@@ -9,20 +9,21 @@ class NaiveBayes {
 
     // initialize schema except mainValuesResume
     initModel (mainCharacteristic){
-        const attributesMap = new Map();
-        this._model = new Model(mainCharacteristic, new Map(), attributesMap, 0);
+        const bagWordMapForCategory = new Map();
+        this._model = new Model(mainCharacteristic, new Map(), bagWordMapForCategory, 0);
     }
 
-    train (category, dataSet, dataSetLength) {
+    train (category, categoryDocuments, documentsCounter) {
         if (this._model === undefined){
+            console.log('model undefined');
             return;
         }
 
-        this._model.totalCountTraining = (this._model.totalCountTraining + dataSetLength);
-        this.updateHipValuesMap(category, dataSetLength);
+        this._model.totalExamplesCounter = (this._model.totalExamplesCounter + documentsCounter);
+        this.updateMapCategoryCounter(category, documentsCounter);
 
-        if(! this._model.attributesMap.has(category)){
-            this._model.attributesMap.set(category, this.buildFrequencyTextMap(dataSet));
+        if(!this._model.bagWordMapForCategory.has(category)){
+            this._model.bagWordMapForCategory.set(category, this.buildBagOfWordsFrom(categoryDocuments));
         }
 
         console.log(this._model);
@@ -53,7 +54,7 @@ class NaiveBayes {
         return frequencyMap;
     }
 
-    buildFrequencyTextMap (dataSet){
+    buildBagOfWordsFrom (dataSet){
 
         const frequencyMap = new Map();
 
@@ -68,42 +69,42 @@ class NaiveBayes {
         return frequencyMap;
     }
 
-    updateHipValuesMap (categoryValue, numRecords){
+    updateMapCategoryCounter (categoryValue, documentsCounter){
 
-        if (!this._model.categoriesMap.has(categoryValue)){
-            this._model.categoriesMap.set(categoryValue, numRecords);
+        if (!this._model.mapCounterCategoryDocuments.has(categoryValue)){
+            this._model.mapCounterCategoryDocuments.set(categoryValue, documentsCounter);
         } else {
-            const lastCount = this._model.categoriesMap.get(categoryValue);
-            this._model.categoriesMap.set(categoryValue, lastCount + numRecords);
+            const lastCount = this._model.mapCounterCategoryDocuments.get(categoryValue);
+            this._model.mapCounterCategoryDocuments.set(categoryValue, lastCount + documentsCounter);
         }
     }
 
     aprioriProb (hipValue){
-        const probClass = this._model.categoriesMap.get(hipValue) / this._model.totalCountTraining;
+        const probClass = this._model.mapCounterCategoryDocuments.get(hipValue) / this._model.totalExamplesCounter;
         console.log(`prob clase: ${probClass}`);
         return probClass;
     }
 
     textConditionalProb (category, messageWords) {
 
-        console.log(`attributesMap.size: ${this._model.attributesMap.size}`);
-        const attFrequencyMap = this._model.attributesMap.get(category);
-        console.log(`attFrequencyMap.size: ${attFrequencyMap.size}`);
+        console.log(`bagWordMapForCategory.size: ${this._model.bagWordMapForCategory.size}`);
+        const bagWordMapForCategory = this._model.bagWordMapForCategory.get(category);
+        console.log(`attFrequencyMap.size: ${bagWordMapForCategory.size}`);
         const arrayCondProb = [messageWords.length];
 
         var vocSize = 0;
-        for(const [key, value] of this._model.attributesMap){
+        for(const [key, value] of this._model.bagWordMapForCategory){
             vocSize += value.size;
         }
 
-        const catSize = attFrequencyMap.size;
+        const catSize = bagWordMapForCategory.size;
 
         console.log(`catSize: ${catSize}`);
         console.log(`vocSize: ${vocSize}`);
 
         //now determine P( w | c ) for each word `w` in the text
         for (let i = 0; i < messageWords.length; i++) {
-            var frequencyByTrain = attFrequencyMap.get(messageWords[i]) || 0;
+            var frequencyByTrain = bagWordMapForCategory.get(messageWords[i]) || 0;
             const tokenProbability = frequencyByTrain + 1 / catSize + vocSize;
 
             arrayCondProb[i] = tokenProbability;

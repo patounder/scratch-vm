@@ -1,10 +1,10 @@
 class Model {
 
-    constructor (mainAttribute, categoriesMap, attributesMap, totalCountTraining){
+    constructor (mainAttribute, mapCounterCategoryDocuments, bagWordMapForCategory, totalExamplesCounter){
         this._mainAttribute = mainAttribute;
-        this._categoriesMap = categoriesMap; //map para contar ejemplos por categoria
-        this._attributesMap = attributesMap; // map con frequency table. Remover frequency table por bagWords
-        this._totalCountTraining = totalCountTraining;
+        this._mapCounterCategoryDocuments = mapCounterCategoryDocuments; //map para contar ejemplos por categoria
+        this._bagWordMapForCategory = bagWordMapForCategory; // map con frequency table. Remover frequency table por bagWords
+        this._totalExamplesCounter = totalExamplesCounter;
         this._bayesResultMap = new Map();
     }
 
@@ -16,12 +16,12 @@ class Model {
         this._mainAttribute = value;
     }
 
-    get categoriesMap () {
-        return this._categoriesMap;
+    get mapCounterCategoryDocuments () {
+        return this._mapCounterCategoryDocuments;
     }
 
-    set categoriesMap (value) {
-        this._categoriesMap = value;
+    set mapCounterCategoryDocuments (value) {
+        this._mapCounterCategoryDocuments = value;
     }
 
     get remainingAttributes () {
@@ -32,20 +32,20 @@ class Model {
         this._remainingAttributes = value;
     }
 
-    get attributesMap () {
-        return this._attributesMap;
+    get bagWordMapForCategory () {
+        return this._bagWordMapForCategory;
     }
 
-    set attributesMap (value) {
-        this._attributesMap = value;
+    set bagWordMapForCategory (value) {
+        this._bagWordMapForCategory = value;
     }
 
-    get totalCountTraining () {
-        return this._totalCountTraining;
+    get totalExamplesCounter () {
+        return this._totalExamplesCounter;
     }
 
-    set totalCountTraining (value) {
-        this._totalCountTraining = value;
+    set totalExamplesCounter (value) {
+        this._totalExamplesCounter = value;
     }
 
     get classType () {
