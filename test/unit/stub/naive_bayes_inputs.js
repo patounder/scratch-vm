@@ -1,36 +1,5 @@
 class NaiveBayesInputsStub {
 
-    constructor () {
-        this._happyTrainingSetText = [
-            'estas muy grande',
-            'haces todo bien',
-            'eres increible',
-            'muy bien hecho',
-            'muchas gracias',
-            'eres magnifica',
-            'eres bueno',
-            'eres una buena persona',
-            'te quiero',
-            'lo hiciste bien',
-            'quiero estar contigo',
-            'eres una ganadora'];
-
-        this._sadTrainingSetText = [
-            'no sirves para nada',
-            'lo hiciste mal',
-            'eres una mala persona',
-            'eres malvado',
-            'mal hecho',
-            'no hay nada que agradecer',
-            'eres malo',
-            'no te quiero',
-            'haces todo mal',
-            'ya no quiero estar contigo',
-            'no lo hiciste bien',
-            'eres un perdedor'
-        ];
-    }
-
     static getHappyTrainingSetText(){
         return [
             'estas muy grande',
@@ -46,7 +15,6 @@ class NaiveBayesInputsStub {
             'quiero estar contigo',
             'eres una ganadora'];
     }
-
 
     static getSadTrainingSetText(){
         return [
@@ -82,6 +50,12 @@ class NaiveBayesInputsStub {
 
     static getLengthArraySad(){
         return this.getSadTrainingSetText().length;
+    }
+
+    static getArrayVocabulary(){
+        return ['estas','muy','grande','haces','todo','bien','eres','increible','hecho','muchas','gracias','magnifica',
+            'bueno','una','buena','persona','te','lo','hiciste','quiero','estar','contigo','ganadora','no','sirves',
+            'para','nada','mal','mala','malvado','hay','que','agradecer','malo','ya','un','perdedor'];
     }
 }
 

@@ -1,10 +1,11 @@
 class Model {
 
-    constructor (name, mapCounterCategoryExamples, mapBagWordForCategory, counterTotalExamples){
+    constructor (name, mapCounterCategoryExamples, mapBagWordForCategory, counterTotalExamples, arrayVocabulary){
         this._name = name;
         this._mapCounterCategoryExamples = mapCounterCategoryExamples; //map para contar ejemplos (documentos) por categoria
         this._mapBagWordsForCategory = mapBagWordForCategory; // map (category_val, map(word, occurrences))
         this._counterTotalExamples = counterTotalExamples;
+        this._arrayVocabulary = arrayVocabulary;
         this._mapBayesResult = new Map();
     }
 
@@ -54,6 +55,14 @@ class Model {
 
     set classType (value) {
         this._classType = value;
+    }
+
+    get arrayVocabulary(){
+        return this._arrayVocabulary;
+    }
+
+    set arrayVocabulary(value){
+        this._arrayVocabulary = value;
     }
 
     get mapBayesResult (){

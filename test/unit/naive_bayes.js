@@ -21,6 +21,8 @@ test('clasiffy text', clasiffyTextTester => {
 
         initModelTester.equals(naiveBayes.model.counterTotalExamples, 0);
 
+        initModelTester.equals(naiveBayes.model.arrayVocabulary.length, 0);
+
         initModelTester.type(naiveBayes.model.mapBayesResult, Map);
         initModelTester.equals(naiveBayes.model.mapBayesResult.size, 0);
 
@@ -47,10 +49,17 @@ test('clasiffy text', clasiffyTextTester => {
         const sadMapBagOfWords = naiveBayes.model.mapBagWordsForCategory.get('tristeza');
 
         trainTextTester.type(happyMapBagOfWords, Map);
+        //test 'n' for category
         trainTextTester.equals(happyMapBagOfWords.size, 23);
 
         trainTextTester.type(sadMapBagOfWords, Map);
+        //test 'n' for category
         trainTextTester.equals(sadMapBagOfWords.size, 27);
+
+        trainTextTester.equals(naiveBayes.model.arrayVocabulary.length, 37);
+
+        trainTextTester.equals(naiveBayes.model.mapBayesResult.size, 0);
+
         trainTextTester.end();
     });
 

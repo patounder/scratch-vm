@@ -16,7 +16,10 @@ class NaiveBayes {
 
     initModel (name){
         const mapBagWordsForCategory = new Map();
-        this._model = new Model(name, new Map(), mapBagWordsForCategory, 0);
+        const mapCounterCategoryExamples = new Map();
+        const arrayVocabulary = [];
+        const counterTotalExamples = 0;
+        this._model = new Model(name, mapCounterCategoryExamples, mapBagWordsForCategory, counterTotalExamples, arrayVocabulary);
     }
 
     train (category, trainingWords, documentsCounter) {
