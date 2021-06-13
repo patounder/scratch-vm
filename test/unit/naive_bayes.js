@@ -4,13 +4,14 @@ const Model = require('../../src/extensions/scratch3_naive_bayes/model');
 const NaiveBayesInputsStub = require('./stub/naive_bayes_inputs')
 
 test('clasiffy text', clasiffyTextTester => {
-    const naiveBayes = new NaiveBayes();
-    const mainAttr = 'emocion';
+
+    const classifierName = 'emocion';
 
     clasiffyTextTester.test('testing init model', initModelTester => {
-        naiveBayes.initModel(mainAttr);
+        var naiveBayes = new NaiveBayes();
+        naiveBayes.initModel(classifierName);
 
-        initModelTester.equals(naiveBayes.model.mainAttribute, 'emocion');
+        initModelTester.equals(naiveBayes.model.name, 'emocion');
 
         initModelTester.type(naiveBayes.model.mapCounterCategoryExamples, Map);
         initModelTester.equals(naiveBayes.model.mapCounterCategoryExamples.size, 0);
@@ -27,38 +28,30 @@ test('clasiffy text', clasiffyTextTester => {
     });
 
 
-    clasiffyTextTester.test('test for init schema', initTextSchema => {
-        initTextSchema.equals(naiveBayes._model.mainAttribute, 'emocion');
-        initTextSchema.equals(naiveBayes._model._mapCounterCategoryDocuments, 0);
-        initTextSchema.equals(naiveBayes._model.attributesMap.size, 0);
+    clasiffyTextTester.test('training model', trainTextTester => {
+        var naiveBayes = new NaiveBayes();
+        //before init model
+        naiveBayes.train('alegria', NaiveBayesInputsStub.getArrayHappyExamples(), NaiveBayesInputsStub.getLengthArrayHappy);
+        naiveBayes.train('tristeza', NaiveBayesInputsStub.getArraySadExamples(), NaiveBayesInputsStub.getLengthArraySad);
 
-        initTextSchema.test('train text tests', trainTextTest => {
+        trainTextTester.equals(naiveBayes.model, undefined);
+        //after initModel
+        naiveBayes.initModel(classifierName);
+        naiveBayes.train('alegria', NaiveBayesInputsStub.getArrayHappyExamples(), NaiveBayesInputsStub.getLengthArrayHappy());
+        naiveBayes.train('tristeza', NaiveBayesInputsStub.getArraySadExamples(), NaiveBayesInputsStub.getLengthArraySad());
 
-            const search = ' ';
-            const replacer = new RegExp(search, 'g');
+        trainTextTester.equals(naiveBayes.model.counterTotalExamples, 24);
+        trainTextTester.equals(naiveBayes.model.mapBagWordsForCategory.size, 2);
 
-            const alegreSampleArray = NaiveBayesInputsStub.getAlegriaTextTrainingSet().join().replace(replacer, ',')
-                .split(',').slice();
-            naiveBayes.train('alegres', alegreSampleArray, 12);
+        const happyMapBagOfWords = naiveBayes.model.mapBagWordsForCategory.get('alegria');
+        const sadMapBagOfWords = naiveBayes.model.mapBagWordsForCategory.get('tristeza');
 
-            const tristeSampleArray = NaiveBayesInputsStub.getTristezaTextTrainingSet().join().replace(replacer, ',')
-                .split(',').slice();
-            naiveBayes.train('tristes', tristeSampleArray, 12);
+        trainTextTester.type(happyMapBagOfWords, Map);
+        trainTextTester.equals(happyMapBagOfWords.size, 23);
 
-            trainTextTest.equals(naiveBayes._model.totalCountTraining, 24);
-            trainTextTest.equals(naiveBayes._model._categoriesMap.size, 2);
-
-            const alegresFrequencyMap = naiveBayes._model.attributesMap.get('alegres');
-            const tristesFrequencyMap = naiveBayes._model.attributesMap.get('tristes');
-
-            trainTextTest.type(alegresFrequencyMap, Map);
-            trainTextTest.equals(alegresFrequencyMap.size, 23);
-
-            trainTextTest.type(tristesFrequencyMap, Map);
-            trainTextTest.equals(tristesFrequencyMap.size, 27);
-            trainTextTest.end();
-        })
-        initTextSchema.end();
+        trainTextTester.type(sadMapBagOfWords, Map);
+        trainTextTester.equals(sadMapBagOfWords.size, 27);
+        trainTextTester.end();
     });
 
     const givenValue = 'persona buena';

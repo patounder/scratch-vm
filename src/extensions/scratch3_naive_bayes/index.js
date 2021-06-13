@@ -21,9 +21,9 @@ class NaiveBayesBlocks {
                 {
                     opcode: 'initConfig',
                     blockType: BlockType.COMMAND,
-                    text: 'clasificar categoria [CATEGORY]',
+                    text: 'clasificador [NAME]',
                     arguments: {
-                        CATEGORY: {
+                        NAME: {
                             type: ArgumentType.STRING,
                             defaultValue: CATEGORY_DEFAULT_VALUE
                         }
@@ -77,15 +77,15 @@ class NaiveBayesBlocks {
     }
 
     initConfig (args){
-        const argCategory = args.CATEGORY;
+        const argName = args.NAME;
 
-        if(argCategory == CATEGORY_DEFAULT_VALUE){
+        if(argName == CATEGORY_DEFAULT_VALUE){
             console.log('using default values. Change them');
             return;
         }
 
-        const classMain = this.normalizeString(argCategory);
-        this.naiveBayes.initModel(classMain);
+        const name = this.normalizeString(argName);
+        this.naiveBayes.initModel(name);
     }
 
     train (args){

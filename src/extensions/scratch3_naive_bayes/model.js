@@ -1,19 +1,19 @@
 class Model {
 
-    constructor (mainAttribute, mapCounterCategoryExamples, bagWordMapForCategory, counterTotalExamples){
-        this._mainAttribute = mainAttribute;
+    constructor (name, mapCounterCategoryExamples, mapBagWordForCategory, counterTotalExamples){
+        this._name = name;
         this._mapCounterCategoryExamples = mapCounterCategoryExamples; //map para contar ejemplos (documentos) por categoria
-        this._mapBagWordsForCategory = bagWordMapForCategory; // map (category_val, map(word, occurrences))
+        this._mapBagWordsForCategory = mapBagWordForCategory; // map (category_val, map(word, occurrences))
         this._counterTotalExamples = counterTotalExamples;
         this._mapBayesResult = new Map();
     }
 
-    get mainAttribute () {
-        return this._mainAttribute;
+    get name () {
+        return this._name;
     }
 
-    set mainAttribute (value) {
-        this._mainAttribute = value;
+    set name (value) {
+        this._name = value;
     }
 
     get mapCounterCategoryExamples () {

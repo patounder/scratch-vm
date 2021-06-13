@@ -14,32 +14,32 @@ class NaiveBayes {
         this._model = value;
     }
 
-    initModel (mainCharacteristic){
+    initModel (name){
         const mapBagWordsForCategory = new Map();
-        this._model = new Model(mainCharacteristic, new Map(), mapBagWordsForCategory, 0);
+        this._model = new Model(name, new Map(), mapBagWordsForCategory, 0);
     }
 
-    train (category, categoryDocuments, documentsCounter) {
+    train (category, trainingWords, documentsCounter) {
         if (this._model === undefined){
             console.log('model undefined');
             return;
         }
-
+        //console.log(`trainingWords= ${trainingWords}`);
         this._model.counterTotalExamples = (this._model.counterTotalExamples + documentsCounter);
         this.updateMapCategoryCounter(category, documentsCounter);
 
         if(!this._model.mapBagWordsForCategory.has(category)){
-            this._model.mapBagWordsForCategory.set(category, this.buildBagOfWordsFrom(categoryDocuments));
+            this._model.mapBagWordsForCategory.set(category, this.buildBagOfWordsFrom(trainingWords));
         }
 
         console.log(this._model);
     }
 
-    buildBagOfWordsFrom (dataSet){
+    buildBagOfWordsFrom (trainingWords){
 
         const frequencyMap = new Map();
 
-        dataSet.forEach(rec => {
+        trainingWords.forEach(rec => {
             if (frequencyMap.get(rec)){
                 frequencyMap.set(rec, frequencyMap.get(rec) + 1);
             } else {
