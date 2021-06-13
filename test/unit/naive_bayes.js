@@ -57,6 +57,8 @@ test('clasiffy text', clasiffyTextTester => {
         trainTextTester.equals(sadMapBagOfWords.size, 27);
 
         trainTextTester.equals(naiveBayes.model.arrayVocabulary.length, 37);
+        trainTextTester.equals(naiveBayes.model.arrayVocabulary.indexOf('eres'),
+            naiveBayes.model.arrayVocabulary.lastIndexOf('eres'));
 
         trainTextTester.equals(naiveBayes.model.mapBayesResult.size, 0);
 

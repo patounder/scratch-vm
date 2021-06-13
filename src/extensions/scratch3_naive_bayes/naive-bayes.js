@@ -35,22 +35,29 @@ class NaiveBayes {
             this._model.mapBagWordsForCategory.set(category, this.buildBagOfWordsFrom(trainingWords));
         }
 
+        var categoryWords =  Array.from(this._model.mapBagWordsForCategory.get(category).keys());
+        var vocabularyWithNewWords = this._model.arrayVocabulary.concat(categoryWords);
+        var vocabularyWithUniqueWords = vocabularyWithNewWords.filter((word, index) => {
+            return vocabularyWithNewWords.indexOf(word) == index;
+        });
+        this._model.arrayVocabulary = vocabularyWithUniqueWords;
+
         console.log(this._model);
     }
 
     buildBagOfWordsFrom (trainingWords){
 
-        const frequencyMap = new Map();
+        const mapBagOfWordsWithOcurrences = new Map();
 
         trainingWords.forEach(rec => {
-            if (frequencyMap.get(rec)){
-                frequencyMap.set(rec, frequencyMap.get(rec) + 1);
+            if (mapBagOfWordsWithOcurrences.get(rec)){
+                mapBagOfWordsWithOcurrences.set(rec, mapBagOfWordsWithOcurrences.get(rec) + 1);
             } else {
-                frequencyMap.set(rec, 1);
+                mapBagOfWordsWithOcurrences.set(rec, 1);
             }
         });
 
-        return frequencyMap;
+        return mapBagOfWordsWithOcurrences;
     }
 
     updateMapCategoryCounter (categoryValue, documentsCounter){
