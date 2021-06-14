@@ -81,44 +81,34 @@ class NaiveBayes {
         console.log(`mapBagWordsForCategory.size: ${this._model.mapBagWordsForCategory.size}`);
         const mapBagWordCategory = this._model.mapBagWordsForCategory.get(category);
         console.log(`mapBagWordCategory.size: ${mapBagWordCategory.size}`);
-        const arrayCondProb = [messageWords.length];
+        const arrayProbConditional = [];
 
-        var vocSize = 0;
-        for(const [key, value] of this._model.mapBagWordsForCategory){
-            vocSize += value.size;
+
+        //now determine P( w | c ) for each word `w` in the text. using m-estimate
+        for (let word of messageWords) {
+            var nk = mapBagWordCategory.get(word) || 0;
+            const tokenProbability = (nk + 1) / (mapBagWordCategory.size + this._model.arrayVocabulary.length);
+            arrayProbConditional.push(tokenProbability);
         }
 
-        const catSize = mapBagWordCategory.size;
+        console.log(`arrayCondProb: ${arrayProbConditional}`);
 
-        console.log(`catSize: ${catSize}`);
-        console.log(`vocSize: ${vocSize}`);
-
-        //now determine P( w | c ) for each word `w` in the text
-        for (let i = 0; i < messageWords.length; i++) {
-            var frequencyByTrain = mapBagWordCategory.get(messageWords[i]) || 0;
-            const tokenProbability = frequencyByTrain + 1 / catSize + vocSize;
-
-            arrayCondProb[i] = tokenProbability;
-        }
-        console.log(`arrayCondProb: ${arrayCondProb}`);
-
-        const resultCondProb = arrayCondProb.reduce((acc, n) => acc * n);
+        const resultCondProb = arrayProbConditional.reduce((acc, n) => acc * n);
         console.log(`resultCondProb: ${resultCondProb}, category: ${category}, messageWords: ${messageWords}`);
         return resultCondProb;
     }
 
     teoBayes (category, newExample){
+
+        const wordsInVocabulary = this.wordsInVocabulary(newExample.split(' '));
+
+        let resultConditionalProb = this.textConditionalProb(category, wordsInVocabulary);
+
         const resultAPrioriProb = this.aprioriProb(category);
-        let teoBayesResult = 0;
-        let resultConditionalProb = 0;
-
-        const newMessageWords = newExample.split(' ');
-
-        resultConditionalProb = this.textConditionalProb(category, newMessageWords);
-        teoBayesResult = resultAPrioriProb + resultConditionalProb;
+        var teoBayesResult = resultAPrioriProb * resultConditionalProb;
 
         console.log(`category:${category}, teoBayesResult:${teoBayesResult}`);
-        this._model.mapBayesResult.set(category, teoBayesResult);//Set result in schema
+        this._model.mapBayesResult.set(category, teoBayesResult);
 
         return teoBayesResult;
     }
