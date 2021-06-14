@@ -107,13 +107,13 @@ class NaiveBayes {
         return resultCondProb;
     }
 
-    teoBayes (category, givenValue){
+    teoBayes (category, newExample){
         const resultAPrioriProb = this.aprioriProb(category);
         let teoBayesResult = 0;
         let resultConditionalProb = 0;
 
-        //classification type text
-        const newMessageWords = givenValue.split(' ');
+        const newMessageWords = newExample.split(' ');
+
         resultConditionalProb = this.textConditionalProb(category, newMessageWords);
         teoBayesResult = resultAPrioriProb + resultConditionalProb;
 
@@ -139,6 +139,18 @@ class NaiveBayes {
         const selectedKey = [...this._model.mapBayesResult].find(([key, val]) => val == value)[0];
         console.log(`selected key:${selectedKey}`);
         return selectedKey;
+    }
+
+    wordsInVocabulary(arrayWords){
+        var result = [];
+
+        for(let word of arrayWords){
+            if(this._model.arrayVocabulary.indexOf(word) >= 0){
+                result.push(word);
+            }
+        }
+
+        return result;
     }
 }
 

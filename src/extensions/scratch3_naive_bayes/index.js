@@ -96,20 +96,17 @@ class NaiveBayesBlocks {
     }
 
     bayes (args){
-
-        const hipArg = args.HIP;
+        const category = args.HIP;
         const nvalArg = args.NVAL;
-        if ((hipArg == CATEGORY_DEFAULT_VALUE) || (typeof nvalArg === 'undefined')){
 
+        if ((category == CATEGORY_DEFAULT_VALUE) || (typeof nvalArg === 'undefined')){
             return;
         }
-        console.log(`hipArg: ${hipArg}`);
-        console.log(`nvalArg: ${nvalArg}`);
 
-        const hip = this.normalizeString(hipArg);
+        const categoryName = this.normalizeString(category);
         const newValue = this.normalizeString(nvalArg);
 
-        return this.naiveBayes.teoBayes(hip, newValue);
+        return this.naiveBayes.teoBayes(categoryName, newValue);
     }
 
     maxCategoryFrom(args){

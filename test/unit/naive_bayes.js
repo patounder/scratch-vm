@@ -7,7 +7,7 @@ test('clasiffy text', clasiffyTextTester => {
 
     const classifierName = 'emocion';
 
-    clasiffyTextTester.test('testing init model', initModelTester => {
+    clasiffyTextTester.test('init model', initModelTester => {
         var naiveBayes = new NaiveBayes();
         naiveBayes.initModel(classifierName);
 
@@ -28,7 +28,6 @@ test('clasiffy text', clasiffyTextTester => {
 
         initModelTester.end();
     });
-
 
     clasiffyTextTester.test('training model', trainTextTester => {
         var naiveBayes = new NaiveBayes();
@@ -65,12 +64,43 @@ test('clasiffy text', clasiffyTextTester => {
         trainTextTester.end();
     });
 
-    const givenValue = 'persona buena';
+    clasiffyTextTester.test('words in vocabulary', wordsInVocabulary => {
+        var naiveBayes = new NaiveBayes();
+        naiveBayes.initModel(classifierName);
+        naiveBayes.train('alegria', NaiveBayesInputsStub.getArrayHappyExamples(), NaiveBayesInputsStub.getLengthArrayHappy());
+        naiveBayes.train('tristeza', NaiveBayesInputsStub.getArraySadExamples(), NaiveBayesInputsStub.getLengthArraySad());
 
-    clasiffyTextTester.test('', teoBayesTest => {
-        const resultTeoBayesAlegres = naiveBayes.teoBayes('alegres', givenValue);
-        const resultTeoBayesTristes = naiveBayes.teoBayes('tristes', givenValue);
-        teoBayesTest.equals(resultTeoBayesAlegres > resultTeoBayesTristes, true);
+        const newValueWords = 'eres increible conmigo'.split(' ');
+        wordsInVocabulary.equals(naiveBayes.wordsInVocabulary(newValueWords).toString(), ['eres','increible'].toString());
+
+        const otherNewValue = 'no sabia que seldria mal'.split(' ');
+        wordsInVocabulary.equals(naiveBayes.wordsInVocabulary(otherNewValue).toString(), ['no','que','mal'].toString());
+
+    });
+
+
+    clasiffyTextTester.test('teo bayes', teoBayesTest => {
+        naiveBayes.initModel(classifierName);
+        naiveBayes.train('alegria', NaiveBayesInputsStub.getArrayHappyExamples(), NaiveBayesInputsStub.getLengthArrayHappy());
+        naiveBayes.train('tristeza', NaiveBayesInputsStub.getArraySadExamples(), NaiveBayesInputsStub.getLengthArraySad());
+
+        var newValue = 'eres malvado conmigo';
+
+        var resultTeoBayesAlegria = naiveBayes.teoBayes('alegria', newValue);
+        teoBayesTest.equals(resultTeoBayesAlegria, 0.008);
+
+        var resultTeoBayesTristes = naiveBayes.teoBayes('tristeza', newValue);
+        teoBayesTest.equals(resultTeoBayesTristes, 0.001);
+
+
+        var otherValue = 'lo hiciste increible';
+
+        var resultTeoBayesAlegria2 = naiveBayes.teoBayes('alegria', otherValue);
+        teoBayesTest.equals(resultTeoBayesAlegria2, 0.000017);
+
+        var resultTeoBayesTristes2 = naiveBayes.teoBayes('tristeza', otherValue);
+        teoBayesTest.equals(resultTeoBayesTristes2, 0.000015);
+
         teoBayesTest.end();
     })
     clasiffyTextTester.end();
