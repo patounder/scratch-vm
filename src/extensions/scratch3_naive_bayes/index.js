@@ -78,12 +78,6 @@ class NaiveBayesBlocks {
 
     initConfig (args){
         const argName = args.NAME;
-
-        if(argName == CATEGORY_DEFAULT_VALUE){
-            console.log('using default values. Change them');
-            return;
-        }
-
         const name = this.normalizeString(argName);
         this.naiveBayes.initModel(name);
     }

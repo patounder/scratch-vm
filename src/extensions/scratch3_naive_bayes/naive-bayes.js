@@ -15,6 +15,11 @@ class NaiveBayes {
     }
 
     initModel (name){
+        if(name === undefined){
+            console.log('invalid classifier name');
+            return;
+        }
+
         const mapBagWordsForCategory = new Map();
         const mapCounterCategoryExamples = new Map();
         const arrayVocabulary = [];
@@ -84,7 +89,7 @@ class NaiveBayes {
         const arrayProbConditional = [];
 
 
-        //now determine P( w | c ) for each word `w` in the text. using m-estimate
+        //now determine P( w | c ) for each word `w` in the text, use m-estimate function
         for (let word of messageWords) {
             var nk = mapBagWordCategory.get(word) || 0;
             const tokenProbability = (nk + 1) / (mapBagWordCategory.size + this._model.arrayVocabulary.length);

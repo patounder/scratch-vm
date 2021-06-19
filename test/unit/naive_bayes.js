@@ -8,23 +8,78 @@ test('clasiffy text', clasiffyTextTester => {
     const classifierName = 'emocion';
 
     clasiffyTextTester.test('init model', initModelTester => {
-        var naiveBayes = new NaiveBayes();
-        naiveBayes.initModel(classifierName);
 
-        initModelTester.equals(naiveBayes.model.name, 'emocion');
+        initModelTester.test('classifier with undefined name', initUndefinedName => {
+            var naiveBayes = new NaiveBayes();
+            naiveBayes.initModel();
+            initUndefinedName.equals(naiveBayes.model, undefined);
+            initUndefinedName.end();
+        });
 
-        initModelTester.type(naiveBayes.model.mapCounterCategoryExamples, Map);
-        initModelTester.equals(naiveBayes.model.mapCounterCategoryExamples.size, 0);
+        initModelTester.test('classifier with default name', initDefaultName => {
+            const CATEGORY_DEFAULT_VALUE = 'nombre';
+            var naiveBayes = new NaiveBayes();
+            naiveBayes.initModel(CATEGORY_DEFAULT_VALUE);
 
-        initModelTester.type(naiveBayes.model.mapBagWordsForCategory, Map);
-        initModelTester.equals(naiveBayes.model.mapBagWordsForCategory.size, 0);
+            initDefaultName.equals(naiveBayes.model.name, 'nombre');
 
-        initModelTester.equals(naiveBayes.model.counterTotalExamples, 0);
+            initDefaultName.type(naiveBayes.model.mapCounterCategoryExamples, Map);
+            initDefaultName.equals(naiveBayes.model.mapCounterCategoryExamples.size, 0);
 
-        initModelTester.equals(naiveBayes.model.arrayVocabulary.length, 0);
+            initDefaultName.type(naiveBayes.model.mapBagWordsForCategory, Map);
+            initDefaultName.equals(naiveBayes.model.mapBagWordsForCategory.size, 0);
 
-        initModelTester.type(naiveBayes.model.mapBayesResult, Map);
-        initModelTester.equals(naiveBayes.model.mapBayesResult.size, 0);
+            initDefaultName.equals(naiveBayes.model.counterTotalExamples, 0);
+
+            initDefaultName.equals(naiveBayes.model.arrayVocabulary.length, 0);
+
+            initDefaultName.type(naiveBayes.model.mapBayesResult, Map);
+            initDefaultName.equals(naiveBayes.model.mapBayesResult.size, 0);
+
+            initDefaultName.end();
+        });
+
+        initModelTester.test('classifier name string', initStringName =>{
+            var naiveBayes = new NaiveBayes();
+            naiveBayes.initModel(classifierName);
+            initStringName.equals(naiveBayes.model.name, 'emocion');
+
+            initStringName.type(naiveBayes.model.mapCounterCategoryExamples, Map);
+            initStringName.equals(naiveBayes.model.mapCounterCategoryExamples.size, 0);
+
+            initStringName.type(naiveBayes.model.mapBagWordsForCategory, Map);
+            initStringName.equals(naiveBayes.model.mapBagWordsForCategory.size, 0);
+
+            initStringName.equals(naiveBayes.model.counterTotalExamples, 0);
+
+            initStringName.equals(naiveBayes.model.arrayVocabulary.length, 0);
+
+            initStringName.type(naiveBayes.model.mapBayesResult, Map);
+            initStringName.equals(naiveBayes.model.mapBayesResult.size, 0);
+            initStringName.end();
+        });
+
+        initModelTester.test('classifier with number', initNumberName =>{
+            var naiveBayes = new NaiveBayes();
+            naiveBayes.initModel(1234);
+            initNumberName.equals(naiveBayes.model.name, 1234);
+
+            initNumberName.type(naiveBayes.model.mapCounterCategoryExamples, Map);
+            initNumberName.equals(naiveBayes.model.mapCounterCategoryExamples.size, 0);
+
+            initNumberName.type(naiveBayes.model.mapBagWordsForCategory, Map);
+            initNumberName.equals(naiveBayes.model.mapBagWordsForCategory.size, 0);
+
+            initNumberName.equals(naiveBayes.model.counterTotalExamples, 0);
+
+            initNumberName.equals(naiveBayes.model.arrayVocabulary.length, 0);
+
+            initNumberName.type(naiveBayes.model.mapBayesResult, Map);
+            initNumberName.equals(naiveBayes.model.mapBayesResult.size, 0);
+            initNumberName.end();
+        });
+
+
 
         initModelTester.end();
     });
