@@ -5,7 +5,7 @@ const MockInputsNaiveBayes = require('./mock_inputs')
 
 test('training model', trainTester => {
 
-    trainTester.test('with undefinedn model', trainWithUndefinedModel => {
+    trainTester.test('with undefined model (without init)', trainWithUndefinedModel => {
         var naiveBayes = new NaiveBayes();
         naiveBayes.train('alegria', MockInputsNaiveBayes.getArrayHappyExamples(), MockInputsNaiveBayes.getLengthArrayHappy);
         naiveBayes.train('tristeza', MockInputsNaiveBayes.getArraySadExamples(), MockInputsNaiveBayes.getLengthArraySad);
@@ -51,6 +51,77 @@ test('training model', trainTester => {
 
         trainModelText.end();
     });
+
+    trainTester.test('with example list empty', emptyTrainList =>{
+        var naiveBayes = new NaiveBayes();
+        naiveBayes.initModel('emocion');
+        naiveBayes.train('foo', MockInputsNaiveBayes.getArrayEmptyExamples(), MockInputsNaiveBayes.getLengthArrayEmpty());
+
+        emptyTrainList.equals(naiveBayes.model.counterTotalExamples, 0);
+        emptyTrainList.equals(naiveBayes.model.mapBagWordsForCategory.size, 1);
+
+        const fooMapBagOfWords = naiveBayes.model.mapBagWordsForCategory.get('foo');
+
+        emptyTrainList.type(fooMapBagOfWords, Map);
+        //test 'n' for category
+        emptyTrainList.equals(fooMapBagOfWords.size, 0);
+
+        emptyTrainList.equals(naiveBayes.model.arrayVocabulary.length, 0);
+        emptyTrainList.equals(naiveBayes.model.mapBayesResult.size, 0);
+
+        emptyTrainList.end();
+    });
+
+    trainTester.test('with string like example list', stringLikeList =>{
+        var naiveBayes = new NaiveBayes();
+        naiveBayes.initModel('name');
+        naiveBayes.train('foo', 'bar', 0);
+
+        stringLikeList.equals(naiveBayes.model.name, 'name');
+
+        stringLikeList.type(naiveBayes.model.mapCounterCategoryExamples, Map);
+        stringLikeList.equals(naiveBayes.model.mapCounterCategoryExamples.size, 0);
+
+        stringLikeList.equals(naiveBayes.model.counterTotalExamples, 0);
+        stringLikeList.type(naiveBayes.model.mapBagWordsForCategory, Map);
+        stringLikeList.equals(naiveBayes.model.mapBagWordsForCategory.size, 0);
+
+        const fooMapBagOfWords = naiveBayes.model.mapBagWordsForCategory.get('foo');
+
+        stringLikeList.type(fooMapBagOfWords, undefined);
+
+        stringLikeList.equals(naiveBayes.model.arrayVocabulary.length, 0);
+        stringLikeList.type(naiveBayes.model.mapBayesResult, Map);
+        stringLikeList.equals(naiveBayes.model.mapBayesResult.size, 0);
+
+        stringLikeList.end();
+    });
+
+    trainTester.test('with number like example list', numberLikeList =>{
+        var naiveBayes = new NaiveBayes();
+        naiveBayes.initModel('name');
+        naiveBayes.train('foo', 123, 0);
+
+        numberLikeList.equals(naiveBayes.model.name, 'name');
+
+        numberLikeList.type(naiveBayes.model.mapCounterCategoryExamples, Map);
+        numberLikeList.equals(naiveBayes.model.mapCounterCategoryExamples.size, 0);
+
+        numberLikeList.equals(naiveBayes.model.counterTotalExamples, 0);
+        numberLikeList.type(naiveBayes.model.mapBagWordsForCategory, Map);
+        numberLikeList.equals(naiveBayes.model.mapBagWordsForCategory.size, 0);
+
+        const fooMapBagOfWords = naiveBayes.model.mapBagWordsForCategory.get('foo');
+
+        numberLikeList.type(fooMapBagOfWords, undefined);
+
+        numberLikeList.equals(naiveBayes.model.arrayVocabulary.length, 0);
+        numberLikeList.type(naiveBayes.model.mapBayesResult, Map);
+        numberLikeList.equals(naiveBayes.model.mapBayesResult.size, 0);
+
+        numberLikeList.end();
+    });
+
 
     trainTester.end();
 });

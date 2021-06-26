@@ -32,6 +32,12 @@ class NaiveBayes {
             console.log('model undefined');
             return;
         }
+
+        if(!Array.isArray(trainingWords)){
+            console.log(`not array trainingWords= ${trainingWords}`);
+            return;
+        }
+
         //console.log(`trainingWords= ${trainingWords}`);
         this._model.counterTotalExamples = (this._model.counterTotalExamples + documentsCounter);
         this.updateMapCategoryCounter(category, documentsCounter);

@@ -52,6 +52,14 @@ class NaiveBayesInputsStub {
         return this.getSadTrainingSetText().length;
     }
 
+    static getArrayEmptyExamples(){
+        return [];
+    }
+
+    static getLengthArrayEmpty(){
+        return this.getArrayEmptyExamples().length;
+    }
+
     static getArrayVocabulary(){
         return ['estas','muy','grande','haces','todo','bien','eres','increible','hecho','muchas','gracias','magnifica',
             'bueno','una','buena','persona','te','lo','hiciste','quiero','estar','contigo','ganadora','no','sirves',
