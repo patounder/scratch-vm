@@ -2,21 +2,6 @@ const test = require('tap').test;
 const NaiveBayes = require('../../../src/extensions/scratch3_naive_bayes/naive-bayes');
 const Model = require('../../../src/extensions/scratch3_naive_bayes/model');
 
-
-test('remove symbols', removeSymbolsTest =>{
-
-    var funRemoveSymbols = function (myStr) {
-        return myStr.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    };
-
-    removeSymbolsTest.equals(funRemoveSymbols('Alegría'), 'alegria');
-    removeSymbolsTest.equals(funRemoveSymbols('VideoJuegos'), 'videojuegos');
-    removeSymbolsTest.equals(funRemoveSymbols('Video Juegos'), 'video juegos');
-
-    removeSymbolsTest.end();
-});
-
-
 test('init model', initModel =>{
 
     initModel.test('classifier with undefined name', undefinedName => {
@@ -90,4 +75,17 @@ test('init model', initModel =>{
     });
 
     initModel.end();
+});
+
+test('remove symbols', removeSymbolsTest =>{
+
+    var funRemoveSymbols = function (myStr) {
+        return myStr.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    };
+
+    removeSymbolsTest.equals(funRemoveSymbols('Alegría'), 'alegria');
+    removeSymbolsTest.equals(funRemoveSymbols('VideoJuegos'), 'videojuegos');
+    removeSymbolsTest.equals(funRemoveSymbols('Video Juegos'), 'video juegos');
+
+    removeSymbolsTest.end();
 });
