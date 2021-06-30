@@ -52,7 +52,7 @@ test('training model', trainTester => {
         trainModelText.end();
     });
 
-    trainTester.test('with example list empty', emptyTrainList =>{
+    trainTester.test('with empty example list', emptyTrainList =>{
         var naiveBayes = new NaiveBayes();
         naiveBayes.initModel('emocion');
         naiveBayes.train('foo', MockInputsNaiveBayes.getArrayEmptyExamples(), MockInputsNaiveBayes.getLengthArrayEmpty());
@@ -121,7 +121,6 @@ test('training model', trainTester => {
 
         numberLikeList.end();
     });
-
 
     trainTester.end();
 });
