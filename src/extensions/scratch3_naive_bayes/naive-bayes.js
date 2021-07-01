@@ -113,7 +113,7 @@ class NaiveBayes {
 
     teoBayes (category, newExample){
 
-        if(!this._model.mapCounterCategoryExamples.has(category)){
+        if(this.model === undefined || !this.model.mapCounterCategoryExamples.has(category)){
             return 0;
         }
 
@@ -133,7 +133,7 @@ class NaiveBayes {
     maxCategoryFrom(bayesResult){
         var maxValue = 0;
 
-        if(!Array.isArray(bayesResult)){
+        if(this.model === undefined || !Array.isArray(bayesResult)){
             return 'indefinida';
         }
 
