@@ -22,5 +22,17 @@ test('maxima', maximaTest => {
     var otherResultBayes = [otherHappyResultTeoBayes, otherSadResultTeoBayes];
     var otherSelectedCategory = naiveBayes.maxCategoryFrom(otherResultBayes);
     maximaTest.equals(otherSelectedCategory, 'alegria');
+
+    maximaTest.test('when param is not array', arrayRandom => {
+
+        var categorySelected = naiveBayes.maxCategoryFrom('1234');
+        arrayRandom.equals(categorySelected, 'indefinida');
+
+        var categoryNumSelected = naiveBayes.maxCategoryFrom(65456);
+        arrayRandom.equals(categoryNumSelected, 'indefinida');
+
+        arrayRandom.end();
+    });
+
     maximaTest.end();
 });

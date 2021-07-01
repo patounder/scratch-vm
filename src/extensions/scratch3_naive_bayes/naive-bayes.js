@@ -130,13 +130,17 @@ class NaiveBayes {
         return teoBayesResult;
     }
 
-    maxCategoryFrom(hValues){
+    maxCategoryFrom(bayesResult){
         var maxValue = 0;
 
-        console.log(`hValues:${hValues}`);
-        for (let i = 0; i < hValues.length; i++){
-            if (hValues[i] > maxValue){
-                maxValue = hValues[i];
+        if(!Array.isArray(bayesResult)){
+            return 'indefinida';
+        }
+
+        console.log(`hValues:${bayesResult}`);
+        for (let result of bayesResult){
+            if (result > maxValue){
+                maxValue = result;
             }
         }
         return this.getKey(maxValue);
