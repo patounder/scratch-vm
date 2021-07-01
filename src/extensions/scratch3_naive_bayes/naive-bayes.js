@@ -34,7 +34,7 @@ class NaiveBayes {
         }
 
         if(!Array.isArray(trainingWords)){
-            console.log(`not array trainingWords= ${trainingWords}`);
+            console.log(`train. not array trainingWords: ${trainingWords}`);
             return;
         }
 
@@ -81,22 +81,24 @@ class NaiveBayes {
         }
     }
 
-    aprioriProb (hipValue){
-        const probClass = this._model.mapCounterCategoryExamples.get(hipValue) / this._model.counterTotalExamples;
-        console.log(`prob clase: ${probClass}`);
+    aprioriProb (category){
+        const probClass = this._model.mapCounterCategoryExamples.get(category) / this._model.counterTotalExamples;
+        console.log(`aprioriProb. category: ${category}, probClass: ${probClass}`);
         return probClass;
     }
 
-    textConditionalProb (category, messageWords) {
+    textConditionalProb (category, wordsInVocabulary) {
 
-        console.log(`mapBagWordsForCategory.size: ${this._model.mapBagWordsForCategory.size}`);
+        if(!wordsInVocabulary.length){
+            return 0;
+        }
+
         const mapBagWordCategory = this._model.mapBagWordsForCategory.get(category);
         console.log(`mapBagWordCategory.size: ${mapBagWordCategory.size}`);
         const arrayProbConditional = [];
 
-
         //now determine P( w | c ) for each word `w` in the text, use m-estimate function
-        for (let word of messageWords) {
+        for (let word of wordsInVocabulary) {
             var nk = mapBagWordCategory.get(word) || 0;
             const tokenProbability = (nk + 1) / (mapBagWordCategory.size + this._model.arrayVocabulary.length);
             arrayProbConditional.push(tokenProbability);
@@ -105,11 +107,15 @@ class NaiveBayes {
         console.log(`arrayCondProb: ${arrayProbConditional}`);
 
         const resultCondProb = arrayProbConditional.reduce((acc, n) => acc * n);
-        console.log(`resultCondProb: ${resultCondProb}, category: ${category}, messageWords: ${messageWords}`);
+        console.log(`resultCondProb: ${resultCondProb}, category: ${category}, messageWords: ${wordsInVocabulary}`);
         return resultCondProb;
     }
 
     teoBayes (category, newExample){
+
+        if(!this._model.mapCounterCategoryExamples.has(category)){
+            return 0;
+        }
 
         const wordsInVocabulary = this.wordsInVocabulary(newExample.split(' '));
 

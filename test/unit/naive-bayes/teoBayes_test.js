@@ -17,6 +17,16 @@ test('teo Bayes', teoBayesTest => {
     var sadResultTeoBayes = naiveBayes.teoBayes('tristeza', newValue);
     teoBayesTest.equals(sadResultTeoBayes, 0.001220703125);
 
+    teoBayesTest.test('when category not trained', categoryNotTrained =>{
+        var fooResultTeoBayes = naiveBayes.teoBayes('foobar', newValue);
+        categoryNotTrained.equals(fooResultTeoBayes, 0);
+
+        var numResultTeoBayes = naiveBayes.teoBayes(123456, newValue);
+        categoryNotTrained.equals(numResultTeoBayes, 0);
+
+        categoryNotTrained.end();
+    });
+
 
     var otherValue = 'lo hiciste increible';
 
@@ -25,6 +35,17 @@ test('teo Bayes', teoBayesTest => {
 
     var otherSadResultTeoBayes = naiveBayes.teoBayes('tristeza', otherValue);
     teoBayesTest.equals(otherSadResultTeoBayes, 0.0000171661376953125);
+
+    teoBayesTest.test('when random new value', randomNewValueTest => {
+        var randomNumValue = Math.floor(Math.random() * 100);
+        var randomNumBayesResult = naiveBayes.teoBayes('alegria', randomNumValue.toString());
+        randomNewValueTest.equals(randomNumBayesResult, 0)
+
+        var randomWordsBayesResult = naiveBayes.teoBayes('alegria', 'extraviado libro');
+        randomNewValueTest.equals(randomWordsBayesResult, 0)
+
+        randomNewValueTest.end();
+    });
 
     teoBayesTest.end();
 });
