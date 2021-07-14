@@ -147,9 +147,11 @@ class NaiveBayes {
     }
 
     getKey(value) {
-        const selectedKey = [...this._model.mapBayesResult].find(([key, val]) => val == value)[0];
-        console.log(`selected key:${selectedKey}`);
-        return selectedKey;
+        const selectedEntry = [...this._model.mapBayesResult].find(([key, val]) => val == value);
+        if(selectedEntry === undefined) {
+            return;
+        }
+        return selectedEntry[0];
     }
 
     wordsInVocabulary(arrayWords){
